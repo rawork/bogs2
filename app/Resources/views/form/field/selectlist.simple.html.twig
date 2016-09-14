@@ -1,0 +1,7 @@
+{% if items %}
+<ul class="select-list">
+    {% for item in items %}
+    <li><label><input type="checkbox"{% if attribute(item, link_mapped) != 0 %} checked="true"{% endif %} name="{{ name }}[]" value="{{ item.id }}"> {{ attribute(item, l_field) }}</label></li>
+    {% endfor %}
+</ul>
+{% endif %}

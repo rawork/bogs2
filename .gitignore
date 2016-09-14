@@ -1,0 +1,40 @@
+.DS_Store
+.idea
+
+# Uploads
+upload/*
+!upload/.htaccess
+files/*
+!files/.htaccess
+thumbs/*
+!thumbs/.htaccess
+
+# Configuration files
+app/config/config.php
+app/config/database.php
+app/config/parameters.php
+
+# Cache
+app/cache/*
+!app/cache/.gitkeep
+!app/cache/smarty
+app/cache/smarty/*
+!app/cache/smarty/.gitkeep
+!app/cache/twig
+app/cache/twig/*
+!app/cache/twig/.gitkeep
+!app/cache/proxies
+app/cache/proxies/*
+!app/cache/proxies/.gitkeep
+!app/cache/hydrators
+app/cache/hydrators/*
+!app/cache/hydrators/.gitkeep
+app/logs/*
+!app/logs/.gitkeep
+app/backup/*
+!app/backup/.gitkeep
+
+# Vendors
+composer.lock
+composer.phar
+vendor/*

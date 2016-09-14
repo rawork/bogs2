@@ -1,0 +1,8 @@
+<?php
+define('TEMPLATE_VERSION_QUANTITY', 10);
+define('CAPTCHA_KEY', 'secretkey');
+/* Developer user */
+define('DEV_USER', 'dev');
+/* md5 hash pass of development user */
+define('DEV_PASS', '');
+define('DEV_EMAIL', 'rawork@yandex.ru');

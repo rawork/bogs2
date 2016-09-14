@@ -1,0 +1,28 @@
+/* font-family: "GothamProRegular"; */
+@font-face {
+    font-family: "GothamProRegular";
+    src: url("../fonts/GothamProRegular/GothamProRegular.eot");
+    src: url("../fonts/GothamProRegular/GothamProRegular.eot?#iefix")format("embedded-opentype"),
+    url("../fonts/GothamProRegular/GothamProRegular.woff") format("woff"),
+    url("../fonts/GothamProRegular/GothamProRegular.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+/* font-family: "GothamProLight"; */
+@font-face {
+    font-family: "GothamProLight";
+    src: url("../fonts/GothamProLight/GothamProLight.eot");
+    src: url("../fonts/GothamProLight/GothamProLight.eot?#iefix")format("embedded-opentype"),
+    url("../fonts/GothamProLight/GothamProLight.woff") format("woff"),
+    url("../fonts/GothamProLight/GothamProLight.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'PFDinBold';
+    src: url('../fonts/PFDinTextCompPro-Bold.eot');
+    src: local('☺'), url('../fonts/PFDinTextCompPro-Bold.woff') format('woff'), url('../fonts/PFDinTextCompPro-Bold.ttf') format('truetype'), url('../fonts/PFDinTextCompPro-Bold.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}

@@ -1,0 +1,13 @@
+#!/usr/bin/env php
+<?php
+
+require_once 'init.php';
+
+use Fuga\Component\Install\FixCommand;
+use Fuga\Component\Install\ConfigCommand;
+use Symfony\Component\Console\Application;
+
+$application = new Application();
+$application->add(new FixCommand);
+$application->add(new ConfigCommand);
+$application->run();

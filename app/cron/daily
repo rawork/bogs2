@@ -1,0 +1,9 @@
+#!/usr/bin/env php
+<?php
+
+require_once(__DIR__ . '/../init.php');
+
+use Fuga\Component\Scheduler\Scheduler;
+
+$scheduler = new Scheduler();
+$scheduler->processTasks('day');

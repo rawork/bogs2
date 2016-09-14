@@ -1,0 +1,37 @@
+html * {
+	font-family: Arial, Sans-serif;
+}
+
+body{
+    background-color: #999;
+}
+
+h1 {
+	font-size:24px;
+	font-weight:normal;
+	padding:0 0 15px 0;
+	margin:0;
+}
+
+.error {
+	width: 550px;
+	position:absolute;      
+    top: 50%;
+    left: 50%;
+	margin-top:-100px;
+    margin-left:-275px;
+	text-align: center;
+}
+
+.error img {
+	height: auto;
+}
+
+.error-text {
+	font-size: 16px;
+	line-height: 24px;
+}
+
+a{
+    color: #f58024;
+}

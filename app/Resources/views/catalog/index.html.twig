@@ -1,0 +1,26 @@
+<div class="catalog"><a name="catalog" id="catalog"></a>
+    {% for cat in cats %}
+    <div class="title"><img src="/files/category/{{ cat.name }}_collection.jpg"></div>
+    <div class="products-wrapper">
+        <div class="slider-products products">
+            {% for item in cat.items %}
+            <div class="item">
+                <div class="category">{{ item.category_id_value.item.title }}</div>
+                <div class="name">{{ item.name }}</div>
+                <a class="photo view-product" href="#" data-id="{{ item.id }}"><img src="{{ item.photo_value.extra.main.path }}"></a>
+                <div class="price">{{ item.price }} руб.</div>
+                {% if cart[item.id] is defined %}
+                <button class="add-product active" data-id="{{ item.id }}">В корзине</button>
+                {% else %}
+                <button class="add-product" data-id="{{ item.id }}">В корзину</button>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="sizes">
+        <div class="link"><a href="">Таблица размеров</a></div>
+        <div class="content"><img src="/files/category/size_{{ cat.name }}.png"></div>
+    </div>
+    {% endfor %}
+</div>

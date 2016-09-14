@@ -1,0 +1,9 @@
+<ul class="breadcrumb">
+	{% for k,item in nodes %}
+	{% if k < count(nodes)-1 %}
+	<li><a href="{{ item.ref }}">{{ item.title }}</a>{% if k < count(nodes)-1 %} <span class="divider">&rarr;</span>{% endif %}</li>
+	{% else %}
+	{#<li class="active">{{ item.title }}</li>#}
+	{% endif %}
+	{% endfor %}
+</ul>

@@ -1,0 +1,12 @@
+<table class="table table-condensed">
+    <thead><tr>
+        <th>Название</th>
+        <th><i class="icon icon-align-justify"></i></th>
+    </tr></thead>
+    {% for item in items %}
+    <tr>
+        <td width="95%" valign="center"><span id="itemTitle{{ item.id }}">{% for fieldName in fields %}{% if item[fieldName] is defined %}{{ item[fieldName] }} {% endif %}{% endfor %} ({{ item.id }})</span></td>
+        <td width="5%"><input class="popup-item" value="{{ item.id }}" type="checkbox" {% if item.id in values %} checked="checked"{% endif %}></td>
+    </tr>
+    {% endfor %}
+</table>

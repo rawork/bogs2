@@ -1,0 +1,26 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block content %}
+<h4>{{ title }}{% if message %}: {{ message }}{% endif %}</h4>
+<form method="post" action="{{ path('admin_module_setting', {'state': state, 'module': module}) }}">
+<table class="table table-condensed">
+<thead><tr>
+{% for param in params %}
+<tr>
+    <td align=left width="250"><strong>{{ param.title }}</strong><br>{{ param.name}}</td><td>
+        {% if param.type == 'bool' %}
+        <input type="checkbox" name="param_'.{{ param.name }}" value="1"{% if param.value > 0 %} checked{% endif %}>
+        {% elseif param.type == 'txt' %}
+        <textarea class="form-control" rows="5" name="param_{{ param.name }}">{{ param.value }}</textarea>
+        {% else %}
+        <input class="form-control" type="text" name="param_{{ param.name }}" value="{{ param.value }}">
+        {% endif %}
+    </td>
+</tr>
+{% endfor %}
+</table>
+<br>
+<input class="btn btn-success" type="submit" value="Сохранить изменения">
+<a class="btn btn-default" href="{{ path('admin_module_setting', {'state': state, 'module': module}) }}">Отменить</a>
+</form>
+{% endblock %}

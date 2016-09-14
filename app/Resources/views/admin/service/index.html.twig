@@ -1,0 +1,42 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block content %}
+{# need title here #}
+{% if message %}
+<div class="well" id="archive_info">{{ message }}</div>
+{% endif %}
+<input type="button" class="btn btn-success" onClick="createBackup()" value="Создать архив" />
+<br><br>
+<table class="table table-condensed">
+    <thead><tr>
+        <th width="55%">Имя</th>
+        <th width="22%">Размер файла</th>
+        <th width="22%">Создан</th>
+        <th><i class="glyphicon glyphicon-align-justify"></i></th>
+    </tr></thead>
+
+    {% for file in finder %}
+    <tr>
+        <td>{{ file.getFilename() }}</td>
+        <td>{{ file.getSize()|file_size }}</td>
+        <td>{{ file.getCTime()|date('Y-m-d H:i:s')|format_date('d.m.Y H:i') }}</td>
+        <td>
+            <div class="btn-group pull-right">
+                <a class="btn btn-small dropdown-toggle admin-dropdown-toggle" id="drop'.md5($file).'" data-toggle="dropdown" href="#">
+                    <i class="glyphicon glyphicon-align-justify"></i>
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu admin-dropdown-menu">
+                    <li><a href="{{ path('admin_backup_get', {'file': file.getFilename()}) }}"><i class="glyphicon glyphicon-pencil"></i> Скачать</a></li>
+                    <li><a href="{{ path('admin_backup_delete', {'file': file.getFilename()}) }}"><i class="glyphicon glyphicon-trash"></i> Удалить</a></li>
+                </ul>
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
+    </table>
+<a href="{{ path('admin_restore_file') }}">Скачать скрипт восстановления системы</a>
+
+<br><br><input type="button" class="btn btn-danger" onClick="clearCache()" value="Очистить кэш" />
+<br><br><div class="well closed" id="cache_info"></div>
+{% endblock %}

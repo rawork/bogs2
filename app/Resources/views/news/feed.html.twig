@@ -1,0 +1,3 @@
+{% for news in items %}
+	<div class="news-item"><span class="date">{{ news.created|format_date('d.m.Y') }}</span> {{ news.name }}</div>
+{% endfor %}

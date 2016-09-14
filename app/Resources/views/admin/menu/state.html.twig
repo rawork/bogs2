@@ -1,0 +1,4 @@
+{% for mod in modules %}
+  <div><a class="module pointer" data-module="{{ mod.name }}"><img src="{{ theme_ref }}/admin/img/icons/icon_folder_{{ state }}.gif"> {{ mod.title }}</a></div>
+  <div class="admin-submenu{% if module != mod.name %} closed{% endif %}" id="table-menu-{{ mod.name }}">{% if module == mod.name %}{{ mod.submenu }}{% endif %}</div>
+{% endfor %}

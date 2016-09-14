@@ -1,0 +1,9 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block content %}
+{% for mod in modules %}
+<div class="index-module">
+    <div><a href="{{ path('admin_module_index', {'state': state, 'module': mod.name}) }}"><img src="{{ mod.icon }}" ><br>{{ mod.title }}</a></div>
+</div>
+{% endfor %}
+{% endblock %}

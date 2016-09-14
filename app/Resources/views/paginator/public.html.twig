@@ -1,0 +1,10 @@
+<div class="pagination">
+	Страницы: 
+	{% if begin_link != '' %}<a href="{{ begin_link }}">&laquo;</a>{/if}
+	{% if prev_link != '' %}<a href="{{ prev_link }}">&lsaquo;</a>{/if}
+	{% for i in pages %}
+	<a{% if page == i.name %} class="active"{% endif %} href="{{ i.ref }}">{{ i.name }}</a>
+	{% endfor %}
+	{% if next_link != '' %}<a href="{{ next_link }}">&rsaquo;</a>{% endif %}
+	{% if end_link != '' %}<a href="{{ end_link }}">&raquo;</a>{% endif %}
+</div>

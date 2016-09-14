@@ -1,0 +1,59 @@
+<br>
+{% if frmMessage %}<div class="alert alert-{{ frmMessage[0] }}">{{ frmMessage[1] }}</div>{% endif %}
+<form name="frm{{ dbform.name }}" id="frm{{ dbform.name }}" action="{{ action }}" method="post" onsubmit="return checkForm(this)" enctype="multipart/form-data">
+    {% for myId,i in items %}
+	{% if i.type == 'hidden' %}<input type="hidden" name="{{ i.name }}" value="{{ i.value }}">{% endif %}
+	{% endfor %}
+	{% for myId,i in items %}
+	<div class="control-group">
+		<div class="controls">
+			{% if i.type == 'string' %}
+			<input type="text" title="{% if i.not_empty %}{{ i.title }}{% endif %}" id="input{{ i.name }}" name="{{ i.name }}" value="{{ i.value }}" placeholder="{{ i.title }}{% if i.not_empty %} *{% endif %}">
+			{% elseif i.type == 'text' %}
+			<textarea rows="7" title="{% if i.not_empty %}{{ i.title }}{% endif %}" id="input{{ i.name }}" name="{{ i.name }}" placeholder="{{ i.title }}{% if i.not_empty %} *{% endif %}">{{ i.value }}</textarea>
+			{% elseif i.type == 'checkbox' %}
+			<input type="checkbox" title="{% if i.not_empty %}{{ i.title }}{% endif %}" id="input{{ i.name }}" name="{{ i.name }}" {% if i.value %}checked{% endif %} /> {{ i.title }}{% if i.not_empty %} *{% endif %}
+			{% elseif i.type == 'file' %}
+			<input type="file" title="{% if i.not_empty %}{{ i.title }}{% endif %}" id="input{{ i.name }}" name="{{ i.name }}" />
+			{% elseif i.type == 'password' %}
+			<input type="password" id="input{{ i.name }}" placeholder="{{ i.title }}{% if i.not_empty %} *{% endif %}">
+			{% elseif i.type == 'select' %}
+			<select title="{% if i.not_empty %}{{ i.title }}{% endif %}" id="input{{ i.name }}" name="{{ i.name }}"{{ i.more }}>
+			<option value="0">Выберите {{ i.title }}{% if i.not_empty %} *{% endif %}</option>
+			{% for op in i.select_values %}
+			<option value="{{ op.value }}"{{ op.sel }}>{{ op.name }}</option>
+			{% endfor %}
+			</select>
+			{% elseif i.type == 'enum' %}
+			<select title="{% if i.not_empty %}{{ i.title }}{% endif %}" id="input{{ i.name }}" name="{{ i.name }}"{{ i.more }}>
+			<option value="0">Выберите {{ i.title }}{% if i.not_empty %} *{% endif %}</option>
+			{% for op in i.select_values %}
+			<option value="{{ op.value }}"{{ op.sel }}>{{ op.name }}</option>
+			{% endfor %}
+			</select>
+			{% endif %}
+		</div>
+	</div>
+	{% if i.is_check %}
+	<div>
+		<div>
+			<input type="{% if i.type == 'password' %}password{% else %}text{% endif %}" id="input{{ i.name }}{{ again_postfix }}" id="{{ i.name }}{{ again_postfix }}" placeholder="{{ i.title }} еще раз">
+		</div>
+	</div>
+	{% endif %}
+	{% endfor %}
+	{% if dbform.is_defense %}
+	<div>
+		<div>
+			<input type="text" id="inputSucure" title="Код безопасности" name="securecode" placeholder="Введите цифры *">
+			<div><img id="secure_image" src="/secureimage?{{ now }}"> <a href="#" onclick="document.getElementById('secure_image').src='/secureimage?'+Math.random();return false">обновить код</a></div>
+		</div>
+	</div>
+    {% endif %}
+	<div>
+		<div>
+			{% if dbform.not_empty %}<label>Поля, отмеченные <span class="r==uired">*</span> &ndash; обязательны для заполнения.</label>{% endif %}
+			<input type="submit" class="btn btn-large" value="{{ dbform.submit_text }}" />
+		</div>
+	</div>
+</form>

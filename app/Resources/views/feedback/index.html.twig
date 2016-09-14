@@ -1,0 +1,9 @@
+{% for item in items %}
+<div class="item">
+    <img src="{{ item.photo_value.extra.main.path }}">
+    <div class="name">{{ item.name }},<br>
+        {{ item.city }}
+    </div>
+    <div class="text">{{ item.message }}</div>
+</div>
+{% endfor %}

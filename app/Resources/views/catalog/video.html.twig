@@ -1,0 +1,11 @@
+<div class="video-wrapper">
+    <div class="slider-video">
+        {% for item in items %}
+        <div>
+        	<div class="video-cont">
+        		<iframe src="{{ item.url }}" frameborder="0" allowfullscreen></iframe>
+        	</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>

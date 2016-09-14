@@ -1,0 +1,6 @@
+<div class="map{{ block }}_links">
+{% for node in nodes %}
+<a href="{{ node.ref }}"><span>&gt;</span> {% if node.title %}{{ node.title }}{% else %}{{ node.name }}{% endif %}</a>
+{{ node.sub }}
+{% endfor %}
+</div>

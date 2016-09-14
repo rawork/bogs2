@@ -1,0 +1,8 @@
+
+<ul class="select-list dialog clearfix">
+    {% if items %}
+    {% for item in items %}
+        <li>{{ attribute(item, l_field) }} <a data-inverse="{{ attribute(item, link_inverse) }}" data-mapped="{{ item.id }}">&times;</a> </li>
+    {% endfor %}
+    {% endif %}
+</ul>

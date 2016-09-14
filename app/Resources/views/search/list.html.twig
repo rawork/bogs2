@@ -1,0 +1,7 @@
+<p>Результаты поиска по запросу &laquo;<b>{{ searchText }}</b>&raquo;:</p>
+{{ ptext }}<br>
+<div class="search-result">
+{% for item in items %}<p>{{ item.num }}. <a href='{{ item.link }}'>{{ item.title }}&nbsp;  &#8594;</a></p><br>
+{% endfor %}
+</div>
+{{ ptext }}

@@ -1,0 +1,321 @@
+//-- Media queries
+@media only screen and (max-width: 960px){
+	.info {
+		.tech-img {
+			width: 50%;
+		}
+		.dots {
+			width: 50%;
+		}
+		#button1 {
+			width: 50%;
+		}
+	}
+}
+
+@media only screen and (max-width: 820px){
+	.banner-top {
+		.slide-text {
+			left: 40px;
+			top: 60px;
+		}
+	}
+
+	.feedback .item {
+		width: 50%;
+		padding-bottom: 50px;
+		&:nth-child(3n+1) {
+			clear: left;
+		}
+		img {
+			border: 6px solid #f58024;
+		}
+	}
+
+	.footer {
+		.container {
+			padding: 0;
+		}
+	}
+
+	.info {
+		padding: 25px 24px 32px;
+		.info-title {
+			text-align: center;
+			font-size: 40px;
+			width: 240px;
+			position: static;
+		}
+		.tech-img {
+			width: 60%;
+			float: none;
+			margin: 0 auto;
+		}
+		.dots {
+			width: 100%;
+			padding: 0 0 30px;
+		}
+		.dot {
+			float: left;
+			width: 50%;
+			padding-right: 20px;
+			&:nth-child(2n+1) {
+				clear: left;
+			}
+		}
+		#button1 {
+			width: 100%;
+			padding: 0;
+			text-align: center;
+		}
+	}
+}
+
+@media only screen and (max-width: 770px){
+	#header1 {
+		.show-catalog-order {
+			display: none;
+		}
+		.social {
+			display: none;
+		}
+	}
+
+	#header2 {
+		.logo {
+			padding: 0;
+		}
+		.menu {
+			display: none;
+		}
+		.mm-btn {
+			display: block;
+		}
+		&.show-menu {
+			.mm-cont {
+				visibility: visible;
+				opacity: 1;
+			}
+			.mm-btn {
+				&__mid {
+					transform: scaleX(0);
+				}
+				&:before {
+					transform: rotate(45deg);
+				}
+				&:after {
+					transform: rotate(-45deg);
+				}
+			}
+		}
+	}
+
+	.banner-top {
+		.slide-text {
+			padding: 15px 10px;
+			text-align: center;
+			position: static;
+			max-width: 100%;
+			background: #000;
+		}
+		.slide-title {
+			font-size: 30px;
+			line-height: 1.2;
+			margin: 0 0 10px;
+		}
+		.btn {
+			color: #fff; 
+			background: #f58024;
+			font-size: 26px;
+			padding: 10px 15px 7px;
+			line-height: 28px;
+		}
+		.slide-delivery {
+			font-size: 16px;
+		}
+	}
+
+	.products .item {
+		.name {
+			font-size: 21px;
+			line-height: 25px;
+			height: 50px;
+		}
+		.price {
+			font-size: 28px;
+		}
+		button {
+			font-size: 21px;
+			padding: 12px 0 8px;
+		}
+	}
+}
+
+@media only screen and (max-width: 670px) {
+	.about-container .col {
+		float: none;
+	}
+	.celebs {
+		width: auto;
+		margin: 0 auto 30px;
+		.mosaic {
+			width: auto;
+		}
+	}
+	.history {
+		width: auto;
+	}
+	.footer .col {
+		width: 100%;
+		float: none;
+		margin-top: 20px;
+		.phone {
+			margin-bottom: 20px;
+		}
+	}
+
+	.modal-dialog {
+		.title {
+			font-size: 36px;
+		}
+		.content {
+			input.size-input {
+				display: block;
+				width: 50%;
+			}
+			span {
+				width: 100%;
+			}
+			button {
+				width: 100%;
+				font-size: 24px;
+				padding: 20px 20px 18px;
+			}
+		} 
+	}
+
+	.product-card {
+		.product-checkout {
+			.btn {
+				float: none;
+				margin-top: 20px;
+				text-align: center;
+				font-size: 26px;
+			}
+			.product-sizes {
+				float: none;
+				width: 100%;
+			}
+		}
+	}
+	.cart {
+		span {
+			font-size: 16px;
+		}
+		button {
+			font-size: 20px;
+    		padding: 14px 18px 10px;
+		}
+	}
+
+	.info {
+		.tech-img {
+			width: 80%;
+		}
+		.dot {
+			float: left;
+			width: 100%;
+			padding-right: 0;
+		}
+	}
+	.profit {
+		width: 100%;
+	}
+}
+
+@media only screen and (max-width: 480px) {
+	body {
+		font-size: 12px;
+	}
+	.banner-top {
+		.banner-img-desktop {
+			display: none;
+		}
+		.banner-img-mob {
+			display: block;
+		}
+	}
+	.products .item {
+		.name {
+			font-size: 18px;
+			line-height: 22px;
+			height: 50px;
+		}
+		.price {
+			font-size: 24px;
+		}
+		button {
+			font-size: 18px;
+			padding: 10px 0 7px;	
+		}
+	}
+
+	.feedback .item {
+		width: 100%;
+		float: none;
+	}
+
+	.modal .product-card {
+		.gallery-grid {
+			li {
+				width: 33.3333%;
+			}
+		}
+		.product-tabs li a {
+			font-size: 22px;
+		}
+	}
+	.modal-dialog .content {
+		padding: 10px 20px;
+	}
+	.cart {
+		span {
+			display: block;
+			padding-right: 0;
+			font-size: 14px;
+		}
+		button {
+			float: right;
+			overflow: hidden;
+			width: 42px;
+			height: 42px;
+			padding: 5px;
+			&:before {
+				content: '';
+				display: block;
+				width: 32px;
+				height: 32px;
+				background: url(/bundles/public/img/icon-cart.png) center center no-repeat;
+				background-size: 32px 32px;
+				margin-bottom: 7px;
+			}
+		}
+	}
+	.info {
+		padding: 20px 10px 25px;
+	}
+}
+
+@media only screen and (max-width: 424px){
+	#header1 .phone a {
+		margin: 10px 0 0;
+	}
+}
+
+@media only screen and (max-width: 400px){
+	.products .item {
+		.name {
+			height: auto;
+		}
+	}
+}

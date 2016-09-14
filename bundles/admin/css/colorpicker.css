@@ -1,0 +1,47 @@
+.color_picker {  
+	height: 16px;  
+	width: 16px;  
+	padding: 0 !important;  
+	border: 1px solid #ccc;  
+	background: url(../img/arrow.png) no-repeat top right;  
+	cursor: pointer;
+} 
+
+#_color_selector {  
+	width: 198px;  
+	position: absolute; 
+	border: 1px solid #ccc;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	background-color: #fff;  
+	padding: 1px;
+}
+
+#_color_custom {
+	width: 100%; 
+	float:left 
+}  
+
+#_color_custom label {
+	font-size: 100%; 
+	color: #666; 
+	margin: 1px 1px; 
+	width: 25%
+}
+
+#_color_custom input {
+	margin: 5px 2px; 
+	padding: 0; 
+	font-size: 100%; 
+	width: 80px; 
+}
+
+._color_swatch {  
+	height: 10px;  
+	width: 10px;  
+	/*border: 1px solid #000;  */
+	margin: 0px 1px 1px 0px;  
+	float: left;  
+	cursor: pointer;
+}

@@ -1,0 +1,10 @@
+<div class="pre-pagination">Записи {{ currentItems }} из {{ totalItems }}</div>
+<ul class="pagination">
+	{% if begin_link is not empty %}<li><a href="{{ begin_link }}">Начало</a></li>{% endif %}
+	{% if prev_link is not empty %}<li><a href="{{ prev_link }}">&laquo;</a></li>{% endif %}
+	{% for k,i in pages %}
+	<li{% if page == i.name %} class="active"{% endif %}><a href="{{ i.ref }}">{{ i.name }}</a></li>
+	{% endfor %}
+	{% if next_link is not empty %}<li><a href="{{ next_link }}">&raquo;</a></li>{% endif %}
+	{% if end_link is not empty %}<li><a href="{{ end_link }}">Конец</a></li>{% endif %}
+</ul>

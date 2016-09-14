@@ -1,0 +1,5 @@
+<div class="alert{% if success %} alert-success{% else %} alert-error{% endif %}">
+  <h5>{{ message }}</h5>
+  {% if !success %}<a href="{{ path('subscribe_process') }}">Перейти к форме подписки</a>{% endif %}
+</div>
+<br><br>

@@ -1,0 +1,21 @@
+path:
+  prj_ref: 
+  res_ref:    /files
+  upload_ref: /upload
+  backup_ref: /app/backup
+  cache_ref:  /app/cache/
+  cache_ttl: 86400;
+
+database:
+  dbname:   dnname  
+  user:     username
+  password: password
+  host:     localhost
+  driver:   pdo_mysql
+  
+captcha:  
+  hash: secretkey
+
+developer:
+  username: dev
+  password: password  

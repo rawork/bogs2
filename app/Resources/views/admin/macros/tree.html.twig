@@ -1,0 +1,14 @@
+{% macro select_tree(nodes, nodes0, parent) %}
+    {% for node in nodes %}
+        {% if node.parent_id == parent %}
+        <li>
+            <a rel="{{ node.id }}" href="javascript:void(0)" class="popup-item">{{ node.complexname }} ({{ node.id }})</a>
+            {% if nodes0[node.id].children %}
+                <ul>
+                    {{ _self.select_tree(nodes0[node.id].children, nodes0, node.id) }}
+                </ul>
+            {% endif %}
+        </li>
+        {% endif %}
+    {% endfor %}
+{% endmacro %}

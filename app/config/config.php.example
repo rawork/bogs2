@@ -1,0 +1,30 @@
+<?php
+
+define('PRJ_ENV', 'dev'); // prod, dev
+define('PRJ_REF', '');
+define('PRJ_DIR', $_SERVER['DOCUMENT_ROOT'].PRJ_REF);
+
+define('RES_REF', PRJ_REF.'/files');
+define('RES_DIR', PRJ_DIR.'/files');
+define('UPLOAD_REF', PRJ_REF.'/upload');
+define('UPLOAD_DIR', PRJ_DIR.'/upload');
+define('BACKUP_REF', PRJ_REF.'/app/backup');
+define('BACKUP_DIR', PRJ_DIR.'/app/backup');
+define('PCRE_RES_REF', str_replace('/', '\/', RES_REF));
+define('THEME_REF', PRJ_REF.'/bundles');
+define('PRJ_LOCALE', 'ru');
+
+define('AUTH_TTL', 86400000);
+
+define('SMARTY_PATH', '/app/Resources/views/');
+define('SMARTY_BACKUP_PATH', '/app/Resources/views/backup/');
+define('SMARTY_CACHE_PATH', '/app/cache/smarty/');
+define('SMARTY_COMPILE_CHECK', true);
+define('SMARTY_CACHE_ENABLED', 0);
+define('SMARTY_CACHE_TTL', 3600);
+
+define('TWIG_PATH', '/app/Resources/views');
+define('TWIG_CACHE_PATH', '/app/cache/twig');
+
+require_once('database.php');
+require_once('parameters.php');

@@ -1,0 +1,69 @@
+// Slick slider
+.slick-slider {
+	ul {
+		display: block;
+		list-style: none;
+	}
+	.slick-list {
+		cursor: default;
+		overflow: hidden !important;
+	}
+	.slick-slide {
+		float: left;
+		min-height: 1px;
+		padding: 0;
+		outline: none;
+		&:focus {outline: none;}
+	}
+	button:focus {outline: none;}
+	.slick-arrow {
+		border: none;
+		overflow: hidden;
+		position: absolute;
+		top: 50%;
+		display: block;
+		width: 24px;
+		height: 24px;
+		background: transparent;
+		margin-top: -20px;
+		text-indent: -9999px;
+		transform: rotate(45deg);
+		z-index: 100;
+		&:focus {
+			outline: none;
+		}
+	}
+	.slick-next {
+		right: 0;
+		border-right: 5px solid #f58024;
+		border-top: 5px solid #f58024;
+	}
+	.slick-prev {
+		left: 0;
+		border-left: 5px solid #f58024;
+		border-bottom: 5px solid #f58024;
+	}
+	.slick-dots {
+		position: relative;
+		text-align: center;
+		display: block;
+		margin:  20px 0 0;
+		padding: 0;
+		li {
+			display: inline-block;
+			button {
+				font-size: 0;
+				line-height: 0;
+				overflow: hidden;
+				display: block;
+				text-indent: -9999px;
+				width: 16px;
+				height: 16px;
+				background: rgba(255,255,255, 0.6);
+				border-radius: 50%;
+				border: none;
+				margin: 0 7px;
+			}
+		}
+	}
+}

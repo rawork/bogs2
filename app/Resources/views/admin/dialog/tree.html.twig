@@ -1,0 +1,9 @@
+{% import "admin/macros/tree.html.twig" as macros %}
+<input type="hidden" id="popupChoiceId" value="{{ entityId }}">
+Выбранный элемент: <span id="popupChoiceTitle">{{ title }}</span>
+<ul id="navigation">
+    <li><a href="javascript:void(0)" rel="0" class="popup-item">Не выбрано</a></li>
+    <ul class="main-menu">
+        {{ macros.select_tree(nodes, nodes, 0) }}
+    </ul>
+</ul>

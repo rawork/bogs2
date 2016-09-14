@@ -1,0 +1,31 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block content %}
+    <h4>{{ title }}: Груповое редактирование{% if message %}: {{ message }}{% endif %}</h4>
+    <div class="admin-content">
+        {{ render('Fuga:Admin:Menu:entity', {'links': links}) }}
+        <br>
+        <form enctype="multipart/form-data" method="post" id="entityForm">
+        <input type="hidden" name="edited" value="1">
+        <input type="hidden" name="ids" value="{{ ids }}">
+        <table class="table table-condensed">
+        {% for item in items %}
+        <tr>
+            <th>Редактирование</th>
+            <th>Запись: {{ item.id }}</th>
+        </tr>
+        {% for field in table.fields %}
+            {% set ft = table.getFieldType(field, item) %}
+            <tr>
+                <td width="150"><strong>{{ field.title }}</strong>
+                    {% if field.help %}<i class="icon-exclamation-sign" alt="{{ field.help }}" title="{{ field.help }}"></i>{% endif %}{% if isRoot %}<div class="sfnt">[{{ field.name }}]</div>{% endif %}</td>
+                <td>{% if field.readonly %}{{ ft.getStatic() }}{% else %}{{ ft.getGroupInput() }}{% endif %}</td>
+            </tr>
+        {% endfor %}
+        {% endfor %}
+        </table>
+        <input type="button" class="btn btn-success" onClick="preSubmit(0)" value="Сохранить">
+        <a class="btn btn-default" href="{{ path('admin_entity_index', {'state': state, 'module': module, 'entity': entity}) }}">Отменить</a>
+        </form>
+    </div>
+{% endblock %}

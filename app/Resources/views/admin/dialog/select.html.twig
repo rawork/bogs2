@@ -1,0 +1,22 @@
+<input type="hidden" id="popupChoiceId" value="{{ entityId }}">
+Выбранный элемент:  <span id="popupChoiceTitle">{{ title }}</span>
+<div id="selectlist"><table class="table table-condensed">
+        <thead>
+        <tr>
+            <th>Название</th>
+        </tr>
+        </thead>
+        <tr>
+            <td><a rel="0" class="popup-item">Не выбрано</a></td>
+        </tr>
+        {% for item in items %}
+        <tr>
+            <td><a rel="{{ item.id }}" class="popup-item">
+            {% for fieldName in fields %}
+            {% if item[fieldName] is defined %}{{ item[fieldName] }} {% endif %}
+            {% endfor %} ({{ item.id }})</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    {{ paginator.render() }}
+</div>

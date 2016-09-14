@@ -1,0 +1,50 @@
+{% extends "admin/auth.html.twig" %}
+
+{% block message %}
+<div class="login-message">
+    {% if message.text is defined %}<div class="alert alert-{{ message.type }}">{{ message.text }}</div>{% endif %}
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="well login-content">
+    <div class="login-header">
+    <img src="{{ theme_ref }}/admin/img/icons/icon_key.gif"> Авторизация
+    </div>
+    <div class="login-form">
+        <form class="form-horizontal" method="post" role="form">
+            <div class="form-group">
+              <label for="inputLogin" class="col-sm-2 control-label">Логин</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputLogin" name="_user">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputPassword" class="col-sm-2 control-label">Пароль</label>
+              <div class="col-sm-10">
+                <input type="password" class="form-control" id="inputPassword" name="_password">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" name="_remember_me"> Запомнить меня
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <input type="submit" class="btn btn-default" value="Войти">
+              </div>
+            </div>
+        </form>
+    </div>
+    <div class="login-footer">
+        <b>Забыли свой пароль?</b><br>
+        Следуйте на <a href="{{ path('security_forget') }}">форму для запроса пароля</a>.<br>
+        <a href="{{ path('public_page') }}" target="_blank">Перейти к просмотру сайта</a>.
+    </div>
+</div>
+{% endblock %}

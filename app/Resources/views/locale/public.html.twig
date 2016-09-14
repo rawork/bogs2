@@ -1,0 +1,7 @@
+<div class="versions">
+    {% set num = 1 %}
+    {% for lcl in locales %}
+    {% if num > 1 %} | {% endif %}<a href="{{ path('public_page',{node: curnode.name}, lcl.language) }}"{% if lcl.language == currentLocale %} class="active"{% endif %}>{{ lcl.language }}</a>
+    {% set num = num + 1 %}
+    {% endfor %}
+</div>

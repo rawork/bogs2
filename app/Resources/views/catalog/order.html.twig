@@ -1,0 +1,10 @@
+<form method="post">
+    {% for product in cart %}
+    <div id="product_line_{{ product.product.id }}" class="product-line"><span>{{ product.product.name }} <a class="remove" href="#" data-id="{{ product.product.id }}" title="Удалить">&times;</a></span> <input type="text" placeholder="Размер" class="size-input" data-id="{{ product.product.id }}"></div>
+    {% endfor %}
+    <input type="text" id="name" placeholder="Ваше имя">
+    <input type="text" id="email" placeholder="Ваш e-mail">
+    <input type="text" id="phone" placeholder="Ваш телефон">
+    {#<input type="text" id="address" placeholder="Ваш адрес">#}
+    <button class="product-order">Заказать</button>
+</form>

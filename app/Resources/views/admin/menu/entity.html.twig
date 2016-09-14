@@ -1,0 +1,7 @@
+{% if links %}
+<div class="btn-group">	
+	{% for link in links %}
+	<a class="btn btn-default" href="{{ link.ref }}">{{ link.name }}</a>
+	{% endfor %}
+</div>
+{% endif %}

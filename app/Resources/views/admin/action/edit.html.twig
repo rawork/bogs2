@@ -1,0 +1,32 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block content %}
+    <h4>{{ title }}: Редактирование{% if message %}: {{ message }}{% endif %}</h4>
+    <div class="admin-content">
+        {{ render('Fuga:Admin:Menu:entity', {'links': links}) }}
+        <br>
+        <form enctype="multipart/form-data" method="post" id="entityForm" action="{{ path('admin_entity_edit', {'state': state, 'module': module, 'entity': entity, 'id': item.id}) }}">
+            <input type="hidden" name="id" value="{{ item.id }}">
+            <input type="hidden" id="utype" name="utype" value="0">
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th>Редактирование</th>
+                    <th>Запись: {{ item.id }}</th>
+                </tr>
+                </thead>
+                {% for name,field in table.fields %}
+                {% set ft = table.getFieldType(field, item) %}
+                <tr>
+                    <td width="150"><strong>{{ field.title }}</strong>
+                        {% if field.help %}<i class="icon-exclamation-sign" alt="{{ field.help }}" title="{{ field.help }}"></i>{% endif %}{% if isRoot %}<div class="sfnt">[{{ field.name }}]</div>{% endif %}</td>
+                    <td>{% if field.readonly %}{{ ft.getStatic() }}{% else %}{{ ft.getInput() }}{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <input type="button" class="btn btn-success" onClick="preSubmit(0)" value="Сохранить">
+            <input type="button" class="btn btn-default" onClick="preSubmit(1)" value="Применить">
+            <a href="{{ path('admin_entity_index', {'state': state, 'module': module, 'entity': entity}) }}" class="btn btn-danger">Отменить</a>
+        </form>
+    </div>
+{% endblock %}
