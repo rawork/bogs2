@@ -19,7 +19,6 @@ class BasketController extends PublicController
 
 	public function paymentAction($id)
 	{
-		var_dump($id);
 		return 'payment';
 	}
 
