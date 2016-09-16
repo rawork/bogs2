@@ -20,6 +20,7 @@ class ModarolaController extends PublicController
 	public function stockAction()
 	{
 		$response = new JsonResponse();
+		$this->get('log')->addError('Modarola stock');
 
 		if ($this->get('request')->headers->has('X-Auth-Token')
 			&& MODAROLA_AUTH_TOKEN == $this->get('request')->headers->get('X-Auth-Token')) {
@@ -52,6 +53,7 @@ class ModarolaController extends PublicController
 	public function productsAction()
 	{
 		$response = new JsonResponse();
+		$this->get('log')->addError('Modarola products');
 
 		if ($this->get('request')->headers->has('X-Auth-Token')
 			&& MODAROLA_AUTH_TOKEN == $this->get('request')->headers->get('X-Auth-Token')) {
