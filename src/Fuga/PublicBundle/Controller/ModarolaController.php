@@ -60,6 +60,7 @@ class ModarolaController extends PublicController
 			$this->get('log')->addError($json);
 			$data = json_decode($json, TRUE);
 
+			$sizes = $
 			// TODO update product sizes variants
 
 

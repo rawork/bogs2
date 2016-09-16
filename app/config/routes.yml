@@ -190,6 +190,13 @@ form:
   path: /ajax/form
   defaults: { _controller: 'Fuga:Public:Catalog:form'}
 
+stock:
+  path: /modarola/stock
+    defaults: { _controller: 'Fuga:Public:Modarola:stock'}
+
+products:
+  path: /modarola/products
+    defaults: { _controller: 'Fuga:Public:Modarola:products'}
 
 public_page:
   path: /{node}
