@@ -30,7 +30,7 @@ class ModarolaController extends PublicController
 
 			foreach ($data as $id => $quantity) {
 				$this->get('container')->updateItem(
-					'catalog_sizes',
+					'catalog_sku',
 					array('quantity' => $quantity),
 					array('modarola_id'=> $id)
 				);
@@ -60,9 +60,49 @@ class ModarolaController extends PublicController
 			$this->get('log')->addError($json);
 			$data = json_decode($json, TRUE);
 
-			$sizes = $
-			// TODO update product sizes variants
+			$articuls = array();
+			$products = $this->get('container')->getItem('catalog_products');
+			foreach ($products as $product) {
+				$articuls[$product['id']] = $product['articul'];
+			}
+			$sizes = $this->get('container')->getItems('catalog_sku');
 
+			foreach ($data as $variant) {
+				$size = $this->get('container')->getItem('catalog_sku', 'modarola_id='.$variant[0]);
+				if (!array_key_exists($variant[2], $articuls)) {
+					continue;
+				}
+				if ($size) {
+					$this->get('container')->updateItem(
+						'catalog_sku',
+						array('qunanity' => $variant[8]),
+						array('id' => $size['id'])
+					);
+					unset($sizes[$size['id']]);
+				} else {
+					$this->get('container')->addItem(
+						'catalog_sku',
+						array(
+							'modarola_id' => $variant[0],
+							'product_id' => $articuls[$variant[2]],
+							'name' => $variant[7],
+							'quntity' => $variant[8],
+						)
+					);
+				}
+				if (count($sizes) > 0) {
+					$ids = array_keys($sizes);
+					foreach ($ids as $id) {
+						$this->get('container')->updateItem(
+							'catalog_sku',
+							array('publish' => 0),
+							array('id' => $id)
+						);
+					}
+
+				}
+
+			}
 
 			$response->setData(array(
 				'message' => 'ok',
