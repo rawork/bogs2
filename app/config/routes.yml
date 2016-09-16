@@ -183,9 +183,13 @@ add_product:
 cart:
   path: /ajax/cart
   defaults: { _controller: 'Fuga:Public:Catalog:cart'}
+product:
+  path: /ajax/product/{id}
+  defaults: { _controller: 'Fuga:Public:Catalog:product'}
 form:
   path: /ajax/form
   defaults: { _controller: 'Fuga:Public:Catalog:form'}
+
 
 public_page:
   path: /{node}

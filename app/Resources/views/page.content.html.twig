@@ -65,60 +65,30 @@
                     <div class="pull-right menu">
                         <ul>
                             {% for menuitem in links %}
-                            <li><a href="#{{ menuitem.name }}" data-link="{{ menuitem.name }}" class="scrollto">{{ menuitem.title }}</a></li>
+                            <li><a href="/#{{ menuitem.name }}" data-link="{{ menuitem.name }}">{{ menuitem.title }}</a></li>
                             {% endfor %}
                         </ul>
                     </div>
-                    <div class="logo"><img src="/bundles/public/img/bogs_logo_footer.png"></div>
+                    <div class="logo"><a href="/"><img src="/bundles/public/img/bogs_logo_footer.png"></a></div>
                     <a href="#" class="mm-btn"><span class="mm-btn__mid"></span></a>
                     <div class="mm-cont"></div>
                 </div>
             </div>
 		</div>
         <div class="container">
-            {{ render('Fuga:Public:Catalog:adv') }}
-            <a name="technology" id="technology"></a>
-            <div class="info">
-                <div class="clearfix">
-                <h3 class="info-title">Почему Bogs</h3>
-                    {{ render('Fuga:Public:Common:block', {'name': 'technology-img'}) }}
-                    <div class="dots">
-                        {{ render('Fuga:Public:Common:block', {'name': 'technology'}) }}
-                    </div>
-                    <div id="button1"><a href="#catalog" data-link="catalog" class="catalog-link scrollto">Посмотреть товары</a></div>
-                </div>
-            </div>
-            {{ render('Fuga:Public:Catalog:index') }}
-            <div class="about-container clearfix"><a name="about" id="about"></a>
-                <div class="celebs col">
-                    <div class="title"><img src="/bundles/public/img/celebs_title.jpg"></div>
-                    <div class="mosaic">{{ render('Fuga:Public:Common:block', {'name': 'celebs'}) }}</div>
-                </div>
-                <div class="history col">
-                    <div class="title"><img src="/bundles/public/img/history_title.png"></div>
-                    <div class="mosaic"><img src="/bundles/public/img/history.jpg"></div>
-                    <div class="text">{{ render('Fuga:Public:Common:block', {'name': 'history'}) }}</div>
-                </div>
-            </div>
+            <h1>{{ h1 }}</h1>
 
-            <div class="video">
-                <a name="video" id="video"></a>
-                <div class="title"><img src="/bundles/public/img/video_title.jpg"></div>
-                {{ render('Fuga:Public:Catalog:video') }}
-            </div>
-            <div class="feedback clearfix">
-                <div class="title"><img src="/bundles/public/img/feedback_title.jpg"></div>
-                {{ render('Fuga:Public:Feedback:index') }}
-            </div>
+            {{ maincontent }}
+            <br><br>
         </div>
         <div class="footer">
             <div class="container clearfix">
                 <div class="col">
                     <div class="phone">{{ render('Fuga:Public:Common:block', {'name': 'phone'}) }}</div>
-                    <img class="logo" src="/bundles/public/img/bogs_logo_footer.png">
+                    <a href="/"><img class="logo" src="/bundles/public/img/bogs_logo_footer.png"></a>
                 </div>
                 <div class="col">
-                    <a href="#catalog" data-link="catalog" class="catalog-link scrollto">Заказать</a><br>
+                    <a href="/#catalog" data-link="catalog" class="catalog-link">Заказать</a><br>
                     <div class="copy">{{ render('Fuga:Public:Common:block', {'name': 'copy'}) }}</div>
                 </div>
                 <div class="col">

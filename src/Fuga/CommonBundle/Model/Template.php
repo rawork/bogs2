@@ -25,7 +25,7 @@ class Template {
 			'template' => array (
 				'name' => 'template',
 				'title' => 'Шаблон HTML',
-				'type' => 'template'
+				'type' => 'string'
 			)
 		));
 		$this->tables[] = array(
@@ -84,7 +84,7 @@ class Template {
 				'name' => 'type',
 				'title' => 'Тип условия',
 				'type' => 'enum',
-				'select_values' => 'Раздел|F;Параметр URL|U;Период времени|T',
+				'select_values' => 'Без условия|0;Раздел|F;Параметр URL|U;Период времени|T',
 				'width' => '20%'
 			),
 			'cond' => array (

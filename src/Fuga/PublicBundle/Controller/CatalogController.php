@@ -24,6 +24,28 @@ class CatalogController extends PublicController
 		return $this->render('catalog/index.html.twig', compact('cats', 'cart'));
 	}
 
+	public function productAction($id)
+	{
+		$response = new JsonResponse();
+		$product = $this->get('container')->getItem('catalog_product', $id);
+
+		if (!$product) {
+			$response->setData(array(
+				'title' => 'Ошибка',
+				'content' => 'Товар отсутствует',
+			));
+
+			return $response;
+		}
+
+		$response->setData(array(
+			'title' => $product['name'],
+			'content' => $this->render('catalog/product.html.twig', compact('product')),
+		));
+
+		return $response;
+	}
+
 	public function socialAction()
 	{
 		$items = $this->get('container')->getItems('catalog_social', 'publish=1');

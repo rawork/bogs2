@@ -1063,6 +1063,17 @@ a.remove {
 	}
 }
 
+.product-price {
+  font-family: 'PFDinBold', Sans-serif;
+  font-size: 30px;
+  line-height: 36px;
+  margin-top: 20px;
+}
+
+.product-articul {
+  margin-top: 10px;
+}
+
 .product-sizes {
 	float: left;
 	width: 50%;
@@ -1112,7 +1123,7 @@ a.remove {
 }
 
 .product-checkout {
-	margin-top: 30px;
+	margin-top: 10px;
 	.btn {
 		display: block;
 		float: right;

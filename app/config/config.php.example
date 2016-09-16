@@ -16,15 +16,10 @@ define('PRJ_LOCALE', 'ru');
 
 define('AUTH_TTL', 86400000);
 
-define('SMARTY_PATH', '/app/Resources/views/');
-define('SMARTY_BACKUP_PATH', '/app/Resources/views/backup/');
-define('SMARTY_CACHE_PATH', '/app/cache/smarty/');
-define('SMARTY_COMPILE_CHECK', true);
-define('SMARTY_CACHE_ENABLED', 0);
-define('SMARTY_CACHE_TTL', 3600);
-
 define('TWIG_PATH', '/app/Resources/views');
 define('TWIG_CACHE_PATH', '/app/cache/twig');
+
+define('MODAROLA_AUTH_TOKEN', '');
 
 require_once('database.php');
 require_once('parameters.php');

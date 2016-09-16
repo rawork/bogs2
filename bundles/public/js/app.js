@@ -66,8 +66,8 @@
 
     $(document).on('click', '.show-catalog-order', function(e){
         e.preventDefault();
-        $('.modal .title').html('Заказать каталог');
-        $('.modal .content').html('<form method="post"><input type="text" id="name" placeholder="Ваше имя"><input type="text" id="email" placeholder="Ваш e-mail"><input type="text" id="phone" placeholder="Ваш телефон"><button class="catalog-order">Заказать</button></form>');
+        $('.modal .title').html('BOGS оптом');
+        $('.modal .content').html('<p>Хотите развивать бизнес вместе с BOGS.  Оставьте свои контакты и мы пришлем вам оптовый прайс-лист<br><br></p><form method="post"><input type="text" id="name" placeholder="Ваше имя"><input type="text" id="email" placeholder="Ваш e-mail"><input type="text" id="phone" placeholder="Ваш телефон"><button class="catalog-order">Отправить</button></form>');
         showModal();
         yaCounter29093585.reachGoal('show_order_pdf');
     });
@@ -143,36 +143,36 @@
             }, "json");
     });
 
-    $(document).on('click', '.add-product', function(e) {
-        e.preventDefault();
-        var that = $(this);
-        var id = that.attr('data-id');
-        that.toggleClass('active');
-        if (that.hasClass('active')) {
-            $.post("/ajax/add", {id: id, amount: 1},
-                function(data){
-                    $('#cart').html(data.text);
-                    $('.cart').show();
-                    that.html('В корзине');
-                    $('body').removeClass('no-scroll');
-                    $('.modal').addClass('hidden');
-                    yaCounter29093585.reachGoal('add_product');
-                }, "json");
-        } else {
-            $.post("/ajax/add", {id: id, amount: -1},
-                function(data){
-                    if (data.text) {
-                        $('#cart').html(data.text);
-                        $('.cart').show();
-                    } else {
-                        $('body').removeClass('no-scroll');
-                        $('.cart').hide();
-                    }
-                    that.html('Выбрать');
-                }, "json");
-
-        }
-    });
+    //$(document).on('click', '.add-product', function(e) {
+    //    e.preventDefault();
+    //    var that = $(this);
+    //    var id = that.attr('data-id');
+    //    that.toggleClass('active');
+    //    if (that.hasClass('active')) {
+    //        $.post("/ajax/add", {id: id, amount: 1},
+    //            function(data){
+    //                $('#cart').html(data.text);
+    //                $('.cart').show();
+    //                that.html('В корзине');
+    //                $('body').removeClass('no-scroll');
+    //                $('.modal').addClass('hidden');
+    //                yaCounter29093585.reachGoal('add_product');
+    //            }, "json");
+    //    } else {
+    //        $.post("/ajax/add", {id: id, amount: -1},
+    //            function(data){
+    //                if (data.text) {
+    //                    $('#cart').html(data.text);
+    //                    $('.cart').show();
+    //                } else {
+    //                    $('body').removeClass('no-scroll');
+    //                    $('.cart').hide();
+    //                }
+    //                that.html('Выбрать');
+    //            }, "json");
+    //
+    //    }
+    //});
 
     $(document).on('click', 'a.remove', function(e) {
         e.preventDefault();
@@ -212,16 +212,15 @@
     });
 
     //====== Product in modal ======//
-    $('.view-product').on('click', function(e){
+    $('.view-product, .add-product').on('click', function(e){
         e.preventDefault();
+        var itemId = $(this).attr('data-id');
         var title = $(this).siblings('.name').text();
-        $.ajax({
-            url: '/bundles/public/modal-product.html'
-        }).done(function(data){
-            $('.modal .title').html(title);
-            $('.modal .content').html(data); // Dummy data
+        $.get('/ajax/product/'+ itemId +'?'+ $.now(), function(data){
+            $('.modal .title').html(data.title);
+            $('.modal .content').html(data.content);
             showModal();
-        });
+        }, "json");
     })
 
 })(jQuery);

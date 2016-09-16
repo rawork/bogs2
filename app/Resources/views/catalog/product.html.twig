@@ -1,0 +1,40 @@
+<div class="product-card">
+    <div class="product-gallery">
+        <div class="gallery-img-big"><img src="{{ product.photo_value.extra.main.path }}"></div>
+        <ul class="gallery-grid clearfix">
+            <li><img src="{{ product.photo_value.extra.main.path }}" class="gallery-thumb" data-img-big="{{ product.photo_value.extra.main.path }}"></li>
+            {% for image in product.gallery_value  %}
+            <li><img src="{{ image.extra.thumb.path }}" class="gallery-thumb" data-img-big="{{ image.extra.main.path }}"></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="product-price">{{ product.price }} руб.</div>
+    <div class="product-articul">Артикул: {{ product.articul }}</div>
+    <div class="product-checkout clearfix">
+        <div class="product-sizes clearfix">
+            <div class="sizes-label">Размеры:</div>
+            <div class="sizes-list-wrap">
+                <select class="sizes-list">
+                    <option value="">35 EU</option>
+                    <option>36 EU</option>
+                    <option>37 EU</option>
+                    <option>38 EU</option>
+                    <option>39 EU</option>
+                    <option>40 EU</option>
+                </select>
+                <span class="chevron"></span>
+            </div>
+        </div>
+        <a href="#" class="btn add-product" data-id="3">Добавить в корзину</a>
+    </div>
+    <ul class="product-tabs">
+        <li class="active"><a href="#" data-tab="description">Описание</a></li>
+        <li><a href="#" data-tab="delivery">Доставка</a></li>
+        <li><a href="#" data-tab="payment">Оплата</a></li>
+    </ul>
+    <ul class="product-tabs-content">
+        <li data-tab-content="description" class="active">{{ product.description }}</li>
+        <li data-tab-content="delivery">{{ render('Fuga:Public:Common:block', {'name': 'delivery'}) }}</li>
+        <li data-tab-content="payment">{{ render('Fuga:Public:Common:block', {'name': 'payment'}) }}</li>
+    </ul>
+</div>
