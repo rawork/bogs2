@@ -38,9 +38,11 @@ class CatalogController extends PublicController
 			return $response;
 		}
 
+		$sizes = $this->get('container')->getItems('catalog_sku', 'publish=1 AND (quantity>0 OR quantity2>0) AND product_id='.$product['id']);
+
 		$response->setData(array(
 			'title' => $product['name'],
-			'content' => $this->render('catalog/product.html.twig', compact('product')),
+			'content' => $this->render('catalog/product.html.twig', compact('product', 'sizes')),
 		));
 
 		return $response;

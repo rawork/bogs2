@@ -26,7 +26,6 @@ class ModarolaController extends PublicController
 			&& MODAROLA_AUTH_TOKEN == $this->get('request')->headers->get('X-Auth-Token')) {
 
 			$json = file_get_contents('php://input');
-			$this->get('log')->addError($json);
 			$data = json_decode($json, TRUE);
 
 			foreach ($data as $id => $quantity) {

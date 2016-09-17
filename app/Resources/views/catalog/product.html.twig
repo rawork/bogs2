@@ -15,17 +15,14 @@
             <div class="sizes-label">Размеры:</div>
             <div class="sizes-list-wrap">
                 <select class="sizes-list">
-                    <option value="">35 EU</option>
-                    <option>36 EU</option>
-                    <option>37 EU</option>
-                    <option>38 EU</option>
-                    <option>39 EU</option>
-                    <option>40 EU</option>
+                    {% for size in sizes %}
+                    <option value="{{ size.modarola_id }}">{{ size.size }} US</option>
+                    {% endfor %}
                 </select>
                 <span class="chevron"></span>
             </div>
         </div>
-        <a href="#" class="btn add-product" data-id="3">Добавить в корзину</a>
+        {% if sizes|length > 0 %}<a href="#" class="btn add-product">Добавить в корзину</a>{% endif %}
     </div>
     <ul class="product-tabs">
         <li class="active"><a href="#" data-tab="description">Описание</a></li>

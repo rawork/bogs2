@@ -21,5 +21,8 @@ define('TWIG_CACHE_PATH', '/app/cache/twig');
 
 define('MODAROLA_AUTH_TOKEN', '');
 
+define("KAZNACHEY_SECRET_KEY", "");
+define("KAZNACHEY_GUID", "");
+
 require_once('database.php');
 require_once('parameters.php');

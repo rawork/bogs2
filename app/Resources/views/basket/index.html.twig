@@ -1,0 +1,33 @@
+<form method="post">
+    {% for product in cart %}
+        <div id="product_line_{{ product.product.id }}" class="product-line"><span>{{ product.product.name }} <a class="remove" href="#" data-id="{{ product.product.id }}" title="Удалить">&times;</a></span> <input type="text" placeholder="Размер" class="size-input" data-id="{{ product.product.id }}"></div>
+    {% endfor %}
+    <input type="text" id="name" placeholder="Ваше имя">
+    <input type="text" id="email" placeholder="Ваш e-mail">
+    <input type="text" id="phone" placeholder="Ваш телефон">
+    {#<input type="text" id="address" placeholder="Ваш адрес">#}
+    <button class="product-order">Заказать</button>
+</form>
+
+
+{% if (merchantInfo) %}
+MerchantInfo<br/>
+ErrorCode: {{ merchantInfo.ErrorCode }}<br/>
+DebugMessage: {{ merchantInfo.DebugMessage }}<br/>
+<form method="post" action="">
+    <input type="hidden" name="action" value="create_payment">
+    <select name="SelectedPaySystemId">
+        {% for paySystem in merchantInfo.PaySystems %}
+        <option value="{{ paySystem.Id }}">{{ paySystem.PaySystemName }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Create payment">
+</form>
+{% endif %}
+
+{% if (createPaymentResponse)  %}
+CreatePayment<br/>
+ErrorCode: {{ createPaymentResponse.ErrorCode }}<br/>
+DebugMessage: {{ createPaymentResponse.DebugMessage }}<br/>
+{{ createPaymentResponse.ExternalForm|dbase64 }}
+{% endif %}

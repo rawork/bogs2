@@ -458,6 +458,9 @@ class Container
 					$engine->addExtension(new \Twig_Extension_StringLoader());
 					$engine->addExtension(new \Twig_Extension_Debug());
 					$engine->addExtension(new Twig\FugaExtension());
+
+					$engine->addFilter(new \Twig_SimpleFilter('dbase64', 'base64_decode'));
+
 					$engine->addGlobal('prj_ref', PRJ_REF);
 					$engine->addGlobal('theme_ref', THEME_REF);
 					$engine->addGlobal('prj_name', PRJ_NAME);
