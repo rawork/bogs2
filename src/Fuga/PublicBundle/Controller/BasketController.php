@@ -117,4 +117,21 @@ class BasketController extends PublicController
 		fclose($fp);
 	}
 
+	public function successAction() {
+		$api = new \Fuga\Kaznachey\Api(KAZNACHEY_SECRET_KEY, KAZNACHEY_GUID);
+
+		try {
+			$statusRequest = $api->GetStatusResponse();
+			echo "ok";
+		} catch (\Exception $e) {
+			print "Error!";
+			print $e->getMessage();
+		}
+
+		$fp = fopen(PRJ_DIR.'/counter.txt', 'a');
+
+		fputs($fp, $statusRequest, strlen($statusRequest));
+		fclose($fp);
+	}
+
 } 
