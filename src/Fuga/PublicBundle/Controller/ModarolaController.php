@@ -27,9 +27,10 @@ class ModarolaController extends PublicController
 
 			$json = file_get_contents('php://input');
 			$this->get('log')->addError($json);
-			$data = json_decode($json, TRUE);
+			$data = json_decode($json, true);
 
 			foreach ($data as $id => $quantity) {
+
 				$this->get('container')->updateItem(
 					'catalog_sku',
 					array('quantity' => $quantity),
@@ -45,7 +46,6 @@ class ModarolaController extends PublicController
 				'message' => 'no',
 			));
 		}
-
 
 		return $response;
 	}
