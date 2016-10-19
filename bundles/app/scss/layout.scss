@@ -1307,11 +1307,14 @@ a.remove {
 
 .custom-input {
     a.circle {
+        display: inline-block;
         font-style: normal;
         font-size: 30px;
         line-height: 44px;
         text-decoration: none;
         color: #595959;
+        background-color: #fff;
+
     }
     input.amount {
         position: relative;
