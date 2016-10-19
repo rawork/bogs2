@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=9"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 		{{ meta }}
-		<link rel="stylesheet" href="{{ asset('/bundles/public/css/app.css') }}" type="text/css" media="screen">
+		<link rel="stylesheet" href="/bundles/public/css/app.css?2015042801" type="text/css" media="screen">
 
         <meta name="twitter:card" content="summary"/>
         <meta name="twitter:site" content="Американские резиновые сапоги BOGS - обувь для жизни!"/>
@@ -23,7 +23,7 @@
         <meta property="og:site_name" content="Американские резиновые сапоги BOGS - обувь для жизни!"/>
 
         <meta name="title" content="Американские резиновые сапоги BOGS - обувь для жизни!">
-        <meta name="description" content="BOGS - продуманный комфорт для любой непогоды, это самая удобная, теплая и непромокаемая обувь, которую вы когда-то носили!"/>
+        <meta name="description" content="BOGS - продуманный комофрт для любой непогоды, это самая удобная, теплая и непромокаемая обувь, которую вы когда-то носили!"/>
         <link rel="image_src" href="http://bogs-shop.ru/files/bogs250x250.jpg" />
 
 		<!--[if lt IE 9]>
@@ -48,70 +48,81 @@
         </script>
         <noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?id=427563047402050&amp;ev=PixelInitialized" /></noscript>
 	</head>
-	<body>
+	<body class="page page--order-status">
 		<div class="header clearfix">
             <div id="header1">
                 <div class="container">
                     <div class="social pull-left">
                         {{ render('Fuga:Public:Catalog:social') }}
                     </div>
-                    <div class="pull-right"><a class="show-catalog-order" href="#">BOGS оптом</a></div>
+                    <div class="pull-right"><a class="show-catalog-order" href="#">Заказать каталог</a></div>
                     <div class="phone">{{ render('Fuga:Public:Common:block', {'name': 'phone-header'}) }} <a href="#" class="show-call-order">Заказать звонок</a></div>
 
                 </div>
             </div>
             <div id="header2">
                 <div class="container clearfix">
-                    <div class="logo"><img src="/bundles/public/img/bogs_logo_footer.png"></div>
+                    <a href="/" class="logo"><img src="/bundles/public/img/bogs_logo_footer.png"></a>
                     <a href="#" class="mm-btn"><span class="mm-btn__mid"></span></a>
                     <div class="mm-cont"></div>
-                    <div id="cart">{{ render('Fuga:Public:Basket:mini') }}</div>
                     <div class="pull-right menu">
                         <ul>
                             {% for menuitem in links %}
-                            <li><a href="#{{ menuitem.name }}" data-link="{{ menuitem.name }}" class="scrollto">{{ menuitem.title }}</a></li>
+                            <li><a href="/#{{ menuitem.name }}" data-link="{{ menuitem.name }}" class="scrollto">{{ menuitem.title }}</a></li>
                             {% endfor %}
                         </ul>
                     </div>
                 </div>
             </div>
 		</div>
-        <div class="container">
-            {{ render('Fuga:Public:Catalog:adv') }}
-            <a name="technology" id="technology"></a>
-            <div class="info">
-                <div class="clearfix">
-                <h3 class="info-title">Почему Bogs</h3>
-                    {{ render('Fuga:Public:Common:block', {'name': 'technology-img'}) }}
-                    <div class="dots">
-                        {{ render('Fuga:Public:Common:block', {'name': 'technology'}) }}
-                    </div>
-                    <div id="button1"><a href="#catalog" data-link="catalog" class="catalog-link scrollto">Посмотреть товары</a></div>
-                </div>
-            </div>
-            {{ render('Fuga:Public:Catalog:index') }}
-            <div class="about-container clearfix"><a name="about" id="about"></a>
-                <div class="celebs col">
-                    <div class="title"><img src="/bundles/public/img/celebs_title.jpg"></div>
-                    <div class="mosaic">{{ render('Fuga:Public:Common:block', {'name': 'celebs'}) }}</div>
-                </div>
-                <div class="history col">
-                    <div class="title"><img src="/bundles/public/img/history_title.png"></div>
-                    <div class="mosaic"><img src="/bundles/public/img/history.jpg"></div>
-                    <div class="text">{{ render('Fuga:Public:Common:block', {'name': 'history'}) }}</div>
-                </div>
+        <div class="container page__content">
+            <h1 class="page__title">Заказ № <span class="order-number">316444</span></h1>
+            <ul class="order-props">
+                <li class="order-prop">
+                    Статус заказа: <span class="order-status order-status--processing">ожидает оплаты</span>
+                </li>
+                <li class="order-prop">
+                    Способ оплаты: <span class="order-payment-type">наличными курьеру</span>
+                </li>
+                <li class="order-prop">
+                    Сумма заказа с доставкой: <span class="order-total">25 160</span>руб.
+                </li>
+            </ul>
+            <div class="btn-wrap ">
+                <a href="#" class="btn btn-pay">Оплатить заказ</a>
             </div>
 
-            <div class="video">
-                <a name="video" id="video"></a>
-                <div class="title"><img src="/bundles/public/img/video_title.jpg"></div>
-                {{ render('Fuga:Public:Catalog:video') }}
-            </div>
-            <div class="feedback clearfix">
-                <div class="title"><img src="/bundles/public/img/feedback_title.jpg"></div>
-                {{ render('Fuga:Public:Feedback:index') }}
-            </div>
+            <h4 class="products-list__title">Товары в заказе</h4>
+            <!-- Products list -->
+            <table class="products-list">
+                <thead>
+                    <tr>
+                        <th>Наименование</th>
+                        <th>Размер</th>
+                        <th>Кол-во</th>
+                        <th>Цена</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="product-in-cart">
+                        <td class="product-in-cart__name">Baby Bogs Classic Flower Stripes</td>
+                        <td class="product-in-cart__size">9 US</td>
+                        <td class="product-in-cart__qty">1</td>
+                        <td class="product-in-cart__price">14 540</td>
+                    </tr>
+                    <tr class="product-in-cart">
+                        <td class="product-in-cart__name">Baby Bogs Classic Flower Stripes</td>
+                        <td class="product-in-cart__size">9 US</td>
+                        <td class="product-in-cart__qty">1</td>
+                        <td class="product-in-cart__price">14 540</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="total">Сумма товаров и доставки:  <span class="total__val">25 160</span></div>
+
         </div>
+
+        <!-- Footer -->
         <div class="footer">
             <div class="container clearfix">
                 <div class="col">
@@ -119,7 +130,6 @@
                     <img class="logo" src="/bundles/public/img/bogs_logo_footer.png">
                 </div>
                 <div class="col">
-                    <a href="#catalog" data-link="catalog" class="catalog-link scrollto">Заказать</a><br>
                     <div class="copy">{{ render('Fuga:Public:Common:block', {'name': 'copy'}) }}</div>
                 </div>
                 <div class="col">
@@ -128,11 +138,13 @@
                 </div>
             </div>
             <ul class="footer-links">
-                <li><a href="/delivery">Доставка</a></li>
-                <li><a href="/payment">Оплата</a></li>
-                <li><a href="/formal-offer">Договор-оферта</a></li>
+                <li><a href="#">Доставка</a></li>
+                <li><a href="#">Оплата</a></li>
+                <li><a href="#">Договор-оферта</a></li>
             </ul>
         </div>
+
+        <!-- Modal -->
         <div class="modal hidden">
             <div class="modal-overlay"></div>
             <div class="modal-dialog">
@@ -143,8 +155,7 @@
         </div>
 
 		<script type="text/javascript" src="/bundles/jquery/jquery.js"></script>
-        <script src="/bundles/public/js/slick.min.js"></script>
-		<script type="text/javascript" src="{{ asset('/bundles/public/js/app.js') }}"></script>
+		<script type="text/javascript" src="/bundles/public/js/order-status.js"></script>
         {{ render('Fuga:Public:Common:block', {'name': 'counter'}) }}
 	</body>
 </html>

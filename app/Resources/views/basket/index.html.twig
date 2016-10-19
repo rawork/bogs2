@@ -1,33 +1,154 @@
-<form method="post">
+<!-- Products list -->
+<table class="products-list">
+    <thead>
+    <tr>
+        <th>Наименование</th>
+        <th>Размер</th>
+        <th>Количество</th>
+        <th>Сумма</th>
+    </tr>
+    </thead>
+    <tbody>
     {% for product in cart %}
-        <div id="product_line_{{ product.product.id }}" class="product-line"><span>{{ product.product.name }} <a class="remove" href="#" data-id="{{ product.product.id }}" title="Удалить">&times;</a></span> <input type="text" placeholder="Размер" class="size-input" data-id="{{ product.product.id }}"></div>
+    <tr class="product-in-cart">
+        <td class="product-in-cart__name"><img src="{{ product.sku.product_id_value.item.photo_value.extra.thumb.path }}"> {{ product.sku.product_id_value.item.name }}</td>
+        <td class="product-in-cart__size">{{ product.sku.size }} US</td>
+        <td class="product-in-cart__qty">
+            <div class="product-sizes custom-select clearfix">
+                {#<div class="custom-select__list-wrap">#}
+                    {#<select class="custom-select__list">#}
+                        {#<option>1</option>#}
+                        {#<option>2</option>#}
+                        {#<option>3</option>#}
+                    {#</select>#}
+                    {#<span class="custom-select__chevron"></span>#}
+                {#</div>#}
+                <div class="custom-input custom-input_cart">
+                    <a href="javascript:;" class="circle minus-circle amount-dec">-</a>
+                    <input type="text"
+                           class="amount"
+                           data-sku="{{ product.sku.modarola_id }}"
+                           data-value="{% if product.sku.product_id_value.item.is_preorder %}10{% else %}{{ product.sku.quantity+product.sku.quantity2 }}{% endif %}"
+                           value="{{ product.amount }}" />
+                    <a href="javascript:;" class="circle plus-circle amount-inc">+</a>
+                </div>
+            </div>
+        </td>
+        <td class="product-in-cart__price">{{ product.sku.product_id_value.item.price*product.amount }}</td>
+        <td><a href="#"  data-id="" class="remove"></a></td>
+    </tr>
     {% endfor %}
-    <input type="text" id="name" placeholder="Ваше имя">
-    <input type="text" id="email" placeholder="Ваш e-mail">
-    <input type="text" id="phone" placeholder="Ваш телефон">
-    {#<input type="text" id="address" placeholder="Ваш адрес">#}
-    <button class="product-order">Заказать</button>
-</form>
+    </tbody>
+</table>
+<div class="sub-total">Сумма товаров:  <span class="sub-total__val">{{ total }}</span></div>
 
+<!-- Shipping -->
+<div class="shipping-payment clearfix">
 
-{% if (merchantInfo) %}
-MerchantInfo<br/>
-ErrorCode: {{ merchantInfo.ErrorCode }}<br/>
-DebugMessage: {{ merchantInfo.DebugMessage }}<br/>
-<form method="post" action="">
-    <input type="hidden" name="action" value="create_payment">
-    <select name="SelectedPaySystemId">
-        {% for paySystem in merchantInfo.PaySystems %}
-        <option value="{{ paySystem.Id }}">{{ paySystem.PaySystemName }}</option>
-        {% endfor %}
-    </select>
-    <input type="submit" value="Create payment">
-</form>
-{% endif %}
+    <div class="shipping-payment__col">
+        <h3 class="shipping-payment__title">Выберите способ доставки</h3>
+        <ul class="shipping-payment__list shipping-list">
+            <li class="shipping-payment__list__item">
+                <div class="radio">
+                    <input id="pickup" type="radio" name="shipping-type" data-shipping-price="0" checked="checked">
+                    <label for="pickup">Самовывоз</label>
+                </div>
+            </li>
+            <li class="shipping-payment__list__item">
+                <div class="radio">
+                    <input id="courier" type="radio" name="shipping-type" data-shipping-price="500">
+                    <label for="courier">Доставка по Москве курьером (500 руб.)</label>
+                </div>
+            </li>
+            <li class="shipping-payment__list__item">
+                <div class="radio">
+                    <input id="russia-pr" type="radio" name="shipping-type" data-shipping-price="0" data-select-region="true">
+                    <label for="russia-pr">За МКАД «Почта России»</label>
+                </div>
+                <div class="select-region hidden-area">
+                    <input type="text" class="select-region__field" placeholder="Введите название города">
+                    <ul class="autocomplete">
+                    </ul>
+                </div>
+            </li>
+            <li class="shipping-payment__list__item">
+                <div class="radio">
+                    <input id="russia-pr" type="radio" name="shipping-type" data-shipping-price="0" data-select-region="true">
+                    <label for="russia-pr">За МКАД курьером</label>
+                </div>
+                <div class="select-region hidden-area">
+                    <input type="text" class="select-region__field" placeholder="Введите название города">
+                    <ul class="autocomplete">
+                    </ul>
+                </div>
+            </li>
+            <li class="shipping-payment__list__item">
+                <div class="radio">
+                    <input id="russia-pr" type="radio" name="shipping-type" data-shipping-price="0" data-select-region="true">
+                    <label for="russia-pr">По России «Почта России»</label>
+                </div>
+                <div class="select-region hidden-area">
+                    <input type="text" class="select-region__field" placeholder="Введите название региона">
+                    <ul class="autocomplete">
+                    </ul>
+                </div>
+            </li>
+            <li class="shipping-payment__list__item">
+                <div class="radio">
+                    <input id="russia-courier" type="radio" name="shipping-type" data-shipping-price="0" data-select-region="true" data-hide-payment=".shipping-payment__cash">
+                    <label for="russia-courier">По России курьером</label>
+                </div>
+                <div class="select-region hidden-area">
+                    <input type="text" class="select-region__field" placeholder="Введите название региона">
+                    <ul class="autocomplete">
+                    </ul>
+                </div>
+            </li>
+            <li class="shipping-payment__list__item">
+                <div class="radio">
+                    <input id="russia-pr" type="radio" name="shipping-type" data-shipping-price="0" data-select-region="true">
+                    <label for="russia-pr">Страны СНГ «Почта России»</label>
+                </div>
+                <div class="select-region hidden-area">
+                    <input type="text" class="select-region__field" placeholder="Введите название страны">
+                    <ul class="autocomplete">
+                    </ul>
+                </div>
+            </li>
+            <li class="shipping-payment__list__item">
+                <div class="radio">
+                    <input id="russia-courier" type="radio" name="shipping-type" data-shipping-price="0" data-select-region="true" data-hide-payment=".shipping-payment__cash">
+                    <label for="russia-courier">Страны СНГ курьером</label>
+                </div>
+                <div class="select-region hidden-area">
+                    <input type="text" class="select-region__field" placeholder="Введите название страны">
+                    <ul class="autocomplete">
+                    </ul>
+                </div>
+            </li>
+        </ul>
+        <div class="shipping-total">Стоимость выбранной доставки: <span class="shipping-total__val">0</span></div>
+    </div>
 
-{% if (createPaymentResponse)  %}
-CreatePayment<br/>
-ErrorCode: {{ createPaymentResponse.ErrorCode }}<br/>
-DebugMessage: {{ createPaymentResponse.DebugMessage }}<br/>
-{{ createPaymentResponse.ExternalForm|dbase64 }}
-{% endif %}
+    <div class="shipping-payment__col">
+        <h3 class="shipping-payment__title">Доступные методы оплаты</h3>
+        <ul class="shipping-payment__list payment-list ">
+            <li class="shipping-payment__list__item shipping-payment__cash">
+                <div class="radio">
+                    <input id="cache" type="radio" name="payment-type">
+                    <label for="cache">Оплата наличными курьеру</label>
+                </div>
+            </li>
+            <li class="shipping-payment__list__item">
+                <div class="radio">
+                    <input type="radio" name="payment-type">
+                    <label for="">Оплата банковской картой</label>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+</div>
+<div class="warning"></div>
+<div class="total">Сумма товаров и доставки:  <span class="total__val"></span></div>
+<div class="btn-wrap"><a class="btn btn-order" href="/order">Оформить заказ</a></div>

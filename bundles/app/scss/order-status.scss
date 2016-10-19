@@ -1,0 +1,24 @@
+.page--order-status {
+	.btn-pay {
+		float: left;
+		padding-left: 50px;
+    	padding-right: 50px;
+	}
+	.products-list {
+		&__title {
+			margin: 40px 0 0;
+			clear: left;
+			font-size: 22px;
+			line-height: 1.2;
+		}
+	}
+	.btn-wrap {
+		margin-top: 30px;
+	}
+}
+
+.order-status {
+	&--processing {
+		color: #b30000;
+	}
+}

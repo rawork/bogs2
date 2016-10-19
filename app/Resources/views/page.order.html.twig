@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<title>{{ title }}</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=9"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+		{{ meta }}
+		<link rel="stylesheet" href="/bundles/public/css/app.css?2015042801" type="text/css" media="screen">
+
+        <meta name="twitter:card" content="summary"/>
+        <meta name="twitter:site" content="Американские резиновые сапоги BOGS - обувь для жизни!"/>
+        <meta name="twitter:title" content="Американские резиновые сапоги BOGS - обувь для жизни!">
+        <meta name="twitter:description" content="BOGS - продуманный комофрт для любой непогоды, это самая удобная, теплая и непромокаемая обувь, которую вы когда-то носили!"/>
+        <meta name="twitter:image:src" content="http://bogs-shop.ru/files/bogs250x250.jpg"/>
+        <meta name="twitter:domain" content="u.r"/>
+
+        <meta property="og:title" content="Американские резиновые сапоги BOGS - обувь для жизни!"/>
+        <meta property="og:description" content="BOGS - продуманный комофрт для любой непогоды, это самая удобная, теплая и непромокаемая обувь, которую вы когда-то носили!"/>
+        <meta property="og:type" content="article" />
+        <meta property="og:image" content="http://bogs-shop.ru/files/bogs250x250.jpg"/>
+        <meta property="og:url" content="http://bogs-shop.ru/"/>
+        <meta property="og:site_name" content="Американские резиновые сапоги BOGS - обувь для жизни!"/>
+
+        <meta name="title" content="Американские резиновые сапоги BOGS - обувь для жизни!">
+        <meta name="description" content="BOGS - продуманный комофрт для любой непогоды, это самая удобная, теплая и непромокаемая обувь, которую вы когда-то носили!"/>
+        <link rel="image_src" href="http://bogs-shop.ru/files/bogs250x250.jpg" />
+
+		<!--[if lt IE 9]>
+		{#<script type="text/javascript" src="/bundles/ie/html5shiv.js"></script>#}
+		<script type="text/javascript" src="/bundles/ie/respond.min.js"></script>
+		<![endif]-->
+
+        <script>(function() {
+                var _fbq = window._fbq || (window._fbq = []);
+                if (!_fbq.loaded) {
+                    var fbds = document.createElement('script');
+                    fbds.async = true;
+                    fbds.src = '//connect.facebook.net/en_US/fbds.js';
+                    var s = document.getElementsByTagName('script')[0];
+                    s.parentNode.insertBefore(fbds, s);
+                    _fbq.loaded = true;
+                }
+                _fbq.push(['addPixelId', '427563047402050']);
+            })();
+            window._fbq = window._fbq || [];
+            window._fbq.push(['track', 'PixelInitialized', {}]);
+        </script>
+        <noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?id=427563047402050&amp;ev=PixelInitialized" /></noscript>
+	</head>
+	<body class="page page--order">
+		<div class="header clearfix">
+            <div id="header1">
+                <div class="container">
+                    <div class="social pull-left">
+                        {{ render('Fuga:Public:Catalog:social') }}
+                    </div>
+                    <div class="pull-right"><a class="show-catalog-order" href="#">Заказать каталог</a></div>
+                    <div class="phone">{{ render('Fuga:Public:Common:block', {'name': 'phone-header'}) }} <a href="#" class="show-call-order">Заказать звонок</a></div>
+
+                </div>
+            </div>
+            <div id="header2">
+                <div class="container clearfix">
+                    <a href="/" class="logo"><img src="/bundles/public/img/bogs_logo_footer.png"></a>
+                    <a href="#" class="mm-btn"><span class="mm-btn__mid"></span></a>
+                    <div class="mm-cont"></div>
+                    <div class="pull-right menu">
+                        <ul>
+                            {% for menuitem in links %}
+                            <li><a href="/#{{ menuitem.name }}" data-link="{{ menuitem.name }}" class="scrollto">{{ menuitem.title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+		</div>
+        <div class="container page__content">
+            <h1 class="page__title">Заполните данные для оформления заказа</h1>
+            <ul class="order-props">
+                <li class="order-prop">
+                    <p>В вашей корзине 2 товара на 25 160 руб. <a class="order-prop__toggle" href="#">Показать список товаров</a></p>
+                    <div class="order-prop__hidden-area">
+                        <!-- Products list -->
+                        <table class="products-list">
+                            <thead>
+                                <tr>
+                                    <th>Наименование</th>
+                                    <th>Размер</th>
+                                    <th>Кол-во</th>
+                                    <th>Цена</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="product-in-cart">
+                                    <td class="product-in-cart__name">Baby Bogs Classic Flower Stripes</td>
+                                    <td class="product-in-cart__size">9 US</td>
+                                    <td class="product-in-cart__qty">1</td>
+                                    <td class="product-in-cart__price">14 540</td>
+                                </tr>
+                                <tr class="product-in-cart">
+                                    <td class="product-in-cart__name">Baby Bogs Classic Flower Stripes</td>
+                                    <td class="product-in-cart__size">9 US</td>
+                                    <td class="product-in-cart__qty">1</td>
+                                    <td class="product-in-cart__price">14 540</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </li>
+                <li class="order-prop">Вы выбрали доставку по Москве (500 руб.) <a href="/cart">Изменить</a></li>
+                <li class="order-prop">Способ оплаты – наличными курьеру <a href="/cart">Изменить</a></li>
+            </ul>
+            <form action="" class="form clearfix">
+                <div class="form__cols-wrap clearfix">
+                    <div class="form__col">
+                        <h4 class="form__title">Личные данные</h4>
+                        <div class="field">
+                            <label for="name" class="field__label">Имя*</label>
+                            <input type="text" id="name" class="field__input">
+                        </div>
+                        <div class="field">
+                            <label for="surname" class="field__label">Фамилия*</label>
+                            <input type="text" id="surname" class="field__input">
+                        </div>
+                        <div class="field">
+                            <label for="email" class="field__label">E-mail*</label>
+                            <input type="email" id="email" class="field__input">
+                        </div>
+                        <div class="field">
+                            <label for="tel" class="field__label">Телефон*</label>
+                            <input type="tel" id="tel" class="field__input">
+                        </div>
+                    </div>
+                    <div class="form__col clearfix">
+                        <h4 class="form__title">Адрес доставки</h4>
+                        <div class="field">
+                            <label for="country" class="field__label">Страна*</label>
+                            <div class="custom-select__list-wrap">
+                                <select class="custom-select__list" id="country">
+                                    <option>Россия</option>
+                                    <option>Украина</option>
+                                    <option>Белоруссия</option>
+                                </select>
+                                <span class="custom-select__chevron"></span>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label for="region" class="field__label">Область или район</label>
+                            <input type="text" id="region" class="field__input">
+                        </div>
+                        <div class="field">
+                            <label for="street" class="field__label">Улица</label>
+                            <input type="text" id="street" class="field__input">
+                        </div>
+                        <div class="fields-small clearfix">
+                            <div class="field">
+                                <label for="house" class="field__label">Дом</label>
+                                <input type="tel" id="house" class="field__input">
+                            </div>
+                            <div class="field">
+                                <label for="building" class="field__label">Корпус</label>
+                                <input type="tel" id="building" class="field__input">
+                            </div>
+                            <div class="field">
+                                <label for="apartment" class="field__label">Квартира</label>
+                                <input type="tel" id="apartment" class="field__input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="form__necessary">* – обязательные поля</p>
+                <submit class="form__submit btn">Отправить заказ</submit>
+            </form>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="container clearfix">
+                <div class="col">
+                    <div class="phone">{{ render('Fuga:Public:Common:block', {'name': 'phone'}) }}</div>
+                    <img class="logo" src="/bundles/public/img/bogs_logo_footer.png">
+                </div>
+                <div class="col">
+                    <div class="copy">{{ render('Fuga:Public:Common:block', {'name': 'copy'}) }}</div>
+                </div>
+                <div class="col">
+                    <div class="email"><a href="mailto:zakaz@bogs-shop.ru">zakaz@bogs-shop.ru </a></div>
+                    <div class="social">{{ render('Fuga:Public:Catalog:social') }}</div>
+                </div>
+            </div>
+            <ul class="footer-links">
+                <li><a href="#">Доставка</a></li>
+                <li><a href="#">Оплата</a></li>
+                <li><a href="#">Договор-оферта</a></li>
+            </ul>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal hidden">
+            <div class="modal-overlay"></div>
+            <div class="modal-dialog">
+                <a href="#" class="close pull-right">&times;</a>
+                <div class="title"></div>
+                <div class="content"></div>
+            </div>
+        </div>
+
+		<script type="text/javascript" src="/bundles/jquery/jquery.js"></script>
+		<script type="text/javascript" src="/bundles/public/js/order.js"></script>
+        {{ render('Fuga:Public:Common:block', {'name': 'counter'}) }}
+	</body>
+</html>

@@ -62,24 +62,24 @@
             </div>
             <div id="header2">
                 <div class="container clearfix">
-                    <div class="pull-right menu">
-                        <ul>
-                            {% for menuitem in links %}
-                            <li><a href="/#{{ menuitem.name }}" data-link="{{ menuitem.name }}">{{ menuitem.title }}</a></li>
-                            {% endfor %}
-                        </ul>
-                    </div>
                     <div class="logo"><a href="/"><img src="/bundles/public/img/bogs_logo_footer.png"></a></div>
                     <a href="#" class="mm-btn"><span class="mm-btn__mid"></span></a>
                     <div class="mm-cont"></div>
+                    <div id="cart">{{ render('Fuga:Public:Basket:mini') }}</div>
+                    <div class="pull-right menu">
+                        <ul>
+                            {% for menuitem in links %}
+                                <li><a href="/#{{ menuitem.name }}" data-link="{{ menuitem.name }}">{{ menuitem.title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
             </div>
 		</div>
-        <div class="container">
-            <h1>{{ h1 }}</h1>
+        <div class="container page__content">
+            <h1 class="page__title">{{ h1 }}</h1>
 
             {{ maincontent }}
-            <br><br>
         </div>
         <div class="footer">
             <div class="container clearfix">
@@ -120,6 +120,9 @@
 		<script type="text/javascript" src="/bundles/jquery/jquery.js"></script>
         <script src="/bundles/public/js/slick.min.js"></script>
 		<script type="text/javascript" src="{{ asset('/bundles/public/js/app.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('/bundles/public/js/cart.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('/bundles/public/js/order.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('/bundles/public/js/order-status.js') }}"></script>
         {{ render('Fuga:Public:Common:block', {'name': 'counter'}) }}
 	</body>
 </html>

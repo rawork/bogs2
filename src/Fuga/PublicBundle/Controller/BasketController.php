@@ -10,12 +10,81 @@ class BasketController extends PublicController
 	public function __construct()
 	{
 		parent::__construct('basket');
+		if (!$this->get('session')->has('cart')) {
+			$this->get('session')->set('cart', array());
+			$this->get('session')->set('num', 0);
+			$this->get('session')->set('total', 0);
+		}
 	}
 
 	public function indexAction()
 	{
 		$cart = $this->get('session')->get('cart');
+		$total = $this->get('session')->get('total');
 
+//		var_dump(array_shift($cart)['sku']['product_id_value']['item']);
+
+		return $this->render('basket/index.html.twig', compact('cart', 'total'));
+	}
+
+	public function miniAction()
+	{
+		$num = $this->get('session')->get('num');
+		$total = $this->get('session')->get('total');
+		$ending = $this->get('util')->ending($num, array('', 'а', 'ов'));
+
+		return $this->render('basket/mini.html.twig', compact('ending', 'num', 'total'));
+	}
+
+	public function editAction()
+	{
+		$id = $this->get('request')->request->get('id');
+		$amount = $this->get('request')->request->get('amount');
+
+		$cart = $this->get('session')->get('cart');
+		$sku = $this->get('container')->getItem('catalog_sku', 'modarola_id='.$id);
+
+		if (isset($cart[$id])) {
+			$cart[$id]['amount'] += $amount;
+		} else {
+			$cart[$id] = array(
+				'sku' => $sku,
+				'product' => $this->get('container')->getItem('catalog_product', $sku['product_id']),
+				'amount' => $amount,
+			);
+		}
+		if ($cart[$id]['amount'] <= 0) {
+			unset($cart[$id]);
+		}
+
+		$num = 0;
+		$total = 0;
+		foreach ($cart as $item){
+			$num += $item['amount'];
+			$total += $item['amount']*$item['sku']['product_id_value']['item']['price'];
+		}
+
+		$this->get('session')->set('cart', $cart);
+		$this->get('session')->set('num', $num);
+		$this->get('session')->set('total', $total);
+
+		$ending = $this->get('util')->ending($num, array('', 'а', 'ов'));
+
+		$response = new JsonResponse();
+		$response->setData(array(
+			'minicart' => $this->render('basket/mini.html.twig', compact('num', 'total', 'ending')),
+		));
+
+		return $response;
+	}
+
+	public function newAction()
+	{
+		return $this->render('basket/new.html.twig');
+	}
+
+	public function orderAction($id)
+	{
 		$api = new \Fuga\Kaznachey\Api(KAZNACHEY_SECRET_KEY, KAZNACHEY_GUID);
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST["action"] == "create_payment") {
@@ -88,16 +157,7 @@ class BasketController extends PublicController
 			$merchantInfo = $api->GetMerchantInfo();
 		}
 
-		return $this->render('basket/index.html.twig', compact('cart', 'merchantInfo', 'createPaymentResponse'));
-	}
-
-	public function saveAction() {
-
-	}
-
-	public function orderAction($id)
-	{
-		return 'order';
+		return $this->render('basket/order.html.twig', compact('merchantInfo', 'createPaymentResponse'));
 	}
 
 	public function statusAction() {

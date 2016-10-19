@@ -1,0 +1,79 @@
+.order-prop__hidden-area {
+	display: none;
+	border: 1px solid #bbb;
+	padding: 0 25px 5px;
+	.products-list {
+		tbody {
+			.product-in-cart:last-child {
+				border-bottom: none;
+			}
+		}
+	}
+}
+.order-props {
+	display: block;
+	list-style: none;
+	margin: 20px 0;
+	padding: 0;
+	font-size: 17px;
+	line-height: 1.6;
+}
+
+.order-prop {
+	display: block;
+	margin-bottom: 17px;
+	a {
+		color: $c-orange;
+	}
+	&__toggle {
+		text-decoration: none;
+		border-bottom: 1px dashed $c-orange;
+		&:hover {
+			border-bottom: none;
+		}
+	}
+}
+
+.form {
+	margin-top: 45px;
+	&__cols-wrap {
+		margin-left: -40px;
+		margin-right: -40px;
+	}
+	&__col {
+		float: left;
+		width: 50%;
+		padding: 0 40px;
+	}
+	&__title {
+		font-size: 22px;
+		margin: 0 0 20px;
+	}
+	&__necessary {
+		float: left;
+		margin-top: 30px;
+	}
+	&__submit {
+		float: right;
+		padding-left: 50px;
+    	padding-right: 50px;
+    	margin-top: 30px;
+	}
+}
+
+.field {
+	margin-top: 20px;
+	&__label {
+		color: #999;
+		display: block;
+		margin-bottom: 3px;
+	}
+}
+.fields-small {
+	margin: 0 -20px 0 -20px;
+	.field {
+		float: left;
+		width: 33.3333%;
+		padding: 0 20px;
+	}
+}

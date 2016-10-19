@@ -6,7 +6,7 @@ class Util
 {
 	private $container;
 
-	public function __construct(Container $container) {
+	public function __construct(Container &$container) {
 		$this->container = $container;
 	}
 	
@@ -19,11 +19,13 @@ class Util
 		return $text;
 	}
 
-	public function prepend_zeroes($str, $length) {
+	public function prepend_zeroes($str, $length)
+	{
 		return str_pad($str, $length, '0', STR_PAD_LEFT);
 	}
 
-	public function getSize($bytes, $precision = 2) {
+	public function getSize($bytes, $precision = 2)
+	{
 		$units = array('б', 'Кб', 'Мб', 'Гб', 'Тб');
 		$pow = floor(($bytes ? log($bytes) : 0) / log(1024));
 		$pow = min($pow, count($units) - 1);
@@ -34,7 +36,8 @@ class Util
 	/** 
 	 * Заливка одноименных файлов 
 	 */
-	public function getNextFileName($filename, $path, $counter = null) {
+	public function getNextFileName($filename, $path, $counter = null)
+	{
 		if (!$counter) {
 			$filename = strtolower($this->translit($filename));
 			if (!$filename) {
@@ -49,7 +52,8 @@ class Util
 		return file_exists(PRJ_DIR.$filename_path) ? $this->getNextFileName($filename, $path, ++$counter) : $filename_ready;
 	}
 
-	public function translit($str) {
+	public function translit($str)
+	{
 		$cyrilic = array(
 			"а", "б", "в", "г", "д", "е", "ё", "ж", "з", "и", 
 			"й", "к", "л", "м", "н", "о", "п", "р", "с", "т", 
@@ -71,7 +75,8 @@ class Util
 		return str_replace($cyrilic, $latin, $str);
 	}
 
-	public function format_date($str, $format) {
+	public function format_date($str, $format)
+	{
 		setlocale(LC_ALL, 'ru_RU.utf-8');
 		$date = new \DateTime($str);
 		$dstr = $date->format($format);
@@ -103,11 +108,13 @@ class Util
 		return $dstr;
 	}
 
-	public function isEmail($email) {
+	public function isEmail($email)
+	{
 		return preg_match('/^[a-z0-9]+([-_\.]?[a-z0-9])*@[a-z0-9]+([-_\.]?[a-z0-9])+\.[a-z]{2,4}$/i', $email);
 	}
 
-	public function get_http_content($host, $url = '/') {
+	public function get_http_content($host, $url = '/')
+	{
 		$retry = 0;
 		while (!($f = @fsockopen($host, 80)) && $retry++ < 10) {
 			sleep(1);
@@ -141,7 +148,8 @@ class Util
 	 * SumProp(nnnn,'USD'|'RUR'|'EUR')-полный вывод со спряжением "долларов"-"центов"
 	 * 
 	 */
-	public function sumProp($srcsumm,$val_rub='', $val_kop=''){
+	public function sumProp($srcsumm,$val_rub='', $val_kop='')
+	{
 		$cifir= Array('од','дв','три','четыр','пят','шест','сем','восем','девят');
 		$sotN = Array('сто','двести','триста','четыреста','пятьсот','шестьсот','семьсот','восемьсот','девятьсот');
 		$milion= Array('триллион','миллиард','миллион','тысяч');
@@ -248,7 +256,8 @@ class Util
 	}
 
 	/* Генерация Хеш-ключа */
-	public function genKey($n = 8) {
+	public function genKey($n = 8)
+	{
 		$pwd = ''; 
 		$k = 0; 
 		$pass = array(); 
@@ -271,7 +280,8 @@ class Util
 		return $pwd;
 	}
 
-	public function guid(){
+	public function guid()
+	{
 		if (function_exists('com_create_guid')){
 			return com_create_guid();
 		} else {
@@ -289,17 +299,27 @@ class Util
 		}
 	}
 
-	public function fetch_user_salt($length = 3){
+	public function fetch_user_salt($length = 3)
+	{
 		$salt = '';
 		for ($i = 0; $i < $length; $i++)
 			$salt .= chr(rand(32, 126));
 		return $salt;
 	}
 
-	public function error($message) {
+	public function error($message)
+	{
 		echo <<<EOD
 <div style="padding:15px;color:#990000;font-size:14px;"><b>Ошибка</b>:&nbsp;$message</div>
 EOD;
+	}
+
+
+	public function ending($number,array $titles)
+	{
+		$cases = [2, 0, 1, 1, 1, 2];
+
+		return $titles[ ($number%100>4 && $number%100<20) ? 2 : $cases[($number%10<5) ? $number%10 : 5] ];
 	}
 
 }

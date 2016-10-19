@@ -1,11 +1,15 @@
+'use strict';
 const gulp = require('gulp'),
     sass = require('gulp-sass'),
+    browserify = require('gulp-browserify'),
     autoprefixer = require('gulp-autoprefixer'),
     browserSync = require('browser-sync').create(),
+    cleanCSS = require('gulp-clean-css'),
+    uglify = require('gulp-uglify'),
     reload = browserSync.reload;
 
 //----- Config -----//
-const build = '../public/css/';
+const build = '../public';
 
 // SASS
 gulp.task('sass', function () {
@@ -15,28 +19,33 @@ gulp.task('sass', function () {
             browsers: ['> 1%', 'last 40 versions'],
             cascade: true
         }))
-        .pipe(gulp.dest( build ))
+        .pipe(cleanCSS())
+        .pipe(gulp.dest( build + '/css/' ))
         .pipe(browserSync.stream());
 });
 
-// Browsersync
-gulp.task('browser-sync', ['sass'], function() {
-	browserSync.init({
-		server: {
-			baseDir: './scss',
-            port: 8080
-		}
-	});
+// JS
+gulp.task('js', function () {
+    return gulp.src('js/*.js')
+    .pipe(browserify())
+    // .pipe(uglify())
+    .pipe(gulp.dest( build + '/js/' ));
 });
 
+// JSON
+gulp.task('json', function () {
+    return gulp.src('js/*.json')
+    .pipe(gulp.dest( build + '/js/' ));
+});
+
+// Browsersync
 gulp.task('serve', ['sass'], function() {
     browserSync.init({
         proxy: 'bogs.dev:8888'
     });
-
     gulp.watch('./scss/**.scss', ['sass']);
-    gulp.watch('../../app/Resources/views/page.index.html.twig').on('change', reload);
+    gulp.watch('./js/**/**.js', ['js']);
+    gulp.watch('../../app/Resources/views/*.twig').on('change', reload);
 });
 
-
-gulp.task('default', ['sass', 'serve']);
+gulp.task('default', ['sass', 'js', 'json', 'serve']); //   <------ Default -----//

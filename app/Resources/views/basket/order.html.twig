@@ -1,0 +1,64 @@
+<ul class="order-props">
+    <li class="order-prop">
+        Статус заказа: <span class="order-status order-status--processing">ожидает оплаты</span>
+    </li>
+    <li class="order-prop">
+        Способ оплаты: <span class="order-payment-type">наличными курьеру</span>
+    </li>
+    <li class="order-prop">
+        Сумма заказа с доставкой: <span class="order-total">25 160</span>руб.
+    </li>
+</ul>
+<div class="btn-wrap ">
+    <a href="#" class="btn btn-pay">Оплатить заказ</a>
+</div>
+
+{% if (merchantInfo) %}
+    MerchantInfo<br/>
+    ErrorCode: {{ merchantInfo.ErrorCode }}<br/>
+    DebugMessage: {{ merchantInfo.DebugMessage }}<br/>
+    <form method="post" action="">
+        <input type="hidden" name="action" value="create_payment">
+        <select name="SelectedPaySystemId">
+            {% for paySystem in merchantInfo.PaySystems %}
+                <option value="{{ paySystem.Id }}">{{ paySystem.PaySystemName }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Create payment">
+    </form>
+{% endif %}
+
+{% if (createPaymentResponse)  %}
+    CreatePayment<br/>
+    ErrorCode: {{ createPaymentResponse.ErrorCode }}<br/>
+    DebugMessage: {{ createPaymentResponse.DebugMessage }}<br/>
+    {{ createPaymentResponse.ExternalForm|dbase64 }}
+{% endif %}
+
+<h4 class="products-list__title">Товары в заказе</h4>
+<!-- Products list -->
+<table class="products-list">
+    <thead>
+    <tr>
+        <th>Наименование</th>
+        <th>Размер</th>
+        <th>Кол-во</th>
+        <th>Сумма</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="product-in-cart">
+        <td class="product-in-cart__name">Baby Bogs Classic Flower Stripes</td>
+        <td class="product-in-cart__size">9 US</td>
+        <td class="product-in-cart__qty">1</td>
+        <td class="product-in-cart__price">14 540</td>
+    </tr>
+    <tr class="product-in-cart">
+        <td class="product-in-cart__name">Baby Bogs Classic Flower Stripes</td>
+        <td class="product-in-cart__size">9 US</td>
+        <td class="product-in-cart__qty">1</td>
+        <td class="product-in-cart__price">14 540</td>
+    </tr>
+    </tbody>
+</table>
+<div class="total">Сумма товаров и доставки:  <span class="total__val">25 160</span></div>

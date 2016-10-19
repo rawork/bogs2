@@ -174,15 +174,11 @@ order_catalog:
 order_call:
   path: /ajax/call
   defaults: { _controller: 'Fuga:Public:Catalog:call' }
-order_product:
-  path: /ajax/order
-  defaults: { _controller: 'Fuga:Public:Catalog:order' }
-add_product:
-  path: /ajax/add
-  defaults: { _controller: 'Fuga:Public:Catalog:add'}
-cart:
-  path: /ajax/cart
-  defaults: { _controller: 'Fuga:Public:Catalog:cart'}
+
+
+add_sku:
+  path: /api/basket/edit
+  defaults: { _controller: 'Fuga:Public:Basket:edit'}
 product:
   path: /ajax/product/{id}
   defaults: { _controller: 'Fuga:Public:Catalog:product'}

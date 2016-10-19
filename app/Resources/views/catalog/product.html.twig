@@ -1,37 +1,62 @@
-<div class="product-card">
+<div class="product-card clearfix">
     <div class="product-gallery">
-        <div class="gallery-img-big"><img src="{{ product.photo_value.extra.main.path }}"></div>
-        <ul class="gallery-grid clearfix">
-            <li><img src="{{ product.photo_value.extra.main.path }}" class="gallery-thumb" data-img-big="{{ product.photo_value.extra.main.path }}"></li>
+        <ul class="gallery-img-big">
+            <li class="active"><img src="{{ product.photo_value.extra.main.path }}" class="gallery-thumb"></li>
             {% for image in product.gallery_value  %}
-            <li><img src="{{ image.extra.thumb.path }}" class="gallery-thumb" data-img-big="{{ image.extra.main.path }}"></li>
+            <li><img src="{{ image.extra.main.path }}" class="gallery-thumb" ></li>
+            {% endfor %}
+        </ul>
+        <ul class="gallery-grid clearfix">
+            <li class="active"><img src="{{ product.photo_value.extra.main.path }}" class="gallery-thumb" data-img-id="1"></li>
+            {% for image in product.gallery_value  %}
+            <li><img src="{{ image.extra.thumb.path }}" class="gallery-thumb" data-img-id="{{ loop.index+1 }}"></li>
             {% endfor %}
         </ul>
     </div>
-    <div class="product-price">{{ product.price }} руб.</div>
-    <div class="product-articul">Артикул: {{ product.articul }}</div>
     <div class="product-checkout clearfix">
-        <div class="product-sizes clearfix">
-            <div class="sizes-label">Размеры:</div>
-            <div class="sizes-list-wrap">
-                <select class="sizes-list">
-                    {% for size in sizes %}
-                    <option value="{{ size.modarola_id }}">{{ size.size }} US</option>
-                    {% endfor %}
-                </select>
-                <span class="chevron"></span>
+        <div class="product-price">{{ product.price }} руб.</div>
+        <div class="product-sku">Артикул: {{ product.articul }}</div>
+        <div class="product-props clearfix">
+            {% if sizes|length > 0 %}
+            <div class="product-sizes custom-select clearfix">
+                <div class="custom-select__label">Размеры:</div>
+                <div class="custom-select__list-wrap">
+                    <select class="custom-select__list" id="sizes">
+                        {% for size in sizes %}
+                            <option data-value="{% if product.is_preorder %}10{% else %}{{ size.quantity + size.quantity2 }}{% endif %}" value="{{ size.modarola_id }}">{{ size.size }} US</option>
+                        {% endfor %}
+                    </select>
+                    <span class="custom-select__chevron"></span>
+                </div>
             </div>
+            <div class="product-qty custom-select clearfix">
+                <div class="custom-select__label">Кол-во:</div>
+                <div class="custom-input">
+                    <a href="javascript:;" class="circle minus-circle amount-dec">-</a>
+                    <input type="text"
+                           class="amount"
+                           data-sku=""
+                           data-value=""
+                           value="1" />
+                    <a href="javascript:;" class="circle plus-circle amount-inc">+</a>
+                </div>
+            </div>
+            {% else %}
+            Временно нет в наличии
+            {% endif %}
         </div>
-        {% if sizes|length > 0 %}<a href="#" class="btn add-product">Добавить в корзину</a>{% endif %}
+        <div class="btn-wrap">
+            {% if sizes|length > 0 %}<a href="#" class="btn add-product">Добавить в корзину</a>{% endif %}
+        </div>
+        <ul class="product-tabs">
+            <li class="active"><a href="#" data-tab="description">Описание</a></li>
+            <li><a href="#" data-tab="delivery">Доставка</a></li>
+            <li><a href="#" data-tab="payment">Оплата</a></li>
+        </ul>
+        <ul class="product-tabs-content">
+            <li data-tab-content="description" class="active">{{ product.description }}</li>
+            <li data-tab-content="delivery">{{ render('Fuga:Public:Common:block', {'name': 'delivery'}) }}</li>
+            <li data-tab-content="payment">{{ render('Fuga:Public:Common:block', {'name': 'payment'}) }}</li>
+        </ul>
     </div>
-    <ul class="product-tabs">
-        <li class="active"><a href="#" data-tab="description">Описание</a></li>
-        <li><a href="#" data-tab="delivery">Доставка</a></li>
-        <li><a href="#" data-tab="payment">Оплата</a></li>
-    </ul>
-    <ul class="product-tabs-content">
-        <li data-tab-content="description" class="active">{{ product.description }}</li>
-        <li data-tab-content="delivery">{{ render('Fuga:Public:Common:block', {'name': 'delivery'}) }}</li>
-        <li data-tab-content="payment">{{ render('Fuga:Public:Common:block', {'name': 'payment'}) }}</li>
-    </ul>
 </div>

@@ -1,0 +1,208 @@
+// Cart
+.page--cart {
+    .btn-wrap {
+        margin-top: 30px;
+        .btn {
+            float: right;
+            padding-left: 50px;
+            padding-right: 50px;
+        }
+    }
+    .btn-order {
+        background: $c-orange;
+        &:hover {
+            background: #000;
+        }
+    }
+    .footer .copy {
+        margin-top: 14px;
+    }
+}
+
+.products-list {
+    text-align: left;
+    width: 100%;
+    margin-top: 20px;
+    th {
+        font-size: 12px;
+        color: #aaa;
+        padding: 0 0 15px;
+    }
+    td {
+        overflow: hidden;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    .remove {
+        display: inline-block;
+        position: relative;
+        width: 20px;
+        height: 20px;
+        background: #aaa;
+        border-radius: 50%;
+        &:before, &:after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            background: #fff;
+        }
+        &:before {
+            width: 14px;
+            height: 2px;
+            margin: -1px 0 0 -7px;
+            transform: rotate(45deg);
+        }
+        &:after {
+            height: 14px;
+            width: 2px;
+            margin: -7px 0 0 -1px;
+            transform: rotate(45deg);
+        }
+
+    }
+    tbody {
+        line-height: 1.4;
+        font-size: 16px;
+        td {
+            position: relative;
+            padding-top: 12px;
+            padding-bottom: 12px;
+            &.product-in-cart__qty {
+                padding-top: 8px;
+            }
+        }
+        .product-in-cart {
+            border-bottom: 1px solid #ddd;
+        }
+    }
+    .price:after {
+        content: 'руб.';
+    }
+    .custom-select {
+        width: 100px;
+    }
+}
+.sub-total, .total {
+    text-align: right;
+    margin-top: 30px;
+    font-family: 'PFDinBold', Sans-serif;
+    font-size: 26px;
+    line-height: 1.2;
+    color: #000;
+    &__val {
+        margin-left: 8px;
+        display: inline-block;
+        &:after {
+            margin-left: 8px;
+            content: 'руб.'
+        }
+    }
+}
+
+.shipping-payment {
+    margin-top: 30px;
+    padding: 30px 20px;
+    border: 1px solid #ddd;
+    &__col {
+        float: left;
+        width: 50%;
+        padding: 0 20px;
+    }
+    &__title {
+        font-size: 22px;
+        line-height: 1.2;
+        margin: 0 0 20px;
+    }
+    &__list {
+        display: block;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        &__item {
+            display: block;
+            padding: 3px 0;
+            margin: 5px 0;
+            .hidden-area {
+                display: none;
+            }
+            &.active .hidden-area {
+                display: block;
+            }
+        }
+    }
+}
+
+.shipping-total {
+    margin-top: 20px;
+    font-weight: bold;
+    &__val {
+        background: #ffc100;
+        padding: 3px 3px 2px;
+        display: inline-block;
+        &:after {
+            content: ' руб.';
+        }
+    }
+}
+
+.select-region {
+    max-width: 400px;
+    position: relative;
+    margin-top: 7px;
+    padding-left: 35px;
+    &__field {
+        padding: 10px;
+        width: 100%;
+        display: block;
+        outline: none;
+        border: 1px solid #999;
+        &.selected {
+            border: 1px solid green;
+            background: #ccffcc;
+        }
+        &:focus {
+            outline: none;
+        }
+    }
+}
+
+.autocomplete {
+    position: absolute;
+    display: block;
+    left: 35px;
+    right: 0;
+    top: 35px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 320px;
+    overflow: scroll;
+    z-index: 120;
+    box-shadow: 0 6px 10px rgba(0,0,0,0.2);
+    li {
+        cursor: pointer;
+        display: block;
+        padding: 4px;
+        margin: 0;
+        background: #eee;
+        border-bottom: 1px solid #ddd;
+        line-height: 20px;
+        &:hover {
+            background: #bbb;
+        }
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+}
+
+.warning {
+    font-weight: bold;
+    text-align: center;
+    display: none;
+    background: #ffc100;
+    margin: 20px 0;
+    padding: 10px 20px;
+}

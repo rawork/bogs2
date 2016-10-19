@@ -30,6 +30,7 @@ class IndexAction extends AdminController
 		$this->state = $state;
 		$this->module = $module;
 		$this->entity = $entity;
+		$this->paginator = $this->get('paginator');
 		$this->table = $this->get('container')->getTable($module.'_'.$entity);
 		$this->baseRef = $this->generateUrl(
 			'admin_entity_index',
@@ -41,33 +42,8 @@ class IndexAction extends AdminController
 		);
 		$this->searchRef = $this->baseRef;
 		$this->fullRef = $this->searchRef.($this->get('request')->query->get('page') ? '?page='.$this->get('request')->query->get('page') : '');
-		if (is_object($this->table)) {
-			if ($filterType = $this->get('request')->request->get('filter_type')) {
-				switch ($filterType) {
-					case 'cansel':
-						$this->get('session')->remove($this->table->dbName());
-						break;
-					default:
-						$this->search_url = $this->table->getSearchURL();
-						parse_str($this->search_url, $this->tableParams);
-						$this->get('session')->set($this->table->dbName(), serialize($this->tableParams));
-				}
-
-				return $this->redirect($this->baseRef);
-			} else {
-				$tableParams = $this->get('session')->get($this->table->dbName());
-				$this->tableParams = unserialize($tableParams);
-			}
-			if (is_array($this->tableParams)) {
-				foreach ($this->tableParams as $key => $value) {
-					$_REQUEST[$key] = $value;
-				}
-			}
-			$this->search_sql = $this->table->getSearchSQL();
-		}
 		$this->rowPerPage = $this->get('session')->get($this->table->dbName().'_rpp', $this->rowPerPage);
-		$this->paginator = $this->get('paginator');
-	}	
+	}
 
 	/* Кнопки управления записью */
 	private function _getUpdateDelete($id)
@@ -260,8 +236,43 @@ class IndexAction extends AdminController
 		return $this->get('templating')->render('admin/common/filter.html.twig', $params);
 	}
 
+	private function initSearchCriteria()
+	{
+		if (is_object($this->table)) {
+			if ($filterType = $this->get('request')->request->get('filter_type')) {
+				switch ($filterType) {
+					case 'cancel':
+						$this->get('session')->remove('cms_table_'.$this->table->dbName());
+						break;
+					default:
+						$this->search_url = $this->table->getSearchURL($this->get('request'));
+						parse_str($this->search_url, $this->tableParams);
+						$this->get('session')->set('cms_table_'.$this->table->dbName(), serialize($this->tableParams));
+				}
+
+				return true;
+			}
+
+			$this->tableParams = unserialize($this->get('session')->get('cms_table_'.$this->table->dbName()));
+
+			if (is_array($this->tableParams)) {
+				foreach ($this->tableParams as $key => $value) {
+					$this->get('request')->request->set($key, $value);
+				}
+			}
+
+			$this->search_sql = $this->table->getSearchSQL();
+		}
+
+		return false;
+	}
+
 	public function run()
 	{
+		if ($this->initSearchCriteria()) {
+			return $this->reload();
+		}
+
 		$this->links[] = array(
 			'ref' => $this->generateUrl(
 				'admin_entity_add',

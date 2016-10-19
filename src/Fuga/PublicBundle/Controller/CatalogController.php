@@ -38,7 +38,11 @@ class CatalogController extends PublicController
 			return $response;
 		}
 
-		$sizes = $this->get('container')->getItems('catalog_sku', 'publish=1 AND (quantity>0 OR quantity2>0) AND product_id='.$product['id']);
+		if ($product['is_preorder']) {
+			$sizes = $this->get('container')->getItems('catalog_sku', 'publish=1 AND product_id='.$product['id']);
+		} else {
+			$sizes = $this->get('container')->getItems('catalog_sku', 'publish=1 AND (quantity>0 OR quantity2>0) AND product_id='.$product['id']);
+		}
 
 		$response->setData(array(
 			'title' => $product['name'],
@@ -108,135 +112,4 @@ class CatalogController extends PublicController
 		return $response;
 	}
 
-	public function orderAction()
-	{
-		$products = $this->get('request')->request->get('products');
-		$name = $this->get('request')->request->get('name');
-		$email = $this->get('request')->request->get('email');
-		$phone = $this->get('request')->request->get('phone');
-		$address = $this->get('request')->request->get('address');
-
-		$detail = '';
-		foreach ($products as $item) {
-			$product = $this->get('container')->getItem('catalog_product', $item['id']);
-			if ($product) {
-				$detail .= $product['name'].'('.$product['articul'].') - Размер '.$item['size']."\n";
-			}
-		}
-
-		$this->get('container')->addItem(
-			'catalog_order_product',
-			array(
-				'detail' => $detail,
-				'name' => $name,
-				'email' => $email,
-				'phone' => $phone,
-				'address' => $address,
-			)
-		);
-
-		$detail = nl2br($detail);
-
-		$this->get('mailer')->send(
-			'Заказ товара на сайте '.$_SERVER['SERVER_NAME'],
-			$this->render('mail/order.html.twig', compact('detail', 'name', 'email', 'phone', 'address')),
-			array(ADMIN_EMAIL)
-		);
-
-		$this->get('session')->set('cart', array());
-
-		$response = new JsonResponse();
-		$response->setData(array(
-			'text' => 'Ваш заказ принят. Скоро Мы свяжемся с Вами',
-		));
-
-		return $response;
-	}
-
-	public function cartAction()
-	{
-		if ($this->get('session')->has('cart')){
-			$num = count($this->get('session')->get('cart'));
-		} else {
-			$num = 0;
-		}
-
-
-		$ending = $this->getNumEnding($num);
-		$response = new JsonResponse();
-		$response->setData(array(
-			'text' => $this->render('catalog/cart.html.twig', compact('num', 'ending')),
-		));
-
-		return $response;
-	}
-
-	public function addAction()
-	{
-		$id = $this->get('request')->request->get('id');
-		$amount = $this->get('request')->request->get('amount');
-
-		if (!$this->get('session')->has('cart')) {
-			$this->get('session')->set('cart', array());
-		}
-
-		$cart = $this->get('session')->get('cart');
-
-		if (!isset($cart[$id])) {
-			$cart[$id] = array(
-				'product' => $this->get('container')->getItem('catalog_product', $id),
-				'amount' => $amount,
-				'size' => '',
-			);
-		} else {
-			$cart[$id]['amount'] += $amount;
-		}
-		if ($cart[$id]['amount'] <= 0) {
-			unset($cart[$id]);
-		}
-
-		$this->get('session')->set('cart', $cart);
-
-		$num = count($cart);
-		$ending = $this->getNumEnding($num);
-
-		$response = new JsonResponse();
-		$response->setData(array(
-			'text' => $this->render('catalog/cart.html.twig', compact('num', 'ending')),
-		));
-
-		return $response;
-	}
-
-	public function formAction()
-	{
-		$cart = $this->get('session')->get('cart');
-		$response = new JsonResponse();
-		$response->setData(array(
-			'text' => $this->render('catalog/order.html.twig', compact('cart')),
-		));
-
-		return $response;
-	}
-
-	private function getNumEnding($number, $endingArray = array('пару', 'пары', 'пар'))
-	{
-		$number = $number % 100;
-		if ($number>=11 && $number<=19) {
-			$ending=$endingArray[2];
-		}
-		else {
-			$i = $number % 10;
-			switch ($i)
-			{
-				case (1): $ending = $endingArray[0]; break;
-				case (2):
-				case (3):
-				case (4): $ending = $endingArray[1]; break;
-				default: $ending=$endingArray[2];
-			}
-		}
-		return $ending;
-	}
-
-} 
+}

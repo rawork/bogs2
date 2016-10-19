@@ -1,0 +1,5 @@
+{% if num > 0 %}
+<a class="mini-cart" href="/basket"><span class="mini-cart__counter">{{ num }}</span><span class="mini-cart__rest"> товар{{ ending }} <br>на {{ total }} руб.</span></a>
+{% else %}
+<a class="mini-cart empty"><span class="mini-cart__rest"> пока нет<br>товаров</span></a>
+{% endif %}

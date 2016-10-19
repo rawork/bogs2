@@ -1,40 +1,64 @@
-<div class="product-card">
+<div class="product-card clearfix">
     <div class="product-gallery">
-        <div class="gallery-img-big"><img src="http://www.bogsfootwear.com/shop/images/w900/71565I-608.jpg"></div>
+        <ul class="gallery-img-big">
+            <li class="active"><img src="http://www.bogsfootwear.com/shop/images/w900/71565I-608.jpg" class="gallery-thumb"></li>
+            <li><img src="http://www.bogsfootwear.com/shop/rotate/71565I-608/01.jpg" class="gallery-thumb" ></li>
+            <li><img src="http://www.bogsfootwear.com/shop/rotate/71565I-608/03.jpg" class="gallery-thumb"></li>
+            <li><img src="http://www.bogsfootwear.com/shop/images/w900/71565I-608.jpg" class="gallery-thumb"></li>
+            <li><img src="http://www.bogsfootwear.com/shop/rotate/71565I-608/01.jpg" class="gallery-thumb"></li>
+            <li><img src="http://www.bogsfootwear.com/shop/rotate/71565I-608/03.jpg" class="gallery-thumb"></li>
+        </ul>
         <ul class="gallery-grid clearfix">
-            <li><img src="http://www.bogsfootwear.com/shop/images/w900/71565I-608.jpg" class="gallery-thumb" data-img-big="http://www.bogsfootwear.com/shop/images/w900/71565I-608.jpg"></li>
-            <li><img src="http://www.bogsfootwear.com/shop/rotate/71565I-608/01.jpg" class="gallery-thumb" data-img-big="http://www.bogsfootwear.com/shop/rotate/71565I-608/01.jpg"></li>
-            <li><img src="http://www.bogsfootwear.com/shop/rotate/71565I-608/03.jpg" class="gallery-thumb" data-img-big="http://www.bogsfootwear.com/shop/rotate/71565I-608/03.jpg"></li>
-            <li><img src="http://www.bogsfootwear.com/shop/images/w900/71565I-608.jpg" class="gallery-thumb" data-img-big="http://www.bogsfootwear.com/shop/images/w900/71565I-608.jpg"></li>
-            <li><img src="http://www.bogsfootwear.com/shop/rotate/71565I-608/01.jpg" class="gallery-thumb" data-img-big="http://www.bogsfootwear.com/shop/rotate/71565I-608/01.jpg"></li>
-            <li><img src="http://www.bogsfootwear.com/shop/rotate/71565I-608/03.jpg" class="gallery-thumb" data-img-big="http://www.bogsfootwear.com/shop/rotate/71565I-608/03.jpg"></li>
+            <li class="active"><img src="http://www.bogsfootwear.com/shop/images/w900/71565I-608.jpg" class="gallery-thumb" data-img-id="1"></li>
+            <li><img src="http://www.bogsfootwear.com/shop/rotate/71565I-608/01.jpg" class="gallery-thumb" data-img-id="2"></li>
+            <li><img src="http://www.bogsfootwear.com/shop/rotate/71565I-608/03.jpg" class="gallery-thumb" data-img-id="3"></li>
+            <li><img src="http://www.bogsfootwear.com/shop/images/w900/71565I-608.jpg" class="gallery-thumb" data-img-id="4"></li>
+            <li><img src="http://www.bogsfootwear.com/shop/rotate/71565I-608/01.jpg" class="gallery-thumb" data-img-id="5"></li>
+            <li><img src="http://www.bogsfootwear.com/shop/rotate/71565I-608/03.jpg" class="gallery-thumb" data-img-id="6"></li>
         </ul>
     </div>
     <div class="product-checkout clearfix">
-        <div class="product-sizes clearfix">
-            <div class="sizes-label">Размеры:</div>
-            <div class="sizes-list-wrap">
-                <select class="sizes-list">
-                    <option>35 EU</option>
-                    <option>36 EU</option>
-                    <option>37 EU</option>
-                    <option>38 EU</option>
-                    <option>39 EU</option>
-                    <option>40 EU</option>
-                </select>
-                <span class="chevron"></span>
+        <div class="product-sku">Артикул: 71565I-608</div>
+        <div class="product-props clearfix">
+            <div class="product-sizes custom-select clearfix">
+                <div class="custom-select__label">Размеры:</div>
+                <div class="custom-select__list-wrap">
+                    <select class="custom-select__list">
+                        <option>35 EU</option>
+                        <option>36 EU</option>
+                        <option>37 EU</option>
+                        <option>38 EU</option>
+                        <option>39 EU</option>
+                        <option>40 EU</option>
+                    </select>
+                    <span class="custom-select__chevron"></span>
+                </div>
             </div>
+            <div class="product-qty custom-select clearfix">
+                <div class="custom-select__label">Кол-во:</div>
+                <div class="custom-select__list-wrap">
+                    <select class="custom-select__list">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                    </select>
+                    <span class="custom-select__chevron"></span>
+                </div>
+            </div>
+            
         </div>
-        <a href="#" class="btn add-product" data-id="3">Добавить в корзину</a>
+            <div class="btn-wrap">
+                <a href="#" class="btn add-product" data-id="3">Добавить в корзину</a>
+            </div>
+            <ul class="product-tabs">
+            <li class="active"><a href="#" data-tab="description">Описание</a></li>
+            <li><a href="#" data-tab="delivery">Доставка</a></li>
+            <li><a href="#" data-tab="payment">Оплата</a></li>
+        </ul>
+        <ul class="product-tabs-content">
+            <li data-tab-content="description" class="active">Ассортимент обуви Bogs широк, как никогда, и при этом их свойства остаются неизменными: эти долговечные ботинки дарят тепло, комфорт и сухость, благодаря чему поклонники марки Bogs выбирают ее с 2002 года</li>
+            <li data-tab-content="delivery">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis praesentium magnam illo, atque iure enim quas recusandae quasi. Placeat, ipsa eos perferendis at sequi fugit, repudiandae odio illo nostrum quis!</li>
+            <li data-tab-content="payment">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatum officiis rerum eaque architecto possimus, quam ducimus, sit inventore molestias, ex, nesciunt ut vero. Et architecto cupiditate earum ratione a? Nesciunt repellendus dolor consequuntur deleniti ad, eos saepe enim ratione repudiandae.</li>
+        </ul>
     </div>
-    <ul class="product-tabs">
-        <li class="active"><a href="#" data-tab="description">Описание</a></li>
-        <li><a href="#" data-tab="delivery">Доставка</a></li>
-        <li><a href="#" data-tab="payment">Оплата</a></li>
-    </ul>
-    <ul class="product-tabs-content">
-        <li data-tab-content="description" class="active">Ассортимент обуви Bogs широк, как никогда, и при этом их свойства остаются неизменными: эти долговечные ботинки дарят тепло, комфорт и сухость, благодаря чему поклонники марки Bogs выбирают ее с 2002 года</li>
-        <li data-tab-content="delivery">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis praesentium magnam illo, atque iure enim quas recusandae quasi. Placeat, ipsa eos perferendis at sequi fugit, repudiandae odio illo nostrum quis!</li>
-        <li data-tab-content="payment">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatum officiis rerum eaque architecto possimus, quam ducimus, sit inventore molestias, ex, nesciunt ut vero. Et architecto cupiditate earum ratione a? Nesciunt repellendus dolor consequuntur deleniti ad, eos saepe enim ratione repudiandae.</li>
-    </ul>
 </div>
