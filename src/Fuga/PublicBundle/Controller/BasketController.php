@@ -64,6 +64,10 @@ class BasketController extends PublicController
 			$total += $item['amount']*$item['sku']['product_id_value']['item']['price'];
 		}
 
+//		$this->get('log')->addError($id);
+//		$this->get('log')->addError(json_encode($sku));
+//		$this->get('log')->addError(json_encode($cart));
+
 		$this->get('session')->set('cart', $cart);
 		$this->get('session')->set('num', $num);
 		$this->get('session')->set('total', $total);
@@ -72,6 +76,37 @@ class BasketController extends PublicController
 
 		$response = new JsonResponse();
 		$response->setData(array(
+			'minicart' => $this->render('basket/mini.html.twig', compact('num', 'total', 'ending')),
+		));
+
+		return $response;
+	}
+
+	public function removeAction()
+	{
+		$id = $this->get('request')->request->get('id');
+		$cart = $this->get('session')->get('cart');
+
+		if (isset($cart[$id])) {
+			unset($cart[$id]);
+		}
+
+		$num = 0;
+		$total = 0;
+		foreach ($cart as $item){
+			$num += $item['amount'];
+			$total += $item['amount']*$item['sku']['product_id_value']['item']['price'];
+		}
+
+		$this->get('session')->set('cart', $cart);
+		$this->get('session')->set('num', $num);
+		$this->get('session')->set('total', $total);
+
+		$ending = $this->get('util')->ending($num, array('', 'а', 'ов'));
+
+		$response = new JsonResponse();
+		$response->setData(array(
+			'status' => true,
 			'minicart' => $this->render('basket/mini.html.twig', compact('num', 'total', 'ending')),
 		));
 

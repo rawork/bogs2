@@ -138,17 +138,19 @@
 
         if (this.value > max) {
             this.value = max;
+        } else if (this.value < 1) {
+            this.value = 1
         }
     });
 
     $(document).on("click", ".amount-dec", function () {
         var amount = parseInt($(this).siblings(".amount").val());
         if (isNaN(amount)) {
-            $(this).siblings(".amount").val(0);
+            $(this).siblings(".amount").val(1);
             return false;
         }
 
-        if (amount > 0) {
+        if (amount > 1) {
             $(this).siblings(".amount").val(--amount);
         }
     });
@@ -157,7 +159,7 @@
         var amount = parseInt($(this).siblings(".amount").val());
 
         if (isNaN(amount)) {
-            $(this).siblings(".amount").val(0);
+            $(this).siblings(".amount").val(1);
             return false;
         }
 

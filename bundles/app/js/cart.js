@@ -90,15 +90,36 @@
 
     $('.remove').on('click', function(e){
         e.preventDefault();
+        var id = parseInt($(this).attr('data-id'));
         var product = $(this).closest('.product-in-cart'),
             price = convert.priceToNum( product.find('.product-in-cart__price') );
-        product.fadeOut(300, function(){
-            product.remove();
-            subTotal = subTotal - price;
-            $('.sub-total__val').text( convert.numToPrice( subTotal ) );
-            checkCart();
-            updateTotals(shippingTotal, subTotal);
-        });        
+        $.post('/api/basket/remove', {id: id}, function(data){
+            if(data.status){
+                $('#cart').html(data.minicart);
+                product.fadeOut(300, function(){
+                    product.remove();
+                    subTotal = subTotal - price;
+                    $('.sub-total__val').text( convert.numToPrice( subTotal ) );
+                    checkCart();
+                    updateTotals(shippingTotal, subTotal);
+                });
+            } else {
+                console.log('remove sku from cart error');
+            }
+        }, 'json');
+
+    });
+
+    $(document).on("change", '.amount', function () {
+        console.log('cart amount change');
+    });
+
+    $(document).on("click", '.amount-dec', function () {
+        console.log('cart amount-dec click');
+    });
+
+    $(document).on("click", '.amount-inc', function () {
+        console.log('cart amount-inc click');
     });
 
     //====== Autocomlete ======//

@@ -75,6 +75,12 @@
         }
         .product-in-cart {
             border-bottom: 1px solid #ddd;
+            &__photo{
+                display: inline-block;
+                position: relative;
+                width: 40px;
+                vertical-align: middle;
+            }
         }
     }
     .price:after {

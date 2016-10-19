@@ -4,6 +4,7 @@
     <tr>
         <th>Наименование</th>
         <th>Размер</th>
+        <th>Цена</th>
         <th>Количество</th>
         <th>Сумма</th>
     </tr>
@@ -11,8 +12,9 @@
     <tbody>
     {% for product in cart %}
     <tr class="product-in-cart">
-        <td class="product-in-cart__name"><img src="{{ product.sku.product_id_value.item.photo_value.extra.thumb.path }}"> {{ product.sku.product_id_value.item.name }}</td>
+        <td class="product-in-cart__name"><img class="product-in-cart__photo" src="{{ product.product.photo_value.extra.thumb.path }}"> {{ product.product.name }} (Арт. {{ product.product.articul }})</td>
         <td class="product-in-cart__size">{{ product.sku.size }} US</td>
+        <td class="product-in-cart__price0">{{ product.product.price }}</td>
         <td class="product-in-cart__qty">
             <div class="product-sizes custom-select clearfix">
                 {#<div class="custom-select__list-wrap">#}
@@ -27,6 +29,7 @@
                     <a href="javascript:;" class="circle minus-circle amount-dec">-</a>
                     <input type="text"
                            class="amount"
+                           data-price="{{ product.product.price }}"
                            data-sku="{{ product.sku.modarola_id }}"
                            data-value="{% if product.sku.product_id_value.item.is_preorder %}10{% else %}{{ product.sku.quantity+product.sku.quantity2 }}{% endif %}"
                            value="{{ product.amount }}" />
@@ -35,7 +38,7 @@
             </div>
         </td>
         <td class="product-in-cart__price">{{ product.sku.product_id_value.item.price*product.amount }}</td>
-        <td><a href="#"  data-id="" class="remove"></a></td>
+        <td><a href="#"  data-id="{{ product.sku.modarola_id }}" class="remove"></a></td>
     </tr>
     {% endfor %}
     </tbody>
@@ -151,4 +154,4 @@
 </div>
 <div class="warning"></div>
 <div class="total">Сумма товаров и доставки:  <span class="total__val"></span></div>
-<div class="btn-wrap"><a class="btn btn-order" href="/order">Оформить заказ</a></div>
+<div class="btn-wrap"><a class="btn btn-order" href="/basket/new">Оформить заказ</a></div>

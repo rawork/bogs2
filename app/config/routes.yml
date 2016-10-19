@@ -179,6 +179,9 @@ order_call:
 add_sku:
   path: /api/basket/edit
   defaults: { _controller: 'Fuga:Public:Basket:edit'}
+remove_sku:
+  path: /api/basket/remove
+  defaults: { _controller: 'Fuga:Public:Basket:remove'}
 product:
   path: /ajax/product/{id}
   defaults: { _controller: 'Fuga:Public:Catalog:product'}
