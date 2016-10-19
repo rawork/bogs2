@@ -1307,18 +1307,19 @@ a.remove {
 
 .custom-input {
     a.circle {
-        display: inline-block;
+        display: block;
+        float: left;
         font-style: normal;
         font-size: 30px;
         line-height: 44px;
+        padding: 0 6px;
         text-decoration: none;
-        color: #595959;
-        background-color: #fff;
+        color: #fff;
+        background-color: #ccc;
 
     }
     input.amount {
-        position: relative;
-        top: -5px;
+        float: left;
         height: 44px;
         width: 50px;
         display: inline-block;
