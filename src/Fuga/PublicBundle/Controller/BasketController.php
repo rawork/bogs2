@@ -82,6 +82,38 @@ class BasketController extends PublicController
 		return $response;
 	}
 
+	public function amountAction()
+	{
+		$id = $this->get('request')->request->get('id');
+		$amount = $this->get('request')->request->get('amount');
+
+		$cart = $this->get('session')->get('cart');
+
+		if (isset($cart[$id])) {
+			$cart[$id]['amount'] = $amount;
+		}
+
+		$num = 0;
+		$total = 0;
+		foreach ($cart as $item){
+			$num += $item['amount'];
+			$total += $item['amount']*$item['sku']['product_id_value']['item']['price'];
+		}
+
+		$this->get('session')->set('cart', $cart);
+		$this->get('session')->set('num', $num);
+		$this->get('session')->set('total', $total);
+
+		$ending = $this->get('util')->ending($num, array('', 'а', 'ов'));
+
+		$response = new JsonResponse();
+		$response->setData(array(
+			'minicart' => $this->render('basket/mini.html.twig', compact('num', 'total', 'ending')),
+		));
+
+		return $response;
+	}
+
 	public function removeAction()
 	{
 		$id = $this->get('request')->request->get('id');
@@ -195,7 +227,8 @@ class BasketController extends PublicController
 		return $this->render('basket/order.html.twig', compact('merchantInfo', 'createPaymentResponse'));
 	}
 
-	public function statusAction() {
+	public function statusAction()
+	{
 		$api = new \Fuga\Kaznachey\Api(KAZNACHEY_SECRET_KEY, KAZNACHEY_GUID);
 
 		try {
@@ -212,7 +245,8 @@ class BasketController extends PublicController
 		fclose($fp);
 	}
 
-	public function successAction() {
+	public function successAction()
+	{
 		$api = new \Fuga\Kaznachey\Api(KAZNACHEY_SECRET_KEY, KAZNACHEY_GUID);
 
 		try {
@@ -227,6 +261,57 @@ class BasketController extends PublicController
 
 		fputs($fp, $statusRequest, strlen($statusRequest));
 		fclose($fp);
+	}
+
+	public function regionsAction()
+	{
+		$regions0 = $this->get('container')->getItems('basket_region', 'publish=1');
+		$regions = array();
+		foreach ($regions0 as $region) {
+			$regions[] = array(
+				'subject' => $region['name'],
+				'price' => $region['cost_post'],
+				'price_carrier' => $region['cost_carrier'],
+			);
+		}
+		$response = new JsonResponse();
+		$response->setData($regions);
+
+		return $response;
+	}
+
+	public function citiesAction()
+	{
+		$items0 = $this->get('container')->getItems('basket_city', 'publish=1');
+		$items = array();
+		foreach ($items0 as $item) {
+			$items[] = array(
+				'subject' => $item['name'],
+				'price' => $item['cost_post'],
+				'price_carrier' => $item['cost_carrier'],
+			);
+		}
+		$response = new JsonResponse();
+		$response->setData($items);
+
+		return $response;
+	}
+
+	public function countriesAction()
+	{
+		$items0 = $this->get('container')->getItems('basket_country', 'publish=1');
+		$items = array();
+		foreach ($items0 as $item) {
+			$items[] = array(
+				'subject' => $item['name'],
+				'price' => $item['cost_post'],
+				'price_carrier' => $item['cost_carrier'],
+			);
+		}
+		$response = new JsonResponse();
+		$response->setData($items);
+
+		return $response;
 	}
 
 } 

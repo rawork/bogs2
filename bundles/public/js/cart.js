@@ -85,6 +85,7 @@
     // Check if Cart is empty
     function checkCart(){
         if( $('.product-in-cart').length === 0 ) {
+            window.location.reload();
             $('.products-list').html('<tr class="empty-cart"><td>Ваша корзина пуста</td></tr>')
         }
     };
@@ -111,17 +112,32 @@
 
     });
 
-    $(document).on("change", '.amount', function () {
-        console.log('cart amount change');
+    $(document).on("check", '.amount, .amount-dec, .amount-inc', function () {
+        console.log('cart amount check');
+
+        var product = $(this).closest('.product-in-cart');
+        var amount = product.find('.amount');
+        var price = product.find('.product-in-cart__price');
+        var priceOld = convert.priceToNum( price );
+        var priceNew = parseInt(amount.val())*parseInt(amount.attr('data-price'));
+        var delta = priceNew - priceOld;
+
+        subTotal += delta;
+        if (subTotal < 0) {
+            subTotal = 0;
+        }
+
+        $.post('/api/basket/amount', {id: amount.attr('data-sku'), amount: amount.val()}, function(data){
+            price.html(priceNew);
+            $('.sub-total__val').text( convert.numToPrice( subTotal ) );
+            checkCart();
+            updateTotals(shippingTotal, subTotal);
+            $('#cart').html(data.minicart);
+        }, "json")
+
     });
 
-    $(document).on("click", '.amount-dec', function () {
-        console.log('cart amount-dec click');
-    });
 
-    $(document).on("click", '.amount-inc', function () {
-        console.log('cart amount-inc click');
-    });
 
     //====== Autocomlete ======//
     // Click Autocomplete Item
@@ -192,7 +208,7 @@ module.exports = (function() {
         regions;
 
     // Get Regions
-    $.getJSON('/bundles/public/js/regions.json', function(data){
+    $.getJSON('/api/basket/regions.json', function(data){
         regions = data;
     });
 

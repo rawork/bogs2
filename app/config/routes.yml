@@ -182,6 +182,18 @@ add_sku:
 remove_sku:
   path: /api/basket/remove
   defaults: { _controller: 'Fuga:Public:Basket:remove'}
+amount_sku:
+    path: /api/basket/amount
+    defaults: { _controller: 'Fuga:Public:Basket:amount'}
+basket_regions:
+    path: /api/basket/regions.json
+    defaults: { _controller: 'Fuga:Public:Basket:regions'}
+basket_cities:
+    path: /api/basket/cities.json
+    defaults: { _controller: 'Fuga:Public:Basket:cities'}
+basket_countries:
+    path: /api/basket/countries.json
+    defaults: { _controller: 'Fuga:Public:Basket:countries'}
 product:
   path: /ajax/product/{id}
   defaults: { _controller: 'Fuga:Public:Catalog:product'}

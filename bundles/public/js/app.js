@@ -141,6 +141,7 @@
         } else if (this.value < 1) {
             this.value = 1
         }
+        $(this).trigger('check');
     });
 
     $(document).on("click", ".amount-dec", function () {
@@ -153,6 +154,7 @@
         if (amount > 1) {
             $(this).siblings(".amount").val(--amount);
         }
+        $(this).trigger('check');
     });
 
     $(document).on("click", ".amount-inc", function () {
@@ -171,6 +173,7 @@
         } else {
             $(this).siblings(".amount").val(amount);
         }
+        $(this).trigger('check');
     });
 
     $(document).on('change', '#sizes', function(e){

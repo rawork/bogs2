@@ -9,7 +9,7 @@ module.exports = (function() {
         regions;
 
     // Get Regions
-    $.getJSON('/bundles/public/js/regions.json', function(data){
+    $.getJSON('/api/basket/regions.json', function(data){
         regions = data;
     });
 
