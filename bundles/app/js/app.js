@@ -23,16 +23,16 @@
     });
 
     // Add sku to basket
-    $(document).on('click', '.add-product', function(e) {
+    $(document).on('click', '.add-product.active', function(e) {
         e.preventDefault();
         var that = $(this);
         var id = $('#sizes option:selected').val();
-        var amount = $('.amount').val();
+        var amount = 1;//$('.amount').val();
 
         $.post("/api/basket/edit", {id: id, amount: amount},
             function(data){
                 $('#cart').html(data.minicart);
-                that.html('В корзине');
+                that.html('Оформить заказ').removeClass('active');
                 yaCounter29093585.reachGoal('add_product');
             }, "json");
     });
@@ -179,7 +179,7 @@
         $('.amount')
             .attr('data-value', $('#sizes option:selected').attr('data-value'))
             .val(1);
-        $('.add-product').html('Добавить в корзину');
+        $('.add-product').html('Добавить в корзину').addClass('active');
     });
 
     //====== Product tabs ======//

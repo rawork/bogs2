@@ -30,24 +30,25 @@
                 </div>
             </div>
             <div class="product-qty custom-select clearfix">
-                <div class="custom-select__label">Кол-во:</div>
-                <div class="custom-input">
-                    <a href="javascript:;" class="circle minus-circle amount-dec">-</a>
-                    <input type="text"
-                           class="amount"
-                           data-sku=""
-                           data-value=""
-                           value="1" />
-                    <a href="javascript:;" class="circle plus-circle amount-inc">+</a>
-                </div>
+                {% if sizes|length > 0 %}<a href="/basket" class="btn active add-product">Добавить в корзину</a>{% endif %}
+                {#<div class="custom-select__label">Кол-во:</div>#}
+                {#<div class="custom-input">#}
+                    {#<a href="javascript:;" class="circle minus-circle amount-dec">-</a>#}
+                    {#<input type="text"#}
+                           {#class="amount"#}
+                           {#data-sku=""#}
+                           {#data-value=""#}
+                           {#value="1" />#}
+                    {#<a href="javascript:;" class="circle plus-circle amount-inc">+</a>#}
+                {#</div>#}
             </div>
             {% else %}
             Временно нет в наличии
             {% endif %}
         </div>
-        <div class="btn-wrap">
-            {% if sizes|length > 0 %}<a href="#" class="btn add-product">Добавить в корзину</a>{% endif %}
-        </div>
+        {#<div class="btn-wrap">#}
+
+        {#</div>#}
         <ul class="product-tabs">
             <li class="active"><a href="#" data-tab="description">Описание</a></li>
             <li><a href="#" data-tab="delivery">Доставка</a></li>
