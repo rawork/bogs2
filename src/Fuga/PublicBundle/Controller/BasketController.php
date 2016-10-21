@@ -7,6 +7,20 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class BasketController extends PublicController
 {
+	private $delivery = array(
+		'self' 			=> 'Самовывоз',
+		'courier' 		=> 'Доставка по Москве курьером',
+		'mkad_post' 	=> 'За МКАД &laquo;Почта России&raquo;',
+		'mkad_carrier' 	=> 'За МКАД курьером',
+		'russia_post' 	=> 'По России &laquo;Почта России&raquo',
+		'russia_carrier'=> 'По России курьером',
+		'sng_post' 		=> 'Страны СНГ &laquo;Почта Росии&raquo;',
+	);
+	private $payment = array(
+		'cash' => 'Оплата наличными при получении',
+		'card' => 'Оплата банковской картой'
+	);
+
 	public function __construct()
 	{
 		parent::__construct('basket');
@@ -14,6 +28,9 @@ class BasketController extends PublicController
 			$this->get('session')->set('cart', array());
 			$this->get('session')->set('num', 0);
 			$this->get('session')->set('total', 0);
+			$this->get('session')->set('cart.delivery.type', '');
+			$this->get('session')->set('cart.delivery.cost', '');
+			$this->get('session')->set('cart.payment.type', '');
 		}
 	}
 
@@ -23,6 +40,7 @@ class BasketController extends PublicController
 		$total = $this->get('session')->get('total');
 
 //		var_dump(array_shift($cart)['sku']['product_id_value']['item']);
+//		var_dump($_SESSION);
 
 		return $this->render('basket/index.html.twig', compact('cart', 'total'));
 	}
@@ -38,116 +56,164 @@ class BasketController extends PublicController
 
 	public function editAction()
 	{
-		$id = $this->get('request')->request->get('id');
-		$amount = $this->get('request')->request->get('amount');
+		if ($_SERVER['REQUEST_METHOD'] == 'POST' && $this->isXmlHttpRequest()) {
+			$id = $this->get('request')->request->get('id');
+			$amount = $this->get('request')->request->get('amount');
 
-		$cart = $this->get('session')->get('cart');
-		$sku = $this->get('container')->getItem('catalog_sku', 'modarola_id='.$id);
+			$cart = $this->get('session')->get('cart');
+			$sku = $this->get('container')->getItem('catalog_sku', 'modarola_id=' . $id);
 
-		if (isset($cart[$id])) {
-			$cart[$id]['amount'] += $amount;
-		} else {
-			$cart[$id] = array(
-				'sku' => $sku,
-				'product' => $this->get('container')->getItem('catalog_product', $sku['product_id']),
-				'amount' => $amount,
-			);
-		}
-		if ($cart[$id]['amount'] <= 0) {
-			unset($cart[$id]);
-		}
+			if (isset($cart[$id])) {
+				$cart[$id]['amount'] += $amount;
+			} else {
+				$cart[$id] = array(
+					'sku' => $sku,
+					'product' => $this->get('container')->getItem('catalog_product', $sku['product_id']),
+					'amount' => $amount,
+				);
+			}
+			if ($cart[$id]['amount'] <= 0) {
+				unset($cart[$id]);
+			}
 
-		$num = 0;
-		$total = 0;
-		foreach ($cart as $item){
-			$num += $item['amount'];
-			$total += $item['amount']*$item['sku']['product_id_value']['item']['price'];
-		}
+			$num = 0;
+			$total = 0;
+			foreach ($cart as $item) {
+				$num += $item['amount'];
+				$total += $item['amount'] * $item['sku']['product_id_value']['item']['price'];
+			}
 
 //		$this->get('log')->addError($id);
 //		$this->get('log')->addError(json_encode($sku));
 //		$this->get('log')->addError(json_encode($cart));
 
-		$this->get('session')->set('cart', $cart);
-		$this->get('session')->set('num', $num);
-		$this->get('session')->set('total', $total);
+			$this->get('session')->set('cart', $cart);
+			$this->get('session')->set('num', $num);
+			$this->get('session')->set('total', $total);
 
-		$ending = $this->get('util')->ending($num, array('', 'а', 'ов'));
+			$ending = $this->get('util')->ending($num, array('', 'а', 'ов'));
 
-		$response = new JsonResponse();
-		$response->setData(array(
-			'minicart' => $this->render('basket/mini.html.twig', compact('num', 'total', 'ending')),
-		));
+			$response = new JsonResponse();
+			$response->setData(array(
+				'minicart' => $this->render('basket/mini.html.twig', compact('num', 'total', 'ending')),
+			));
 
-		return $response;
+			return $response;
+		}
+
+		return $this->redirect('/');
 	}
 
 	public function amountAction()
 	{
-		$id = $this->get('request')->request->get('id');
-		$amount = $this->get('request')->request->get('amount');
+		if ($_SERVER['REQUEST_METHOD'] == 'POST' && $this->isXmlHttpRequest()) {
+			$id = $this->get('request')->request->get('id');
+			$amount = $this->get('request')->request->get('amount');
 
-		$cart = $this->get('session')->get('cart');
+			$cart = $this->get('session')->get('cart');
 
-		if (isset($cart[$id])) {
-			$cart[$id]['amount'] = $amount;
+			if (isset($cart[$id])) {
+				$cart[$id]['amount'] = $amount;
+			}
+
+			$num = 0;
+			$total = 0;
+			foreach ($cart as $item) {
+				$num += $item['amount'];
+				$total += $item['amount'] * $item['sku']['product_id_value']['item']['price'];
+			}
+
+			$this->get('session')->set('cart', $cart);
+			$this->get('session')->set('num', $num);
+			$this->get('session')->set('total', $total);
+
+			$ending = $this->get('util')->ending($num, array('', 'а', 'ов'));
+
+			$response = new JsonResponse();
+			$response->setData(array(
+				'minicart' => $this->render('basket/mini.html.twig', compact('num', 'total', 'ending')),
+			));
+
+			return $response;
 		}
 
-		$num = 0;
-		$total = 0;
-		foreach ($cart as $item){
-			$num += $item['amount'];
-			$total += $item['amount']*$item['sku']['product_id_value']['item']['price'];
-		}
-
-		$this->get('session')->set('cart', $cart);
-		$this->get('session')->set('num', $num);
-		$this->get('session')->set('total', $total);
-
-		$ending = $this->get('util')->ending($num, array('', 'а', 'ов'));
-
-		$response = new JsonResponse();
-		$response->setData(array(
-			'minicart' => $this->render('basket/mini.html.twig', compact('num', 'total', 'ending')),
-		));
-
-		return $response;
+		return $this->redirect('/');
 	}
 
 	public function removeAction()
 	{
-		$id = $this->get('request')->request->get('id');
-		$cart = $this->get('session')->get('cart');
+		if ($_SERVER['REQUEST_METHOD'] == 'POST' && $this->isXmlHttpRequest()) {
+			$id = $this->get('request')->request->get('id');
+			$cart = $this->get('session')->get('cart');
 
-		if (isset($cart[$id])) {
-			unset($cart[$id]);
+			if (isset($cart[$id])) {
+				unset($cart[$id]);
+			}
+
+			$num = 0;
+			$total = 0;
+			foreach ($cart as $item) {
+				$num += $item['amount'];
+				$total += $item['amount'] * $item['sku']['product_id_value']['item']['price'];
+			}
+
+			$this->get('session')->set('cart', $cart);
+			$this->get('session')->set('num', $num);
+			$this->get('session')->set('total', $total);
+
+			$ending = $this->get('util')->ending($num, array('', 'а', 'ов'));
+
+			$response = new JsonResponse();
+			$response->setData(array(
+				'status' => true,
+				'minicart' => $this->render('basket/mini.html.twig', compact('num', 'total', 'ending')),
+			));
+
+			return $response;
 		}
 
-		$num = 0;
-		$total = 0;
-		foreach ($cart as $item){
-			$num += $item['amount'];
-			$total += $item['amount']*$item['sku']['product_id_value']['item']['price'];
+		return $this->redirect('/');
+	}
+
+	public function infoAction()
+	{
+		if ($_SERVER['REQUEST_METHOD'] == 'POST' && $this->isXmlHttpRequest()) {
+			$response = new JsonResponse();
+			try {
+				$delivery_type = $this->get('request')->request->get('delivery_type');
+				$delivery_cost = $this->get('request')->request->get('delivery_cost');
+				$payment_type = $this->get('request')->request->get('payment_type');
+
+				$this->get('session')->set('cart.delivery.type', $delivery_type);
+				$this->get('session')->set('cart.delivery.cost', $delivery_cost);
+				$this->get('session')->set('cart.payment.type', $payment_type);
+
+				$response->setData(array('status' => 'ok'));
+			} catch (\Exception $e) {
+				$this->get('log')->addError($e->getMessage());
+				$response->setData(array('status' => 'error'));
+			}
+
+			return $response;
 		}
 
-		$this->get('session')->set('cart', $cart);
-		$this->get('session')->set('num', $num);
-		$this->get('session')->set('total', $total);
-
-		$ending = $this->get('util')->ending($num, array('', 'а', 'ов'));
-
-		$response = new JsonResponse();
-		$response->setData(array(
-			'status' => true,
-			'minicart' => $this->render('basket/mini.html.twig', compact('num', 'total', 'ending')),
-		));
-
-		return $response;
+		return $this->redirect('/');
 	}
 
 	public function newAction()
 	{
-		return $this->render('basket/new.html.twig');
+		$cart = $this->get('session')->get('cart');
+		$num = $this->get('session')->get('num');
+		$total = $this->get('session')->get('total');
+		$delivery_type = $this->get('session')->get('cart.delivery.type', 'self');
+		$payment_type = $this->get('session')->get('cart.payment.type', 'card');
+		$delivery_type_title = $this->delivery[$delivery_type];
+		$delivery_cost = $this->get('session')->get('cart.delivery.cost');
+		$payment_type_title = $this->payment[$payment_type];
+
+		$ending = $this->get('util')->ending($num, array('', 'а', 'ов'));
+
+		return $this->render('basket/new.html.twig', compact('cart', 'num', 'ending', 'total', 'delivery_type', 'delivery_type_title', 'delivery_cost', 'payment_type', 'payment_type_title'));
 	}
 
 	public function orderAction($id)

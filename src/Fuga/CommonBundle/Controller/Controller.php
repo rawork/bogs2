@@ -39,7 +39,7 @@ abstract class Controller {
 	{
 		$response = new RedirectResponse($url, $status);
 
-		$response->send();
+		return $response;
 	}
 
 	public function reload()

@@ -52,25 +52,25 @@
 
 <!-- Shipping -->
 <div class="shipping-payment clearfix">
-
+    <a name="info"></a>
     <div class="shipping-payment__col">
         <h3 class="shipping-payment__title">Выберите способ доставки</h3>
         <ul class="shipping-payment__list shipping-list">
             <li class="shipping-payment__list__item">
                 <div class="radio">
-                    <input id="pickup" type="radio" name="shipping-type" data-shipping-price="0" checked="checked">
+                    <input id="pickup" type="radio" name="shipping-type" value="self" data-shipping-price="0" checked="checked">
                     <label for="pickup">Самовывоз</label>
                 </div>
             </li>
             <li class="shipping-payment__list__item">
                 <div class="radio">
-                    <input id="courier" type="radio" name="shipping-type" data-shipping-price="500">
+                    <input id="courier" type="radio" name="shipping-type" value="courier" data-shipping-price="500">
                     <label for="courier">Доставка по Москве курьером (500 руб.)</label>
                 </div>
             </li>
             <li class="shipping-payment__list__item">
                 <div class="radio">
-                    <input id="russia-pr" type="radio" name="shipping-type" data-shipping-price="0" data-select-region="true">
+                    <input id="russia-pr" type="radio" name="shipping-type" value="mkad_post" data-shipping-price="0" data-select-region="true">
                     <label for="russia-pr">За МКАД «Почта России»</label>
                 </div>
                 <div class="select-city hidden-area">
@@ -81,7 +81,7 @@
             </li>
             <li class="shipping-payment__list__item">
                 <div class="radio">
-                    <input id="russia-pr" type="radio" name="shipping-type" data-shipping-price="0" data-select-region="true">
+                    <input id="russia-pr" type="radio" name="shipping-type" value="mkad_carrier" data-shipping-price="0" data-select-region="true">
                     <label for="russia-pr">За МКАД курьером</label>
                 </div>
                 <div class="select-city hidden-area">
@@ -92,7 +92,7 @@
             </li>
             <li class="shipping-payment__list__item">
                 <div class="radio">
-                    <input id="russia-pr" type="radio" name="shipping-type" data-shipping-price="0" data-select-region="true">
+                    <input id="russia-pr" type="radio" name="shipping-type" value="russia_post" data-shipping-price="0" data-select-region="true">
                     <label for="russia-pr">По России «Почта России»</label>
                 </div>
                 <div class="select-region hidden-area">
@@ -103,7 +103,7 @@
             </li>
             <li class="shipping-payment__list__item">
                 <div class="radio">
-                    <input id="russia-courier" type="radio" name="shipping-type" data-shipping-price="0" data-select-region="true" data-hide-payment=".shipping-payment__cash">
+                    <input id="russia-courier" type="radio" name="shipping-type" value="russia_carrier" data-shipping-price="0" data-select-region="true" data-hide-payment=".shipping-payment__cash">
                     <label for="russia-courier">По России курьером</label>
                 </div>
                 <div class="select-region hidden-area">
@@ -114,7 +114,7 @@
             </li>
             <li class="shipping-payment__list__item">
                 <div class="radio">
-                    <input id="russia-pr" type="radio" name="shipping-type" data-shipping-price="0" data-select-region="true">
+                    <input id="russia-pr" type="radio" name="shipping-type" value="sng_post" data-shipping-price="0" data-select-region="true">
                     <label for="russia-pr">Страны СНГ «Почта России»</label>
                 </div>
                 <div class="select-country hidden-area">
@@ -132,13 +132,13 @@
         <ul class="shipping-payment__list payment-list ">
             <li class="shipping-payment__list__item shipping-payment__cash">
                 <div class="radio">
-                    <input id="cache" type="radio" name="payment-type">
-                    <label for="cache">Оплата наличными курьеру</label>
+                    <input id="cache" type="radio" value="cash" name="payment-type">
+                    <label for="cache">Оплата наличными при получении</label>
                 </div>
             </li>
             <li class="shipping-payment__list__item">
                 <div class="radio">
-                    <input type="radio" name="payment-type">
+                    <input type="radio" name="payment-type" value="card">
                     <label for="">Оплата банковской картой</label>
                 </div>
             </li>

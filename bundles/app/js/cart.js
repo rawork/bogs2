@@ -169,6 +169,7 @@
 
     $('.btn-order').on('click', function(e){
         e.preventDefault();
+        var $that = $(this);
         var paymentChecked = false,
             productsLength = $('.product-in-cart').length;
         $('input[name="payment-type"]').each(function() {
@@ -185,11 +186,22 @@
             return;
         }
         if ( shouldSelectRegion ) {
-            showMessage('Выберите регион');
+            showMessage('Выберите место доставки');
             return;
         }
-        console.info('Заказ отправлен!');
-        window.location = window.location.origin + '/order';
+        //console.info('Заказ отправлен!');
+        var delivery_type = $('input[name=shipping-type]:checked').val();
+        var delivery_cost = shippingTotal;
+        var payment_type = $('input[name=payment-type]:checked').val();
+
+        console.log(delivery_type, delivery_cost, payment_type);
+
+        $.post('/api/basket/info', {delivery_type: delivery_type, delivery_cost: delivery_cost, payment_type: payment_type}, function(data){
+            if (data.status == 'ok') {
+                window.location = $that.attr('href');
+            }
+        },"json");
+
     });
 
 })(jQuery);

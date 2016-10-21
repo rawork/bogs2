@@ -185,6 +185,9 @@ remove_sku:
 amount_sku:
     path: /api/basket/amount
     defaults: { _controller: 'Fuga:Public:Basket:amount'}
+basket_infp:
+    path: /api/basket/info
+    defaults: { _controller: 'Fuga:Public:Basket:info'}
 basket_regions:
     path: /api/basket/regions.json
     defaults: { _controller: 'Fuga:Public:Basket:regions'}

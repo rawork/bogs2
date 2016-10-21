@@ -1,6 +1,6 @@
 <ul class="order-props">
     <li class="order-prop">
-        <p>В вашей корзине 2 товара на 25 160 руб. <a class="order-prop__toggle" href="#">Показать список товаров</a></p>
+        <p>В вашей корзине {{ num }} товар{{ ending }} на сумму {{ total }} руб. <a class="order-prop__toggle" href="#">Показать список товаров</a></p>
         <div class="order-prop__hidden-area">
             <!-- Products list -->
             <table class="products-list">
@@ -9,28 +9,24 @@
                     <th>Наименование</th>
                     <th>Размер</th>
                     <th>Кол-во</th>
-                    <th>Цена</th>
+                    <th>Сумма</th>
                 </tr>
                 </thead>
                 <tbody>
+                {% for product in cart %}
                 <tr class="product-in-cart">
-                    <td class="product-in-cart__name">Baby Bogs Classic Flower Stripes</td>
-                    <td class="product-in-cart__size">9 US</td>
-                    <td class="product-in-cart__qty">1</td>
-                    <td class="product-in-cart__price">14 540</td>
+                    <td class="product-in-cart__name">{{ product.product.name }}</td>
+                    <td class="product-in-cart__size">{{ product.sku.size }} US</td>
+                    <td class="product-in-cart__qty">{{ product.amount }}</td>
+                    <td class="product-in-cart__price">{{ product.amount*product.product.price }}</td>
                 </tr>
-                <tr class="product-in-cart">
-                    <td class="product-in-cart__name">Baby Bogs Classic Flower Stripes</td>
-                    <td class="product-in-cart__size">9 US</td>
-                    <td class="product-in-cart__qty">1</td>
-                    <td class="product-in-cart__price">14 540</td>
-                </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </div>
     </li>
-    <li class="order-prop">Вы выбрали доставку по Москве (500 руб.) <a href="/cart">Изменить</a></li>
-    <li class="order-prop">Способ оплаты – наличными курьеру <a href="/cart">Изменить</a></li>
+    <li class="order-prop">Способ доставки &mdash; {{ delivery_type_title }} ({{ delivery_cost }} руб.) <a href="/basket#info">Изменить</a></li>
+    <li class="order-prop">Способ оплаты &mdash; {{ payment_type_title }} <a href="/basket#info">Изменить</a></li>
 </ul>
 <form action="" class="form clearfix">
     <div class="form__cols-wrap clearfix">
@@ -54,7 +50,9 @@
             </div>
         </div>
         <div class="form__col clearfix">
-            <h4 class="form__title">Адрес доставки</h4>
+            <h4 class="form__title">{% if delivery_type == 'self' %}Адрес самовывоза{% else %}Адрес доставки{% endif %}</h4>
+            {% if delivery_type == 'self' %}<p>Москва, ул. Верхняя Радищевская, 12/19, с 11-00 до 18-00</p>{% endif %}
+            {% if delivery_type == sng_post %}
             <div class="field">
                 <label for="country" class="field__label">Страна*</label>
                 <div class="custom-select__list-wrap">
@@ -66,21 +64,37 @@
                     <span class="custom-select__chevron"></span>
                 </div>
             </div>
+            {% endif %}
+            {% if delivery_type in ['mkad_post', 'russia_post', 'russia_carrier', 'sng_post'] %}
             <div class="field">
-                <label for="region" class="field__label">Область или район</label>
+                <label for="region" class="field__label">Почтовый индекс*</label>
+                <input type="text" id="index" class="field__input">
+            </div>
+            {% endif %}
+            {% if delivery_type in ['russia_post', 'russia_carrier', 'sng_post'] %}
+            <div class="field">
+                <label for="region" class="field__label">Регион (область,край,республика и т.п.)</label>
                 <input type="text" id="region" class="field__input">
             </div>
+            {% endif %}
+            {% if delivery_type not in ['self', 'courier'] %}
             <div class="field">
-                <label for="street" class="field__label">Улица</label>
+                <label for="region" class="field__label">Населенный пункт*</label>
+                <input type="text" id="town" class="field__input">
+            </div>
+            {% endif %}
+            {% if delivery_type != 'self' %}
+            <div class="field">
+                <label for="street" class="field__label">Улица*</label>
                 <input type="text" id="street" class="field__input">
             </div>
             <div class="fields-small clearfix">
                 <div class="field">
-                    <label for="house" class="field__label">Дом</label>
+                    <label for="house" class="field__label">Дом*</label>
                     <input type="tel" id="house" class="field__input">
                 </div>
                 <div class="field">
-                    <label for="building" class="field__label">Корпус</label>
+                    <label for="building" class="field__label">Строение</label>
                     <input type="tel" id="building" class="field__input">
                 </div>
                 <div class="field">
@@ -88,6 +102,7 @@
                     <input type="tel" id="apartment" class="field__input">
                 </div>
             </div>
+            {% endif %}
         </div>
     </div>
     <p class="form__necessary">* – обязательные поля</p>
