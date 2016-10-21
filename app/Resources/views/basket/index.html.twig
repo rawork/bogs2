@@ -74,7 +74,7 @@
                     <label for="russia-pr">За МКАД «Почта России»</label>
                 </div>
                 <div class="select-city hidden-area">
-                    <input type="text" class="select-city__field" placeholder="Введите название города">
+                    <input type="text" class="select-region__field" data-source="cities" data-context="price" placeholder="Введите название города">
                     <ul class="autocomplete">
                     </ul>
                 </div>
@@ -82,10 +82,10 @@
             <li class="shipping-payment__list__item">
                 <div class="radio">
                     <input id="russia-pr" type="radio" name="shipping-type" data-shipping-price="0" data-select-region="true">
-                    <label for="russia-pr">За МКАД EMS курьером</label>
+                    <label for="russia-pr">За МКАД курьером</label>
                 </div>
                 <div class="select-city hidden-area">
-                    <input type="text" class="select-city__field" placeholder="Введите название города">
+                    <input type="text" class="select-region__field" data-source="cities" data-context="price_carrier" placeholder="Введите название города">
                     <ul class="autocomplete">
                     </ul>
                 </div>
@@ -96,7 +96,7 @@
                     <label for="russia-pr">По России «Почта России»</label>
                 </div>
                 <div class="select-region hidden-area">
-                    <input type="text" class="select-region__field" placeholder="Введите название региона">
+                    <input type="text" class="select-region__field" data-source="regions" data-context="price" placeholder="Введите название региона">
                     <ul class="autocomplete">
                     </ul>
                 </div>
@@ -107,7 +107,7 @@
                     <label for="russia-courier">По России курьером</label>
                 </div>
                 <div class="select-region hidden-area">
-                    <input type="text" class="select-region__field" placeholder="Введите название региона">
+                    <input type="text" class="select-region__field" data-source="regions" data-context="price_carrier" placeholder="Введите название региона">
                     <ul class="autocomplete">
                     </ul>
                 </div>
@@ -118,7 +118,7 @@
                     <label for="russia-pr">Страны СНГ «Почта России»</label>
                 </div>
                 <div class="select-country hidden-area">
-                    <input type="text" class="select-country__field" placeholder="Введите название страны">
+                    <input type="text" class="select-region__field" data-source="countries" data-context="price" placeholder="Введите название страны">
                     <ul class="autocomplete">
                     </ul>
                 </div>
