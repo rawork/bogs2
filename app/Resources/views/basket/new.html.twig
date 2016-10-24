@@ -25,73 +25,73 @@
             </table>
         </div>
     </li>
-    <li class="order-prop">Способ доставки &mdash; {{ delivery_type_title }} ({{ delivery_cost }} руб.) <a href="/basket#info">Изменить</a></li>
+    <li class="order-prop">Способ доставки &mdash; {{ delivery_type_title }} ({% if delivery_cost < 0 %}стоимость рассчитывается менеджером{% else %}{{ delivery_cost }} руб.{% endif %}) <a href="/basket#info">Изменить</a></li>
     <li class="order-prop">Способ оплаты &mdash; {{ payment_type_title }} <a href="/basket#info">Изменить</a></li>
 </ul>
-<form action="" class="form clearfix">
+<form action="" class="form clearfix" name="new-order">
     <div class="form__cols-wrap clearfix">
         <div class="form__col">
             <h4 class="form__title">Личные данные</h4>
             <div class="field">
                 <label for="name" class="field__label">Имя*</label>
-                <input type="text" id="name" class="field__input">
+                <input type="text" id="name" data-validator="*" class="field__input">
             </div>
             <div class="field">
                 <label for="surname" class="field__label">Фамилия*</label>
-                <input type="text" id="surname" class="field__input">
+                <input type="text" id="surname" data-validator="*" class="field__input">
             </div>
             <div class="field">
                 <label for="email" class="field__label">E-mail*</label>
-                <input type="email" id="email" class="field__input">
+                <input type="email" id="email" data-validator="*,email" class="field__input">
             </div>
             <div class="field">
                 <label for="tel" class="field__label">Телефон*</label>
-                <input type="tel" id="tel" class="field__input">
+                <input type="tel" id="tel" data-validator="*,tel" placeholder="+7 (999)999-9999" class="field__input">
             </div>
         </div>
         <div class="form__col clearfix">
             <h4 class="form__title">{% if delivery_type == 'self' %}Адрес самовывоза{% else %}Адрес доставки{% endif %}</h4>
             {% if delivery_type == 'self' %}<p>Москва, ул. Верхняя Радищевская, 12/19, с 11-00 до 18-00</p>{% endif %}
-            {% if delivery_type == sng_post %}
+            {% if delivery_type == 'sng_post' %}
             <div class="field">
                 <label for="country" class="field__label">Страна*</label>
                 <div class="custom-select__list-wrap">
-                    <select class="custom-select__list" id="country">
-                        <option>Россия</option>
-                        <option>Украина</option>
-                        <option>Белоруссия</option>
+                    <select class="custom-select__list" id="country" data-validator="*">
+                        {#<option>Россия</option>#}
+                        <option value="Украина"{% if delivery_country == 'Украина' %} selected="selected"{% endif %}>Украина</option>
+                        <option value="Белоруссия"{% if delivery_country == 'Белоруссия' %} selected="selected"{% endif %}>Белоруссия</option>
                     </select>
                     <span class="custom-select__chevron"></span>
                 </div>
             </div>
             {% endif %}
-            {% if delivery_type in ['mkad_post', 'russia_post', 'russia_carrier', 'sng_post'] %}
+            {% if delivery_type in ['mkad_post', 'mkad_carrier', 'russia_post', 'russia_carrier', 'sng_post'] %}
             <div class="field">
-                <label for="region" class="field__label">Почтовый индекс*</label>
-                <input type="text" id="index" class="field__input">
+                <label for="index" class="field__label">Почтовый индекс*</label>
+                <input type="text" id="index" data-validator="*,num" class="field__input">
             </div>
             {% endif %}
             {% if delivery_type in ['russia_post', 'russia_carrier', 'sng_post'] %}
             <div class="field">
                 <label for="region" class="field__label">Регион (область,край,республика и т.п.)</label>
-                <input type="text" id="region" class="field__input">
+                <input type="text" id="region" value="{% if delivery_region %}{{ delivery_region }}{% endif %}" class="field__input">
             </div>
             {% endif %}
             {% if delivery_type not in ['self', 'courier'] %}
             <div class="field">
-                <label for="region" class="field__label">Населенный пункт*</label>
-                <input type="text" id="town" class="field__input">
+                <label for="city" class="field__label">Населенный пункт*</label>
+                <input type="text" id="city" data-validator="*" value="{% if delivery_city %}{{ delivery_city }}{% endif %}" class="field__input">
             </div>
             {% endif %}
             {% if delivery_type != 'self' %}
             <div class="field">
                 <label for="street" class="field__label">Улица*</label>
-                <input type="text" id="street" class="field__input">
+                <input type="text" id="street" data-validator="*" class="field__input">
             </div>
             <div class="fields-small clearfix">
                 <div class="field">
                     <label for="house" class="field__label">Дом*</label>
-                    <input type="tel" id="house" class="field__input">
+                    <input type="tel" id="house" data-validator="*" class="field__input">
                 </div>
                 <div class="field">
                     <label for="building" class="field__label">Строение</label>

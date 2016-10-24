@@ -29,8 +29,27 @@ class BasketController extends PublicController
 			$this->get('session')->set('num', 0);
 			$this->get('session')->set('total', 0);
 			$this->get('session')->set('cart.delivery.type', '');
+			$this->get('session')->set('cart.delivery.country', '');
+			$this->get('session')->set('cart.delivery.region', '');
+			$this->get('session')->set('cart.delivery.city', '');
 			$this->get('session')->set('cart.delivery.cost', '');
 			$this->get('session')->set('cart.payment.type', '');
+			$this->get('session')->set('cart.buyer', array(
+				'name' => '',
+				'lastname' => '',
+				'email' => '',
+				'phone' => ''
+			));
+			$this->get('session')->set('cart.delivery.address', array(
+				'index' => '',
+				'country' => '',
+				'region' => '',
+				'city' => '',
+				'street' => '',
+				'house' => '',
+				'building' => '',
+				'apartment' => '',
+			));
 		}
 	}
 
@@ -38,11 +57,13 @@ class BasketController extends PublicController
 	{
 		$cart = $this->get('session')->get('cart');
 		$total = $this->get('session')->get('total');
+		$payment_type = $this->get('session')->get('cart.payment.type');
+		$delivery_type = $this->get('session')->get('cart.delivery.type');
 
 //		var_dump(array_shift($cart)['sku']['product_id_value']['item']);
 //		var_dump($_SESSION);
 
-		return $this->render('basket/index.html.twig', compact('cart', 'total'));
+		return $this->render('basket/index.html.twig', compact('cart', 'total', 'payment_type' , 'delivery_type'));
 	}
 
 	public function miniAction()
@@ -181,12 +202,84 @@ class BasketController extends PublicController
 			$response = new JsonResponse();
 			try {
 				$delivery_type = $this->get('request')->request->get('delivery_type');
+				$delivery_country = $this->get('request')->request->get('delivery_country');
+				$delivery_region = $this->get('request')->request->get('delivery_region');
+				$delivery_city = $this->get('request')->request->get('delivery_city');
 				$delivery_cost = $this->get('request')->request->get('delivery_cost');
 				$payment_type = $this->get('request')->request->get('payment_type');
 
 				$this->get('session')->set('cart.delivery.type', $delivery_type);
+				$this->get('session')->set('cart.delivery.country', $delivery_country);
+				$this->get('session')->set('cart.delivery.region', $delivery_region);
+				$this->get('session')->set('cart.delivery.city', $delivery_city);
 				$this->get('session')->set('cart.delivery.cost', $delivery_cost);
 				$this->get('session')->set('cart.payment.type', $payment_type);
+
+				if ($delivery_type == 'courier') {
+					$this->get('session')->set('cart.delivery.region', 'Москва');
+					$this->get('session')->set('cart.delivery.city', 'Москва');
+				}
+
+				$response->setData(array('status' => 'ok'));
+			} catch (\Exception $e) {
+				$this->get('log')->addError($e->getMessage());
+				$response->setData(array('status' => 'error'));
+			}
+
+			return $response;
+		}
+
+		return $this->redirect('/');
+	}
+
+	public function buyerAction()
+	{
+		if ($_SERVER['REQUEST_METHOD'] == 'POST' && $this->isXmlHttpRequest()) {
+			$response = new JsonResponse();
+			try {
+				$name = $this->get('request')->request->get('delivery_type');
+				$lastname = $this->get('request')->request->get('delivery_country');
+				$email = $this->get('request')->request->get('delivery_region');
+				$phone = $this->get('request')->request->get('delivery_city');
+
+				$addressIndex = $this->get('request')->request->get('index');
+				$addressCountry = $this->get('request')->request->get('country');
+				$addressRegion = $this->get('request')->request->get('region');
+				$addressCity = $this->get('request')->request->get('city');
+				$addressHouse = $this->get('request')->request->get('house');
+				$addressBuilding = $this->get('request')->request->get('building');
+				$addressApartment = $this->get('request')->request->get('apartment');
+
+				$this->get('session')->set('cart.buyer', array(
+					'name' => $name,
+					'lastname' => $lastname,
+					'email' => $email,
+					'phone' => $phone,
+				));
+				$address = array();
+				if ($addressIndex) {
+					$address['index'] = $addressIndex;
+				}
+				if ($addressCountry) {
+					$address['country'] = $addressCountry;
+				}
+				if ($addressRegion) {
+					$address['region'] = $addressRegion;
+				}
+				if ($addressCity) {
+					$address['city'] = $addressCity;
+				}
+				if ($addressHouse) {
+					$address['house'] = $addressHouse;
+				}
+				if ($addressBuilding) {
+					$address['building'] = $addressBuilding;
+				}
+				if ($addressApartment) {
+					$address['apartment'] = $addressApartment;
+				}
+
+				$this->get('session')->set('cart.delivery.address', $address);
 
 				$response->setData(array('status' => 'ok'));
 			} catch (\Exception $e) {
@@ -209,11 +302,14 @@ class BasketController extends PublicController
 		$payment_type = $this->get('session')->get('cart.payment.type', 'card');
 		$delivery_type_title = $this->delivery[$delivery_type];
 		$delivery_cost = $this->get('session')->get('cart.delivery.cost');
+		$delivery_country = $this->get('session')->get('cart.delivery.country');
+		$delivery_region = $this->get('session')->get('cart.delivery.region');
+		$delivery_city = $this->get('session')->get('cart.delivery.city');
 		$payment_type_title = $this->payment[$payment_type];
 
 		$ending = $this->get('util')->ending($num, array('', 'а', 'ов'));
 
-		return $this->render('basket/new.html.twig', compact('cart', 'num', 'ending', 'total', 'delivery_type', 'delivery_type_title', 'delivery_cost', 'payment_type', 'payment_type_title'));
+		return $this->render('basket/new.html.twig', compact('cart', 'num', 'ending', 'total', 'delivery_type', 'delivery_type_title', 'delivery_cost', 'delivery_country', 'delivery_region', 'delivery_city', 'payment_type', 'payment_type_title'));
 	}
 
 	public function orderAction($id)

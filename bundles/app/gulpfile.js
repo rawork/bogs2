@@ -1,5 +1,6 @@
 'use strict';
 const gulp = require('gulp'),
+    gutil = require('gulp-util'),
     sass = require('gulp-sass'),
     browserify = require('gulp-browserify'),
     autoprefixer = require('gulp-autoprefixer'),
@@ -27,7 +28,7 @@ gulp.task('sass', function () {
 // JS
 gulp.task('js', function () {
     return gulp.src('js/*.js')
-    .pipe(browserify())
+    .pipe(browserify().on('error', console.error.bind(console)))
     // .pipe(uglify())
     .pipe(gulp.dest( build + '/js/' ));
 });
@@ -41,7 +42,7 @@ gulp.task('json', function () {
 // Browsersync
 gulp.task('serve', ['sass'], function() {
     browserSync.init({
-        proxy: 'bogs.dev:8888'
+        proxy: 'bogs'
     });
     gulp.watch('./scss/**.scss', ['sass']);
     gulp.watch('./js/**/**.js', ['js']);

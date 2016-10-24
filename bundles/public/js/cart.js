@@ -191,13 +191,30 @@
             return;
         }
         //console.info('Заказ отправлен!');
-        var delivery_type = $('input[name=shipping-type]:checked').val();
+        var delivery_type_field = $('input[name=shipping-type]:checked');
+        var delivery_type = delivery_type_field.val();
+        var delivery_country = $('input.select-region__field[data-source=countries]').val();
+        var delivery_region = '';
+        var delivery_city = '';
+        try {
+            var parent = delivery_type_field.parents('.shipping-payment__list__item');
+            if (parent.find('input[data-source=regions]').length) {
+                delivery_region = parent.find('input[data-source=regions]').val();
+            }
+            if (parent.find('input[data-source=cities]').length){
+                delivery_city = parent.find('input[data-source=cities]').val();
+            }
+
+        } catch (err) {
+            console.log(err);
+        }
+
         var delivery_cost = shippingTotal;
         var payment_type = $('input[name=payment-type]:checked').val();
 
-        console.log(delivery_type, delivery_cost, payment_type);
+        //console.log(delivery_country, delivery_region, delivery_city);
 
-        $.post('/api/basket/info', {delivery_type: delivery_type, delivery_cost: delivery_cost, payment_type: payment_type}, function(data){
+        $.post('/api/basket/info', {delivery_type: delivery_type, delivery_country: delivery_country, delivery_region: delivery_region, delivery_city: delivery_city, delivery_cost: delivery_cost, payment_type: payment_type}, function(data){
             if (data.status == 'ok') {
                 window.location = $that.attr('href');
             }
@@ -442,8 +459,19 @@ module.exports = function(shippingTotal, subTotal){
 	        subTotal += convert.priceToNum( $(this) );
 	    });
     }
-    var total = subTotal + shippingTotal;
-    $('.shipping-total__val').text(shippingTotal);
+    var total = 0;
+    if (shippingTotal > -1) {
+        total = subTotal + shippingTotal;
+        $('.shipping-total__val').text(shippingTotal).removeClass('none');
+        $('.total__title').text('Стоимость товаров и доставки');
+
+    } else {
+        total = subTotal;
+        $('.shipping-total__val').text('Рассчитывается менеджером').addClass('none');
+        $('.total__title').text('Стоимость товаров');
+    }
+
+
     $('.sub-total__val').text(subTotal);
     $('.total__val').text(total);
 };

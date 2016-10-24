@@ -48,11 +48,12 @@
     {% endif %}
 </table>
 {% if cart|length > 0 %}
+<a name="info"></a>
 <div class="sub-total">Сумма товаров:  <span class="sub-total__val">{{ total }}</span></div>
 
 <!-- Shipping -->
+
 <div class="shipping-payment clearfix">
-    <a name="info"></a>
     <div class="shipping-payment__col">
         <h3 class="shipping-payment__title">Выберите способ доставки</h3>
         <ul class="shipping-payment__list shipping-list">
@@ -70,7 +71,7 @@
             </li>
             <li class="shipping-payment__list__item">
                 <div class="radio">
-                    <input id="russia-pr" type="radio" name="shipping-type" value="mkad_post" data-shipping-price="0" data-select-region="true">
+                    <input id="russia-pr" type="radio" name="shipping-type" value="mkad_post" data-shipping-price="0" data-select-region="true" data-hide-payment=".shipping-payment__cash">
                     <label for="russia-pr">За МКАД «Почта России»</label>
                 </div>
                 <div class="select-city hidden-area">
@@ -81,7 +82,7 @@
             </li>
             <li class="shipping-payment__list__item">
                 <div class="radio">
-                    <input id="russia-pr" type="radio" name="shipping-type" value="mkad_carrier" data-shipping-price="0" data-select-region="true">
+                    <input id="russia-pr" type="radio" name="shipping-type" value="mkad_carrier" data-shipping-price="0" data-select-region="true" data-hide-payment=".shipping-payment__cash">
                     <label for="russia-pr">За МКАД курьером</label>
                 </div>
                 <div class="select-city hidden-area">
@@ -92,36 +93,36 @@
             </li>
             <li class="shipping-payment__list__item">
                 <div class="radio">
-                    <input id="russia-pr" type="radio" name="shipping-type" value="russia_post" data-shipping-price="0" data-select-region="true">
+                    <input id="russia-pr" type="radio" name="shipping-type" value="russia_post" data-shipping-price="-1" data-select-region="false" data-hide-payment=".shipping-payment__cash">
                     <label for="russia-pr">По России «Почта России»</label>
                 </div>
-                <div class="select-region hidden-area">
-                    <input type="text" class="select-region__field" data-source="regions" data-context="price" placeholder="Введите название региона">
-                    <ul class="autocomplete">
-                    </ul>
-                </div>
+                {#<div class="select-region hidden-area">#}
+                    {#<input type="text" class="select-region__field" data-source="regions" data-context="price" placeholder="Введите название региона">#}
+                    {#<ul class="autocomplete">#}
+                    {#</ul>#}
+                {#</div>#}
             </li>
             <li class="shipping-payment__list__item">
                 <div class="radio">
-                    <input id="russia-courier" type="radio" name="shipping-type" value="russia_carrier" data-shipping-price="0" data-select-region="true" data-hide-payment=".shipping-payment__cash">
+                    <input id="russia-courier" type="radio" name="shipping-type" value="russia_carrier" data-shipping-price="-1" data-select-region="false" data-hide-payment=".shipping-payment__cash">
                     <label for="russia-courier">По России курьером</label>
                 </div>
-                <div class="select-region hidden-area">
-                    <input type="text" class="select-region__field" data-source="regions" data-context="price_carrier" placeholder="Введите название региона">
-                    <ul class="autocomplete">
-                    </ul>
-                </div>
+                {#<div class="select-region hidden-area">#}
+                    {#<input type="text" class="select-region__field" data-source="regions" data-context="price_carrier" placeholder="Введите название региона">#}
+                    {#<ul class="autocomplete">#}
+                    {#</ul>#}
+                {#</div>#}
             </li>
             <li class="shipping-payment__list__item">
                 <div class="radio">
-                    <input id="russia-pr" type="radio" name="shipping-type" value="sng_post" data-shipping-price="0" data-select-region="true">
+                    <input id="russia-pr" type="radio" name="shipping-type" value="sng_post" data-shipping-price="-1" data-select-region="false" data-hide-payment=".shipping-payment__cash">
                     <label for="russia-pr">Страны СНГ «Почта России»</label>
                 </div>
-                <div class="select-country hidden-area">
-                    <input type="text" class="select-region__field" data-source="countries" data-context="price" placeholder="Введите название страны">
-                    <ul class="autocomplete">
-                    </ul>
-                </div>
+                {#<div class="select-country hidden-area">#}
+                    {#<input type="text" class="select-region__field" data-source="countries" data-context="price" placeholder="Введите название страны">#}
+                    {#<ul class="autocomplete">#}
+                    {#</ul>#}
+                {#</div>#}
             </li>
         </ul>
         <div class="shipping-total">Стоимость выбранной доставки: <span class="shipping-total__val">0</span></div>
@@ -132,13 +133,13 @@
         <ul class="shipping-payment__list payment-list ">
             <li class="shipping-payment__list__item shipping-payment__cash">
                 <div class="radio">
-                    <input id="cache" type="radio" value="cash" name="payment-type">
+                    <input id="cache" type="radio" value="cash"{% if payment_type == 'cash' %} checked="checked"{% endif %} name="payment-type">
                     <label for="cache">Оплата наличными при получении</label>
                 </div>
             </li>
             <li class="shipping-payment__list__item">
                 <div class="radio">
-                    <input type="radio" name="payment-type" value="card">
+                    <input type="radio" name="payment-type" value="card"{% if payment_type == 'card' %} checked="checked"{% endif %}>
                     <label for="">Оплата банковской картой</label>
                 </div>
             </li>
@@ -147,6 +148,6 @@
 
 </div>
 <div class="warning"></div>
-<div class="total">Сумма товаров и доставки:  <span class="total__val"></span></div>
+<div class="total"><span class="total__title">Сумма товаров и доставки</span>:  <span class="total__val"></span></div>
 <div class="btn-wrap"><a class="btn btn-order" href="/basket/new">Оформить заказ</a></div>
 {% endif %}

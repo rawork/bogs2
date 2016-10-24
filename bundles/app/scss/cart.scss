@@ -150,6 +150,9 @@
         &:after {
             content: ' руб.';
         }
+        &.none:after {
+            content: '';
+        }
     }
 }
 

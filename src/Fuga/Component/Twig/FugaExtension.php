@@ -54,7 +54,7 @@ class FugaExtension  extends \Twig_Extension
 	public function asset($path)
 	{
 		if(file_exists(PRJ_DIR.$path)){
-			return PRJ_REF.$path.'?'.date('YmdHi',filemtime(PRJ_DIR.$path));
+			return PRJ_REF.$path.'?'.date('YmdHis',filemtime(PRJ_DIR.$path));
 		}
 
 		return PRJ_REF.$path;
