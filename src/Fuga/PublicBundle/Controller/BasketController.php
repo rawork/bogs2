@@ -640,7 +640,7 @@ class BasketController extends PublicController
 					"MerchantInternalUserId" => $order['user_id'], //Номер пользователя в системе мерчанта
 
 					"StatusUrl" => "http://".$_SERVER['SERVER_NAME']."/basket/status/".$id, // url для ответа платежного сервера с состоянием платежа.
-					"ReturnUrl" => "http://".$_SERVER['SERVER_NAME']."/basket/payment/", //url возврата ползователя после платежа.
+					"ReturnUrl" => "http://".$_SERVER['SERVER_NAME']."/basket/payment", //url возврата ползователя после платежа.
 
 				),
 			);
