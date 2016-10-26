@@ -663,17 +663,17 @@ class BasketController extends PublicController
 
 		try {
 			$statusRequest = $api->GetStatusResponse();
+			$fp = fopen(PRJ_DIR.'/counter.txt', 'a');
+
+			fputs($fp, $statusRequest, strlen($statusRequest));
+			fclose($fp);
 			$this->get('log')->addError(serialize($statusRequest));
 			echo "ok";
 		} catch (\Exception $e) {
 			print "Error!";
 			print $e->getMessage();
+			$this->get('log')->addError($e->getMessage());
 		}
-
-		$fp = fopen(PRJ_DIR.'/counter.txt', 'a');
-
-		fputs($fp, $statusRequest, strlen($statusRequest));
-		fclose($fp);
 	}
 
 	public function successAction($id)
@@ -682,17 +682,17 @@ class BasketController extends PublicController
 
 		try {
 			$statusRequest = $api->GetStatusResponse();
+			$fp = fopen(PRJ_DIR.'/counter.txt', 'a');
+
+			fputs($fp, $statusRequest, strlen($statusRequest));
+			fclose($fp);
 			$this->get('log')->addError(serialize($statusRequest));
 			echo "ok";
 		} catch (\Exception $e) {
 			print "Error!";
 			print $e->getMessage();
+			$this->get('log')->addError($e->getMessage());
 		}
-
-		$fp = fopen(PRJ_DIR.'/counter.txt', 'a');
-
-		fputs($fp, $statusRequest, strlen($statusRequest));
-		fclose($fp);
 	}
 
 	public function regionsAction()
