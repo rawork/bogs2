@@ -1,0 +1,23 @@
+{{ order.name }} {{ order.lastname }}, ваш заказ принят!<br><br>
+
+№ заказа - {{ order_id }}<br>
+Статус заказа - {{ status_title }}<br><br>
+
+{% if order.delivery_cost != -1  %}К оплате - {{ order.cost+order.delivery_cost }} руб.<br>
+{% if order.payment_type == 'card' %}<h3><a href="{{ link }}">Оплатить {{ order.cost+order.delivery_cost }} руб.</a></h3>{% endif %}
+{% endif %}
+Способ оплаты - {{ payment_type_title }}<br><br>
+
+Способ доставки - {{ delivery_type_title }}<br>
+Стоимость доставки - {% if order.delivery_cost == -1  %}Требуется рассчитать{% else %}{{ order.delivery_cost }} руб.{% endif %}<br>
+Адрес доставки - {{ delivery_info_string }}<br><br>
+
+Стоимость товаров - {{ order.cost }} руб.<br>
+Количество товаров - {{ order.num }} шт.<br>
+<br>
+Товары:<br>
+{{ order.detail|nl2br }}<br>
+
+
+{#<p>В ближайшее время ваш заказ будет сформирован и отправлен в службу доставки.</p>#}
+<p>По всем вопросам вы можете связаться с нами по телефону: +7 (495) 580-21-68 или по электронной почте <a href="mailto:zakaz@bogs-shop.ru">zakaz@bogs-shop.ru</a></p>

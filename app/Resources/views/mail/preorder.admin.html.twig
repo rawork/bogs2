@@ -1,0 +1,22 @@
+№ предзаказа - {{ order_id }}<br>
+Статус предзаказа - {{ status_title }}<br><br>
+
+Покупатель:<br>
+Имя - {{ order.name }}<br>
+Фамилия -  {{ order.lastname }}<br>
+E-mail - {{ order.email }}<br>
+Телефон - {{ order.phone }}<br><br>
+
+{% if order.delivery_cost != -1  %}К оплате - {{ order.cost+order.delivery_cost }} руб.<br><br>{% endif %}
+Способ оплаты - {{ payment_type_title }}<br><br>
+
+Способ доставки - {{ delivery_type_title }}<br>
+Стоимость доставки - {% if order.delivery_cost == -1  %}Требуется рассчитать{% else %}{{ order.delivery_cost }} руб.{% endif %}<br>
+Адрес доставки - {{ delivery_info_string }}<br><br>
+
+Стоимость товаров - {{ order.cost }} руб.<br>
+Количество товаров - {{ order.num }} шт.<br>
+<br>
+Товары:<br>
+{{ order.detail|nl2br }}<br>
+

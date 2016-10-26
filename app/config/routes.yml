@@ -175,17 +175,16 @@ order_call:
   path: /ajax/call
   defaults: { _controller: 'Fuga:Public:Catalog:call' }
 
-
-add_sku:
+sku_add:
   path: /api/basket/edit
   defaults: { _controller: 'Fuga:Public:Basket:edit'}
-remove_sku:
+sku_remove:
   path: /api/basket/remove
   defaults: { _controller: 'Fuga:Public:Basket:remove'}
-amount_sku:
+sku_amount:
     path: /api/basket/amount
     defaults: { _controller: 'Fuga:Public:Basket:amount'}
-basket_infp:
+basket_info:
     path: /api/basket/info
     defaults: { _controller: 'Fuga:Public:Basket:info'}
 basket_regions:
@@ -197,6 +196,19 @@ basket_cities:
 basket_countries:
     path: /api/basket/countries.json
     defaults: { _controller: 'Fuga:Public:Basket:countries'}
+order_save:
+    path: /api/order/save
+    defaults: { _controller: 'Fuga:Public:Basket:save'}
+order:
+    path: /basket/order/{id}
+    defaults: { _controller: 'Fuga:Public:Common:index', node: 'basket', action: 'order'}
+status:
+    path: /basket/status/{id}
+    defaults: { _controller: 'Fuga:Public:basket:status'}
+success:
+    path: /basket/success/{id}
+    defaults: { _controller: 'Fuga:Public:basket:success'}
+
 product:
   path: /ajax/product/{id}
   defaults: { _controller: 'Fuga:Public:Catalog:product'}

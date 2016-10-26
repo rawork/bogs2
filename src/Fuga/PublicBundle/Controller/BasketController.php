@@ -21,6 +21,15 @@ class BasketController extends PublicController
 		'card' => 'Оплата банковской картой'
 	);
 
+	private $statuses = array(
+		'new' => 'Получен, в обработке',
+		'calc' => 'Требуется расчет доставки',
+		'wait' => 'Ожидает оплаты',
+		'paid' => 'Оплачен',
+		'delivered' => 'Передан в службу доставки',
+		'completed' => 'Выполнен',
+	);
+
 	public function __construct()
 	{
 		parent::__construct('basket');
@@ -41,7 +50,7 @@ class BasketController extends PublicController
 				'phone' => ''
 			));
 			$this->get('session')->set('cart.delivery.address', array(
-				'index' => '',
+				'postindex' => '',
 				'country' => '',
 				'region' => '',
 				'city' => '',
@@ -298,6 +307,9 @@ class BasketController extends PublicController
 		$cart = $this->get('session')->get('cart');
 		$num = $this->get('session')->get('num');
 		$total = $this->get('session')->get('total');
+		$buyer = $this->get('session')->get('cart.buyer');
+		$delivery_info = $this->get('session')->get('cart.delivery.address');
+
 		$delivery_type = $this->get('session')->get('cart.delivery.type', 'self');
 		$payment_type = $this->get('session')->get('cart.payment.type', 'card');
 		$delivery_type_title = $this->delivery[$delivery_type];
@@ -309,11 +321,289 @@ class BasketController extends PublicController
 
 		$ending = $this->get('util')->ending($num, array('', 'а', 'ов'));
 
-		return $this->render('basket/new.html.twig', compact('cart', 'num', 'ending', 'total', 'delivery_type', 'delivery_type_title', 'delivery_cost', 'delivery_country', 'delivery_region', 'delivery_city', 'payment_type', 'payment_type_title'));
+		$this->get('container')->setVar('title', 'Оформление заказа');
+		$this->get('container')->setVar('h1', 'Оформление заказа');
+
+		return $this->render('basket/new.html.twig', compact('cart', 'num', 'ending', 'total', 'delivery_type', 'delivery_type_title', 'delivery_cost', 'delivery_country', 'delivery_region', 'delivery_city', 'payment_type', 'payment_type_title', 'buyer', 'delivery_info'));
+	}
+
+	public function saveAction(){
+		if ($_SERVER['REQUEST_METHOD'] == 'POST' && $this->isXmlHttpRequest()) {
+			$response = new JsonResponse();
+			$cart = $this->get('session')->get('cart');
+			$num = $this->get('session')->get('num');
+//			$total = $this->get('session')->get('total');
+			$delivery_type = $this->get('session')->get('cart.delivery.type', 'self');
+			$payment_type = $this->get('session')->get('cart.payment.type', 'card');
+			$delivery_type_title = $this->delivery[$delivery_type];
+			$delivery_cost = $this->get('session')->get('cart.delivery.cost');
+			$payment_type_title = $this->payment[$payment_type];
+
+			$buyer = array(
+				'name' => $this->get('request')->request->get('name', ''),
+				'lastname' => $this->get('request')->request->get('lastname', ''),
+				'email' => $this->get('request')->request->get('email', ''),
+				'phone' => $this->get('request')->request->get('phone', ''),
+			);
+			$delivery_info = array();
+			if ($this->get('request')->request->get('country', '')) {
+				$delivery_info['country'] = $this->get('request')->request->get('country', '');
+			}
+			if ($this->get('request')->request->get('postindex', '')) {
+				$delivery_info['postindex'] = $this->get('request')->request->get('postindex', '');
+			}
+			if ($this->get('request')->request->get('region', '')) {
+				$delivery_info['region'] = $this->get('request')->request->get('region', '');
+			}
+			if ($this->get('request')->request->get('city', '')) {
+				$delivery_info['city'] = $this->get('request')->request->get('city', '');
+			}
+			if ($this->get('request')->request->get('street', '')) {
+				$delivery_info['street'] = $this->get('request')->request->get('street', '');
+			}
+			if ($this->get('request')->request->get('house', '')) {
+				$delivery_info['house'] = $this->get('request')->request->get('house', '');
+			}
+			if ($this->get('request')->request->get('building', '')) {
+				$delivery_info['building'] = $this->get('request')->request->get('building', '');
+			}
+			if ($this->get('request')->request->get('apartment', '')) {
+				$delivery_info['apartment'] = $this->get('request')->request->get('apartment', '');
+			}
+
+			$delivery_info_string = join(', ', $delivery_info);
+
+			switch ($payment_type) {
+				case 'card':
+					$order_status = 'wait';
+					break;
+				default:
+					$order_status = 'new';
+			}
+
+			if (in_array($delivery_type, array('russia_post', 'russia_carrier', 'sng_post')) ) {
+				$order_status = 'calc';
+			}
+
+			$user = $this->get('container')->getItem('basket_user', 'email="'.$buyer['email'].'"');
+			if ($user) {
+				$user_id = $user['id'];
+				$this->get('container')->updateItem(
+					'basket_user',
+					$delivery_info,
+					array('id' => $user_id)
+				);
+			} else {
+				try {
+					$user_id = $this->get('container')->addItem(
+						'basket_user',
+						array_merge($buyer, $delivery_info, array('publish' => 1))
+					);
+				} catch(\Exception $e){
+					$this->get('log')->addError($e->getMessage());
+					$response->setData(array(
+						'status' => 'error',
+						'error' => 'Ошибка добавления пользователя',
+					));
+
+					return $response;
+				}
+			}
+
+			$realProducts = array();
+			$realTotal = 0;
+			$realNum = 0;
+			$preorderProducts = array();
+			$preorderTotal = 0;
+			$preorderNum = 0;
+
+			$orderData = array(
+				'user_id' => $user_id,
+				'delivery_type' => $delivery_type,
+				'delivery_cost' => $delivery_cost,
+				'delivery_details' => json_encode($delivery_info),
+				'payment_type' => $payment_type,
+				'order_status'=> $order_status,
+			);
+
+			$orderData = array_merge($orderData, $buyer);
+
+			foreach ($cart as $product){
+				$sku = array(
+					'photo' => $product['product']['photo_value']['extra']['thumb']['path'],
+					'name'  => $product['product']['name'].'(Артикул-'.$product['product']['articul'].')',
+					'size'  => $product['sku']['size'].' US',
+					'price' => $product['product']['price'].' руб.',
+					'amount'=> $product['amount'].' шт.',
+				);
+				if ($product['product']['is_preorder'] == 1) {
+					$preorderProducts[] = $sku;
+					$preorderTotal += $sku['price']*$sku['amount'];
+					$preorderNum += $sku['amount'];
+				} else {
+					$realProducts[] = $sku;
+					$realTotal += $sku['price']*$sku['amount'];
+					$realNum += $sku['amount'];
+				}
+			}
+
+			$link = '';
+
+			if ($preorderTotal > 0) {
+				$preorderData = $orderData;
+				$preorderData['cost'] = $preorderTotal;
+				$preorderData['num'] = $preorderNum;
+				$preorderData['is_preorder'] = 1;
+				$preorderData['detail_json'] = json_encode($preorderProducts);
+
+				$strProducts = '';
+				$strProducts .= join("\t", array('Название', 'Размер', 'Цена', 'Количество'))."\n";
+				foreach ($preorderProducts as $product) {
+					array_shift($product);
+					$strProducts .= join("\t", $product)."\n";
+				}
+
+				$preorderData['detail'] = $strProducts;
+
+				try {
+					$order_id = $this->get('container')->addItem('basket_order', array_merge($preorderData, array('publish' => 1)));
+					$link = $this->generateUrl('order', array('id' => md5($buyer['email'].$order_id)));
+
+					$this->get('mailer')->send(
+						'Предзаказ №'.$order_id.' оформлен в интернет магазине BOGS-SHOP.RU',
+						$this->render(
+							'mail/preorder.buyer.html.twig',
+							array(
+								'order' => $preorderData,
+								'order_id' => $order_id,
+								'delivery_type_title' => $delivery_type_title,
+								'payment_type_title' => $payment_type_title,
+								'delivery_info_string' => $delivery_info_string,
+								'status_title' => $this->statuses[$preorderData['order_status']],
+								'link' => 'http://'.$_SERVER['SERVER_NAME'].$link,
+							)
+						),
+						$buyer['email']
+					);
+
+					$this->get('mailer')->send(
+						'Предзаказ №'.$order_id.' оформлен в интернет магазине BOGS-SHOP.RU',
+						$this->render(
+							'mail/preorder.admin.html.twig',
+							array(
+								'order' => $preorderData,
+								'order_id' => $order_id,
+								'delivery_type_title' => $delivery_type_title,
+								'payment_type_title' => $payment_type_title,
+								'delivery_info_string' => $delivery_info_string,
+								'status_title' => $this->statuses[$preorderData['order_status']],
+								'link' => 'http://'.$_SERVER['SERVER_NAME'].$link,
+							)
+						),
+						$buyer['email']
+					);
+
+				} catch (\Exception $e) {
+					$this->get('log')->addError($e->getMessage());
+					$response->setData(array(
+						'status' => 'error',
+						'error' => 'Ошибка добавления предзаказа',
+					));
+
+					return $response;
+				}
+			}
+
+			if ($realTotal > 0) {
+
+				$orderData['cost'] = $realTotal;
+				$orderData['num'] = $realNum;
+				$orderData['is_preorder'] = 0;
+				$orderData['detail_json'] = json_encode($realProducts);
+
+				$strProducts = '';
+				$strProducts .= join("\t", array('Название', 'Размер', 'Цена', 'Количество')) . "\n";
+				foreach ($realProducts as $product) {
+					array_shift($product);
+					$strProducts .= join("\t", $product) . "\n";
+				}
+
+				$orderData['detail'] = $strProducts;
+
+				try {
+					$order_id = $this->get('container')->addItem('basket_order', array_merge($orderData, array('publish' => 1)));
+					$link = $this->generateUrl('order', array('id' => md5($buyer['email'] . $order_id)));
+
+					$this->get('mailer')->send(
+						'Заказ №' . $order_id . ' оформлен в интернет магазине BOGS-SHOP.RU',
+						$this->render(
+							'mail/order.buyer.html.twig',
+							array(
+								'order' => $orderData,
+								'order_id' => $order_id,
+								'delivery_type_title' => $delivery_type_title,
+								'payment_type_title' => $payment_type_title,
+								'delivery_info_string' => $delivery_info_string,
+								'status_title' => $this->statuses[$orderData['order_status']],
+								'link' => 'http://' . $_SERVER['SERVER_NAME'] . $link,
+							)
+						),
+						$buyer['email']
+					);
+
+					$this->get('mailer')->send(
+						'Заказ №' . $order_id . ' оформлен в интернет магазине BOGS-SHOP.RU',
+						$this->render(
+							'mail/order.admin.html.twig',
+							array(
+								'order' => $orderData,
+								'order_id' => $order_id,
+								'delivery_type_title' => $delivery_type_title,
+								'payment_type_title' => $payment_type_title,
+								'delivery_info_string' => $delivery_info_string,
+								'status_title' => $this->statuses[$orderData['order_status']],
+								'link' => 'http://' . $_SERVER['SERVER_NAME'] . $link,
+							)
+						),
+						$buyer['email']
+					);
+
+				} catch (\Exception $e) {
+					$this->get('container')->addError($e->getMessage());
+					$response->setData(array(
+						'status' => 'error',
+						'error' => 'Ошибка добавления заказа',
+					));
+
+					return $response;
+				}
+			}
+
+			$this->get('session')->set('cart', array());
+			$this->get('session')->set('num', 0);
+			$this->get('session')->set('total', 0);
+			$this->get('session')->set('cart.buyer', $buyer);
+			$this->get('session')->set('cart.delivery.address', $delivery_info);
+
+			$response->setData(array(
+				'status' => 'ok',
+				'link' => 'http://'.$_SERVER['SERVER_NAME'].$link,
+			));
+
+			return $response;
+		}
+
+		return $this->redirect('/');
 	}
 
 	public function orderAction($id)
 	{
+		$order = $this->get('container')->getItem('basket_order', 'MD5(CONCAT(email, id)) = "'.$id.'"');
+		if (!$order) {
+			return $this->redirect('/');
+		}
+		$order['detail_json'] = json_decode($order['detail_json'], true);
+
 		$api = new \Fuga\Kaznachey\Api(KAZNACHEY_SECRET_KEY, KAZNACHEY_GUID);
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST["action"] == "create_payment") {
@@ -325,18 +615,10 @@ class BasketController extends PublicController
 				//необходимо передавать идентификатор системы, которую выберет пользователь)
 				"Products" => array( // Список продуктов
 					array(
-						"ImageUrl" => "http://someImage.com//some.jpg", // Ссылка на изображение товара
-						"ProductItemsNum" => "1", // Колличество
-						"ProductName" => "Модель танка Т34-85 ", // Наименование товара
-						"ProductPrice" => "500", //Стоимость товара
-						"ProductId" => "123", // Идентификатор товара из системы мерчанта. Необходим для аналити продаж
-					),
-					array(
-						"ImageUrl" => "http://someImage.com/some.jpg", // Ссылка на изображение товара
-						"ProductItemsNum" => "2", // Колличество
-						"ProductName" => "Модель танка Т34-76 ", // Наименование товара
-						"ProductPrice" => "400", //Стоимость товара
-						"ProductId" => "124", // Идентификатор товара из системы мерчанта. Необходим для аналити продаж
+						"ProductItemsNum" => "1", // Количество
+						"ProductName" => "Оплата заказа № ".$order['id'], // Наименование товара
+						"ProductPrice" => number_format($order['cost']+$order['delivery_cost'], 2), //Стоимость товара
+						"ProductId" => $order['id'], // Идентификатор товара из системы мерчанта. Необходим для аналити продаж
 					)
 				),
 				"Currency" => "RUB", // Валюта (UAH, USD, RUB, EUR)
@@ -344,35 +626,15 @@ class BasketController extends PublicController
 
 				"PaymentDetails" => array( //Детали платежа
 					//Обязательные поля
-					"EMail" => "rawork@yandex.ru", //Емайл клиента
-					"PhoneNumber" => "9159210472", //Номер телефона клиента
+					"EMail" => $order['email'], //Емайл клиента
+					'PhoneNumber' => $order['phone'],
 
-					"MerchantInternalPaymentId" => "1234", // Номер платежа в системе мерчанта
-					"MerchantInternalUserId" => "21", //Номер пользователя в системе мерчанта
+					"MerchantInternalPaymentId" => $order['id'], // Номер платежа в системе мерчанта
+					"MerchantInternalUserId" => $order['user_id'], //Номер пользователя в системе мерчанта
 
-					"StatusUrl" => "http://test2.galichstrana.ru/basket/status", // url для ответа платежного сервера с состоянием платежа.
-					"ReturnUrl" => "http://test2.galichstrana.ru/basket/success", //url возврата ползователя после платежа.
+					"StatusUrl" => "http://".$_SERVER['SERVER_NAME']."/basket/status/".$id, // url для ответа платежного сервера с состоянием платежа.
+					"ReturnUrl" => "http://".$_SERVER['SERVER_NAME']."/basket/success/".$id, //url возврата ползователя после платежа.
 
-					//По возможности нужно заполнить эти поля.
-					"CustomMerchantInfo" => "", // Любая информация
-					"BuyerCountry" => "Россия", //Страна
-					"BuyerFirstname" => "Роман", //Имя,
-					"BuyerPatronymic" => "Алякритский", // отчество
-					"BuyerLastname" => "Яковлевич", //Фамилия
-					"BuyerStreet" => "Крестьянская, дом 24", // Адрес
-					"BuyerZone" => "Костромская область", //   Область
-					"BuyerZip" => "157203", //  Индекс
-					"BuyerCity" => "Галич", //   Город,
-
-					//аналогичная информация о доставке. Если информация совпадает можно скопировать.
-					"DeliveryFirstname" => "Роман",
-					"DeliveryPatronymic" => "Яковлевич",
-					"DeliveryLastname" => "Алякритский",
-					"DeliveryZip" => "157203",
-					"DeliveryCountry" => "Россия",
-					"DeliveryStreet" => "Крестьянская, дом 24",
-					"DeliveryCity" => "Галич",
-					"DeliveryZone" => "Костромская область",
 				),
 			);
 
@@ -382,19 +644,29 @@ class BasketController extends PublicController
 			////DebugMessage - Описание ошибки
 			$createPaymentResponse = $api->CreatePayment($request);
 
+			var_dump($createPaymentResponse);
+
 		} else {
 			$merchantInfo = $api->GetMerchantInfo();
 		}
 
-		return $this->render('basket/order.html.twig', compact('merchantInfo', 'createPaymentResponse'));
+		$delivery_type_title = $this->delivery[$order['delivery_type']];
+		$payment_type_title = $this->payment[$order['payment_type']];
+		$order_status_title = $this->statuses[$order['order_status']];
+
+		$this->get('container')->setVar('title', 'Заказ № '.$order['id']);
+		$this->get('container')->setVar('h1', 'Заказ № '.$order['id']);
+
+		return $this->render('basket/order.html.twig', compact('order', 'delivery_type_title', 'payment_type_title', 'order_status_title', 'merchantInfo', 'createPaymentResponse'));
 	}
 
-	public function statusAction()
+	public function statusAction($id)
 	{
 		$api = new \Fuga\Kaznachey\Api(KAZNACHEY_SECRET_KEY, KAZNACHEY_GUID);
 
 		try {
 			$statusRequest = $api->GetStatusResponse();
+			$this->get('log')->addError(serialize($statusRequest));
 			echo "ok";
 		} catch (\Exception $e) {
 			print "Error!";
@@ -407,12 +679,13 @@ class BasketController extends PublicController
 		fclose($fp);
 	}
 
-	public function successAction()
+	public function successAction($id)
 	{
 		$api = new \Fuga\Kaznachey\Api(KAZNACHEY_SECRET_KEY, KAZNACHEY_GUID);
 
 		try {
 			$statusRequest = $api->GetStatusResponse();
+			$this->get('log')->addError(serialize($statusRequest));
 			echo "ok";
 		} catch (\Exception $e) {
 			print "Error!";

@@ -30,7 +30,6 @@ class Mailer
 		$this->engine->Html($message, 'UTF-8');
 		$this->engine->To($subscribers);
 		$this->engine->Send();
-		@unlink(PRJ_DIR.$letter['file']);
 	}
 
 }
