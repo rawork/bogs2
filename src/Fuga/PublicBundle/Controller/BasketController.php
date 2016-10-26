@@ -31,6 +31,13 @@ class BasketController extends PublicController
 		'completed' => 'Выполнен',
 	);
 
+	private $paymentResults = array(
+		'Success' => 'Платеж выполнен успешно',
+		'Failed'  => 'Ошибка платежа',
+		'Inprogress' =>	'Платеж в обработке, или аккаунт продавца не активен',
+		'Deferred' => 'Платеж ожидает подтверждения продавца (Отложенный платеж)',
+	);
+
 	public function __construct()
 	{
 		parent::__construct('basket');
@@ -488,7 +495,7 @@ class BasketController extends PublicController
 					);
 
 					$this->get('mailer')->send(
-						'Предзаказ №'.$order_id.' оформлен в интернет магазине BOGS-SHOP.RU',
+						'Предзаказ №'.$order_id.' оформлен в BOGS-SHOP.RU',
 						$this->render(
 							'mail/preorder.admin.html.twig',
 							array(
@@ -501,7 +508,7 @@ class BasketController extends PublicController
 								'link' => 'http://'.$_SERVER['SERVER_NAME'].$link,
 							)
 						),
-						$buyer['email']
+						ADMIN_EMAIL
 					);
 
 				} catch (\Exception $e) {
@@ -553,7 +560,7 @@ class BasketController extends PublicController
 					);
 
 					$this->get('mailer')->send(
-						'Заказ №' . $order_id . ' оформлен в интернет магазине BOGS-SHOP.RU',
+						'Заказ №' . $order_id . ' оформлен в BOGS-SHOP.RU',
 						$this->render(
 							'mail/order.admin.html.twig',
 							array(
@@ -566,7 +573,7 @@ class BasketController extends PublicController
 								'link' => 'http://' . $_SERVER['SERVER_NAME'] . $link,
 							)
 						),
-						$buyer['email']
+						ADMIN_EMAIL
 					);
 
 				} catch (\Exception $e) {
@@ -633,7 +640,7 @@ class BasketController extends PublicController
 					"MerchantInternalUserId" => $order['user_id'], //Номер пользователя в системе мерчанта
 
 					"StatusUrl" => "http://".$_SERVER['SERVER_NAME']."/basket/status/".$id, // url для ответа платежного сервера с состоянием платежа.
-					"ReturnUrl" => "http://".$_SERVER['SERVER_NAME']."/basket/success/".$id, //url возврата ползователя после платежа.
+					"ReturnUrl" => "http://".$_SERVER['SERVER_NAME']."/basket/order/".$id, //url возврата ползователя после платежа.
 
 				),
 			);
@@ -658,7 +665,7 @@ class BasketController extends PublicController
 		return $this->render('basket/order.html.twig', compact('order', 'delivery_type_title', 'payment_type_title', 'order_status_title', 'merchantInfo', 'createPaymentResponse'));
 	}
 
-	public function statusAction($id)
+	public function statusAction()
 	{
 		$api = new \Fuga\Kaznachey\Api(KAZNACHEY_SECRET_KEY, KAZNACHEY_GUID);
 
@@ -666,10 +673,58 @@ class BasketController extends PublicController
 
 		try {
 			$statusRequest = $api->GetStatusResponse();
-			$fp = fopen(PRJ_DIR.'/counter.txt', 'a');
+			if ($statusRequest['ErrorCode'] != 0) {
+				throw new \Exception('Payment error code '.$statusRequest['ErrorCode']);
+			}
+			$order = $this->get('container')->getItem('basket_order', $statusRequest['OrderId']);
+			if (!$order) {
+				throw new \Exception('Order not found');
+			}
 
-			fputs($fp, $statusRequest, strlen($statusRequest));
-			fclose($fp);
+			$this->get('container')->updateItem(
+				'basket_order',
+				array(
+					'payment_status' => 'paid',
+					'payment_detail' => json_encode($statusRequest),
+					'order_status' => 'paid',
+				),
+				array('id' => $order['id'])
+			);
+
+			$delivery_info = array();
+			if ($order['delivery_detail']) {
+				$delivery_info = json_decode($order['delivery_detail'], true);
+			}
+
+			$this->get('mailer')->send(
+				'Заказ №' . $order['id'] . ' оплата получена. Интернет магазин BOGS-SHOP.RU',
+				$this->render(
+					'mail/payment.buyer.html.twig',
+					array(
+						'order' => $order,
+						'status' => $statusRequest,
+						'delivery_type_title' => $this->delivery[$order['delivery_type']],
+						'payment_type_title' => $this->payment[$order['payment_type']],
+						'delivery_info_string' => join(', ', $delivery_info),
+						'status_title' => $this->statuses[$order['order_status']],
+					)
+				),
+				$order['email']
+			);
+
+			$this->get('mailer')->send(
+				'Заказ №' . $order['id'] . ' оплата получена. BOGS-SHOP.RU',
+				$this->render(
+					'mail/payment.admin.html.twig',
+					array(
+						'order' => $order,
+						'status' => $statusRequest,
+						'status_title' => $this->statuses[$order['order_status']],
+					)
+				),
+				ADMIN_EMAIL
+			);
+
 			$this->get('log')->addError(serialize($statusRequest));
 			$response->setContent("ok");
 		} catch (\Exception $e) {
@@ -680,26 +735,20 @@ class BasketController extends PublicController
 		return $response;
 	}
 
-	public function successAction($id)
+	public function paymentAction()
 	{
-		$api = new \Fuga\Kaznachey\Api(KAZNACHEY_SECRET_KEY, KAZNACHEY_GUID);
+		$id = $this->get('request')->query->getInt('OrderId', 0);
+		$result = $this->get('request')->query->get('Result', 'Failed');
 
-		$response = new Response();
-
-		try {
-			$statusRequest = $api->GetStatusResponse();
-			$fp = fopen(PRJ_DIR.'/counter.txt', 'a');
-
-			fputs($fp, $statusRequest, strlen($statusRequest));
-			fclose($fp);
-			$this->get('log')->addError(serialize($statusRequest));
-			$response->setContent("ok");
-		} catch (\Exception $e) {
-			$response->setContent("Error!".$e->getMessage());
-			$this->get('log')->addError($e->getMessage());
+		$order = $this->get('container')->getItem('basket_order', $id);
+		if (!$order) {
+			return $this->redirect('/');
 		}
 
-		return $response;
+		$this->get('container')->setVar('title', 'Оплата заказа № '.$order['id']);
+		$this->get('container')->setVar('h1', 'Оплата заказа № '.$order['id']);
+
+		return $this->render('basket/order.html.twig', compact('order', 'result'));
 	}
 
 	public function regionsAction()

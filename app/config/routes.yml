@@ -203,11 +203,8 @@ order:
     path: /basket/order/{id}
     defaults: { _controller: 'Fuga:Public:Common:index', node: 'basket', action: 'order'}
 status:
-    path: /basket/status/{id}
+    path: /basket/status/
     defaults: { _controller: 'Fuga:Public:basket:status'}
-success:
-    path: /basket/success/{id}
-    defaults: { _controller: 'Fuga:Public:basket:success'}
 
 product:
   path: /ajax/product/{id}
