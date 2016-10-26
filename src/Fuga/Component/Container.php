@@ -554,7 +554,7 @@ class Container
 					$router = new Router(
 						new YamlFileLoader($locator),
 						'routes.yml',
-						array('cache_dir' => $this->getBaseDir().'/app/cache', 'debug' => PRJ_ENV == 'dev'),
+						array('cache_dir' => PRJ_ENV == 'dev' ? null :$this->getBaseDir().'/app/cache', 'debug' => PRJ_ENV == 'dev'),
 						$requestContext
 					);
 					$router->getRouteCollection()->addPrefix(PRJ_REF);
