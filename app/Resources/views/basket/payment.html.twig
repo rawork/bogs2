@@ -1,0 +1,37 @@
+<ul class="order-props">
+    <li class="order-prop">
+        Статус оплаты: <span class="order-status order-status--processing">{{ result_title }}</span>
+    </li>
+    <li class="order-prop">
+        Способ оплаты: <span class="order-payment-type">{{ payment_type_title }}</span>
+    </li>
+    {% if order.order_status == 'wait' %}
+    <li class="order-prop">
+        Сумма заказа с доставкой: <span class="order-total">{{ order.cost+order.delivery_cost }}</span>руб.
+    </li>
+    {% endif %}
+</ul>
+
+<h4 class="products-list__title">Товары в заказе</h4>
+<!-- Products list -->
+<table class="products-list">
+    <thead>
+    <tr>
+        <th>Наименование</th>
+        <th>Размер</th>
+        <th>Кол-во</th>
+        <th>Сумма</th>
+    </tr>
+    </thead>
+    <tbody>
+    {%  for product in order.detail_json %}
+    <tr class="product-in-cart">
+        <td class="product-in-cart__name">{{ product.name }}</td>
+        <td class="product-in-cart__size">{{ product.size }} US</td>
+        <td class="product-in-cart__qty">{{ product.amount }}</td>
+        <td class="product-in-cart__price">{{ product.price }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<div class="total">Стоимость товаров и доставки:  <span class="total__val">{{ order.cost+order.delivery_cost }}</span></div>

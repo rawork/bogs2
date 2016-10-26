@@ -640,7 +640,7 @@ class BasketController extends PublicController
 					"MerchantInternalUserId" => $order['user_id'], //Номер пользователя в системе мерчанта
 
 					"StatusUrl" => "http://".$_SERVER['SERVER_NAME']."/basket/status/".$id, // url для ответа платежного сервера с состоянием платежа.
-					"ReturnUrl" => "http://".$_SERVER['SERVER_NAME']."/basket/order/".$id, //url возврата ползователя после платежа.
+					"ReturnUrl" => "http://".$_SERVER['SERVER_NAME']."/basket/payment/", //url возврата ползователя после платежа.
 
 				),
 			);
@@ -673,10 +673,14 @@ class BasketController extends PublicController
 
 		try {
 			$statusRequest = $api->GetStatusResponse();
+			$this->get('log')->addError(serialize($statusRequest));
 			if ($statusRequest['ErrorCode'] != 0) {
 				throw new \Exception('Payment error code '.$statusRequest['ErrorCode']);
 			}
-			$order = $this->get('container')->getItem('basket_order', $statusRequest['OrderId']);
+			$order = $this->get('container')->getItem(
+				'basket_order',
+				'order_status="wait" AND id='.$statusRequest['OrderId']
+			);
 			if (!$order) {
 				throw new \Exception('Order not found');
 			}
@@ -725,7 +729,6 @@ class BasketController extends PublicController
 				ADMIN_EMAIL
 			);
 
-			$this->get('log')->addError(serialize($statusRequest));
 			$response->setContent("ok");
 		} catch (\Exception $e) {
 			$response->setContent("Error!".$e->getMessage());
@@ -745,10 +748,16 @@ class BasketController extends PublicController
 			return $this->redirect('/');
 		}
 
+		$order['detail_json'] = json_decode($order['detail_json'], true);
+		$delivery_type_title = $this->delivery[$order['delivery_type']];
+		$payment_type_title = $this->payment[$order['payment_type']];
+		$order_status_title = $this->statuses[$order['order_status']];
+		$result_title = $this->paymentResults[$result];
+
 		$this->get('container')->setVar('title', 'Оплата заказа № '.$order['id']);
 		$this->get('container')->setVar('h1', 'Оплата заказа № '.$order['id']);
 
-		return $this->render('basket/order.html.twig', compact('order', 'result'));
+		return $this->render('basket/payment.html.twig', compact('order', 'delivery_type_title', 'payment_type_title', 'result', 'result_title'));
 	}
 
 	public function regionsAction()
