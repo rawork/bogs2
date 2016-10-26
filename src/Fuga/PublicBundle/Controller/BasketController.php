@@ -4,6 +4,7 @@ namespace Fuga\PublicBundle\Controller;
 
 use Fuga\CommonBundle\Controller\PublicController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class BasketController extends PublicController
 {
@@ -661,6 +662,8 @@ class BasketController extends PublicController
 	{
 		$api = new \Fuga\Kaznachey\Api(KAZNACHEY_SECRET_KEY, KAZNACHEY_GUID);
 
+		$response = new Response();
+
 		try {
 			$statusRequest = $api->GetStatusResponse();
 			$fp = fopen(PRJ_DIR.'/counter.txt', 'a');
@@ -668,18 +671,21 @@ class BasketController extends PublicController
 			fputs($fp, $statusRequest, strlen($statusRequest));
 			fclose($fp);
 			$this->get('log')->addError(serialize($statusRequest));
-			echo "ok";
+			$response->setContent("ok");
 		} catch (\Exception $e) {
-			print "Error!";
-			print $e->getMessage();
+			$response->setContent("Error!".$e->getMessage());
 			$this->get('log')->addError($e->getMessage());
 		}
+
+		return $response;
 	}
 
 	public function successAction($id)
 	{
 		$api = new \Fuga\Kaznachey\Api(KAZNACHEY_SECRET_KEY, KAZNACHEY_GUID);
 
+		$response = new Response();
+
 		try {
 			$statusRequest = $api->GetStatusResponse();
 			$fp = fopen(PRJ_DIR.'/counter.txt', 'a');
@@ -687,12 +693,13 @@ class BasketController extends PublicController
 			fputs($fp, $statusRequest, strlen($statusRequest));
 			fclose($fp);
 			$this->get('log')->addError(serialize($statusRequest));
-			echo "ok";
+			$response->setContent("ok");
 		} catch (\Exception $e) {
-			print "Error!";
-			print $e->getMessage();
+			$response->setContent("Error!".$e->getMessage());
 			$this->get('log')->addError($e->getMessage());
 		}
+
+		return $response;
 	}
 
 	public function regionsAction()
