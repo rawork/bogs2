@@ -608,7 +608,6 @@ class BasketController extends PublicController
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST["action"] == "create_payment") {
 
-			var_dump($_POST);
 			//Запрос на создание платежа.
 			$request = Array(
 				"SelectedPaySystemId" => $_POST["SelectedPaySystemId"], //Выбранная платёжная система (1 - идентификатор тестовой платежной системы,
@@ -617,7 +616,7 @@ class BasketController extends PublicController
 					array(
 						"ProductItemsNum" => "1", // Количество
 						"ProductName" => "Оплата заказа № ".$order['id'], // Наименование товара
-						"ProductPrice" => number_format($order['cost']+$order['delivery_cost'], 2), //Стоимость товара
+						"ProductPrice" => number_format($order['cost']+$order['delivery_cost'], 2, '.', ''), //Стоимость товара
 						"ProductId" => $order['id'], // Идентификатор товара из системы мерчанта. Необходим для аналити продаж
 					)
 				),
@@ -627,7 +626,7 @@ class BasketController extends PublicController
 				"PaymentDetails" => array( //Детали платежа
 					//Обязательные поля
 					"EMail" => $order['email'], //Емайл клиента
-					'PhoneNumber' => $order['phone'],
+					'PhoneNumber' => preg_replace('/(\+|\s|\(|\))+/','',$order['phone']),
 
 					"MerchantInternalPaymentId" => $order['id'], // Номер платежа в системе мерчанта
 					"MerchantInternalUserId" => $order['user_id'], //Номер пользователя в системе мерчанта
@@ -643,8 +642,6 @@ class BasketController extends PublicController
 			////ErrorCode - Код ошибки в системе (0 - успешный запрос)
 			////DebugMessage - Описание ошибки
 			$createPaymentResponse = $api->CreatePayment($request);
-
-			var_dump($createPaymentResponse);
 
 		} else {
 			$merchantInfo = $api->GetMerchantInfo();
