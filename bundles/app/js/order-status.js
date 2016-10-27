@@ -9,4 +9,10 @@
     // Close modal
     modal.closeModal();
 
+    $('.btn-pay').on('click', function(e){
+        e.preventDefault();
+
+        $('#form-payment').submit();
+    });
+
 })(jQuery);

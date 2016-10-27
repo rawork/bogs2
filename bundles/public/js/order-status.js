@@ -10,6 +10,12 @@
     // Close modal
     modal.closeModal();
 
+    $('.btn-pay').on('click', function(e){
+        e.preventDefault();
+
+        $('#form-payment').submit();
+    });
+
 })(jQuery);
 },{"./modules/call-order":2,"./modules/catalog-order":3,"./modules/mob-menu":4,"./modules/modal":5}],2:[function(require,module,exports){
 'use strict';

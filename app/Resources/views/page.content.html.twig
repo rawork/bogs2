@@ -115,9 +115,9 @@
         <script src="/bundles/public/js/slick.min.js"></script>
         <script src="/bundles/public/js/jquery.maskedinput.min.js"></script>
 		<script type="text/javascript" src="{{ asset('/bundles/public/js/app.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('/bundles/public/js/cart.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('/bundles/public/js/order.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('/bundles/public/js/order-status.js') }}"></script>
+        {% for script in javascript %}
+        <script type="text/javascript" src="{{ asset(script) }}"></script>
+        {% endfor %}
         {{ render('Fuga:Public:Common:block', {'name': 'counter'}) }}
 	</body>
 </html>

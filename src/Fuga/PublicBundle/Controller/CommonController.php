@@ -69,11 +69,25 @@ class CommonController extends Controller {
 			'meta'      => $this->getManager('Fuga:Common:Meta')->getMeta(),
 			'links'     => $links,
 			'action'    => $action,
+			'options'   => $options,
 			'curnode'   => $nodeItem,
+			'curuser'   => $this->get('security')->getCurrentUser(),
 			'locale'    => $this->get('session')->get('locale'),
+			'asset'		=> 'dev' == PRJ_ENV ? date('YmdHis') : 'prodaction'
 		);
 		$this->get('templating')->assign($params);
-		$this->get('templating')->assign(array('maincontent' => $staticContent.$this->dinamicAction($node, $action, $options)));
+
+
+		$res = $this->dinamicAction($node, $action, $options);
+		if (is_object($res) && $res instanceof Response) {
+			return $res;
+		} elseif (is_array($res)) {
+			$response = new JsonResponse();
+			$response->setData($res);
+			return $response;
+		}
+
+		$this->get('templating')->assign(array('maincontent' => $staticContent.$res));
 
 		$response = new Response();
 		$response->setContent($this->render(

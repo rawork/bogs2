@@ -32,10 +32,10 @@ class BasketController extends PublicController
 	);
 
 	private $paymentResults = array(
-		'Success' => 'Платеж выполнен успешно',
-		'Failed'  => 'Ошибка платежа',
-		'Inprogress' =>	'Платеж в обработке, или аккаунт продавца не активен',
-		'Deferred' => 'Платеж ожидает подтверждения продавца (Отложенный платеж)',
+		'success'    => 'Платеж выполнен успешно',
+		'failed'     => 'Ошибка платежа',
+		'inprogress' =>	'Платеж в обработке, или аккаунт продавца не активен',
+		'deferred'   => 'Платеж ожидает подтверждения продавца (Отложенный платеж)',
 	);
 
 	public function __construct()
@@ -79,6 +79,8 @@ class BasketController extends PublicController
 
 //		var_dump(array_shift($cart)['sku']['product_id_value']['item']);
 //		var_dump($_SESSION);
+
+		$this->get('container')->addScript('/bundles/public/js/cart.js');
 
 		return $this->render('basket/index.html.twig', compact('cart', 'total', 'payment_type' , 'delivery_type'));
 	}
@@ -329,10 +331,14 @@ class BasketController extends PublicController
 
 		$ending = $this->get('util')->ending($num, array('', 'а', 'ов'));
 
+		$countries = $this->get('container')->getItems('basket_country', 'publish=1');
+
 		$this->get('container')->setVar('title', 'Оформление заказа');
 		$this->get('container')->setVar('h1', 'Оформление заказа');
 
-		return $this->render('basket/new.html.twig', compact('cart', 'num', 'ending', 'total', 'delivery_type', 'delivery_type_title', 'delivery_cost', 'delivery_country', 'delivery_region', 'delivery_city', 'payment_type', 'payment_type_title', 'buyer', 'delivery_info'));
+		$this->get('container')->addScript('/bundles/public/js/order.js');
+
+		return $this->render('basket/new.html.twig', compact('cart', 'num', 'ending', 'total', 'delivery_type', 'delivery_type_title', 'delivery_cost', 'delivery_country', 'delivery_region', 'delivery_city', 'payment_type', 'payment_type_title', 'buyer', 'delivery_info', 'countries'));
 	}
 
 	public function saveAction(){
@@ -430,6 +436,7 @@ class BasketController extends PublicController
 				'delivery_type' => $delivery_type,
 				'delivery_cost' => $delivery_cost,
 				'delivery_details' => json_encode($delivery_info),
+				'address' => $delivery_info_string,
 				'payment_type' => $payment_type,
 				'order_status'=> $order_status,
 			);
@@ -661,6 +668,7 @@ class BasketController extends PublicController
 
 		$this->get('container')->setVar('title', 'Заказ № '.$order['id']);
 		$this->get('container')->setVar('h1', 'Заказ № '.$order['id']);
+		$this->get('container')->addScript('/bundles/public/js/order-status.js');
 
 		return $this->render('basket/order.html.twig', compact('order', 'delivery_type_title', 'payment_type_title', 'order_status_title', 'merchantInfo', 'createPaymentResponse'));
 	}

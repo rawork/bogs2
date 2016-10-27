@@ -9,13 +9,13 @@
     <li class="order-prop">
         Способ оплаты: <span class="order-payment-type">{{ payment_type_title }}</span>
     </li>
-    {% if order.order_status == 'wait' %}
+    {% if order.order_status != 'calc'  %}
     <li class="order-prop">
-        Сумма заказа с доставкой: <span class="order-total">{{ order.cost+order.delivery_cost }}</span>руб.
+        Сумма заказа с доставкой: <span class="order-total">{{ order.cost+order.delivery_cost }}</span> руб.
     </li>
     {% endif %}
 </ul>
-{% if order.order_status == 'wait' %}
+{% if order.order_status == 'wait' and order.is_preorder != 1 %}
 <div class="btn-wrap ">
     <a href="#" class="btn btn-pay">Оплатить заказ</a>
 </div>
@@ -29,7 +29,7 @@
         <th>Наименование</th>
         <th>Размер</th>
         <th>Кол-во</th>
-        <th>Сумма</th>
+        <th>Цена</th>
     </tr>
     </thead>
     <tbody>
@@ -46,22 +46,16 @@
 {% if order.order_status == 'calc' %}
 <div class="total">Стоимость товаров:  <span class="total__val">{{ order.cost }}</span></div>
 {% else %}
-<div class="total">Стоимость товаров и доставки:  <span class="total__val">{{ order.cost+order.delivery_cost }}</span></div>
+<div class="total">Стоимость товаров и доставки:  <span class="total__val">{{ order.delivery_cost+order.cost }}</span></div>
 {% endif %}
 {% if (merchantInfo) %}
-    <form method="post" action="">
+    <form id="form-payment" method="post" action="">
         <input type="hidden" name="action" value="create_payment">
-        <div class="custom-select__list-wrap">
-            <select name="SelectedPaySystemId" class="custom-select__list">
                 {% for paySystem in merchantInfo.PaySystems %}
-                    <option value="{{ paySystem.Id }}">{{ paySystem.PaySystemName }}</option>
+                    {% if paySystem.Id == 1 or paySystem.Id == 2022  %}
+                    <input type="hidden" name="SelectedPaySystemId" value="{{ paySystem.Id }}">
+                    {% endif %}
                 {% endfor %}
-            </select>
-            <span class="custom-select__chevron"></span>
-        </div>
-        <div class="btn-wrap ">
-            <input type="submit" value="Create payment">
-        </div>
     </form>
 {% endif %}
 

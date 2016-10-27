@@ -420,6 +420,24 @@ class Container
 		return isset($this->templateVars[$name]) ? $this->templateVars[$name] : null;
 	}
 
+	public function addScript ($path)
+	{
+		if (isset($this->templateVars['javascript']) && is_array($this->templateVars['javascript'])) {
+			$this->templateVars['javascript'][] = $path;
+		} else {
+			$this->templateVars['javascript'] = array($path);
+		}
+	}
+
+	public function addCSS ($path)
+	{
+		if (isset($this->templateVars['css']) && is_array($this->templateVars['css'])) {
+			$this->templateVars['css'][] = $path;
+		} else {
+			$this->templateVars['css'] = array($path);
+		}
+	}
+
 	public function getVars()
 	{
 		return $this->templateVars;	
