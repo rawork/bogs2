@@ -687,7 +687,7 @@ class BasketController extends PublicController
 			}
 			$order = $this->get('container')->getItem(
 				'basket_order',
-				'order_status="wait" AND id='.$statusRequest['OrderId']
+				'order_status="wait" AND id='.$statusRequest['MerchantInternalPaymentId']
 			);
 			if (!$order) {
 				throw new \Exception('Order not found');
