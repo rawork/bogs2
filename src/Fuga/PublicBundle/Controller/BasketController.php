@@ -718,6 +718,11 @@ class BasketController extends PublicController
 				array('id' => $order['id'])
 			);
 
+			$order = $this->get('container')->getItem(
+				'basket_order',
+				$statusRequest['MerchantInternalPaymentId']
+			);
+
 			$delivery_info = array();
 			if ($order['delivery_detail']) {
 				$delivery_info = json_decode($order['delivery_detail'], true);
