@@ -1217,7 +1217,7 @@ a.remove {
 		list-style: none;
         font-size: 14px;
         line-height: 1.6;
-		li {
+		&>li {
 			display: none;
 			&.active {
 				display: block;
