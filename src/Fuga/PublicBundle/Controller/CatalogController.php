@@ -87,7 +87,7 @@ class CatalogController extends PublicController
 
 		$response = new JsonResponse();
 		$response->setData(array(
-			'text' => 'Мы отправим Вам PDF-каталог в ближайшее время',
+			'text' => 'Мы отправим вам оптовый прайс-лист в ближайшее время.',
 		));
 
 		return $response;

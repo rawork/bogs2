@@ -53,7 +53,7 @@ var modal = require('./modal');
 module.exports = (function(){
 	$(document).on('click', '.show-catalog-order', function(e){
         e.preventDefault();
-        $('.modal .title').html('Заказать каталог');
+        $('.modal .title').html('BOGS Оптом');
         $('.modal .content').html('<form method="post"><input type="text" id="name" placeholder="Ваше имя"><input type="text" id="email" placeholder="Ваш e-mail"><input type="text" id="phone" placeholder="Ваш телефон"><button class="btn catalog-order">Заказать</button></form>');
         modal.showModal();
         yaCounter29093585.reachGoal('show_order_pdf');
