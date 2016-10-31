@@ -686,7 +686,7 @@ class BasketController extends PublicController
 
 		try {
 			$statusRequest = $api->GetStatusResponse();
-			
+
 			$this->get('log')->addError(serialize($statusRequest));
 
 			$order = $this->get('container')->getItem(
@@ -701,7 +701,7 @@ class BasketController extends PublicController
 				$this->get('container')->updateItem(
 					'basket_order',
 					array(
-						'payment_detail' => json_encode($statusRequest),
+						'payment_details' => json_encode($statusRequest),
 					),
 					array('id' => $order['id'])
 				);
@@ -712,7 +712,7 @@ class BasketController extends PublicController
 				'basket_order',
 				array(
 					'payment_status' => 'paid',
-					'payment_detail' => json_encode($statusRequest),
+					'payment_details' => json_encode($statusRequest),
 					'order_status' => 'paid',
 				),
 				array('id' => $order['id'])
