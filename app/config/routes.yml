@@ -203,7 +203,7 @@ order:
     path: /basket/order/{id}
     defaults: { _controller: 'Fuga:Public:Common:index', node: 'basket', action: 'order'}
 status:
-    path: /basket/status/
+    path: /basket/status
     defaults: { _controller: 'Fuga:Public:basket:status'}
 
 product:

@@ -651,7 +651,7 @@ class BasketController extends PublicController
 					"MerchantInternalPaymentId" => $order['id'], // Номер платежа в системе мерчанта
 					"MerchantInternalUserId" => $order['user_id'], //Номер пользователя в системе мерчанта
 
-					"StatusUrl" => "http://".$_SERVER['SERVER_NAME']."/basket/status/".$id, // url для ответа платежного сервера с состоянием платежа.
+					"StatusUrl" => "http://".$_SERVER['SERVER_NAME']."/basket/status", // url для ответа платежного сервера с состоянием платежа.
 					"ReturnUrl" => "http://".$_SERVER['SERVER_NAME']."/basket/payment", //url возврата ползователя после платежа.
 
 				),
@@ -686,16 +686,26 @@ class BasketController extends PublicController
 
 		try {
 			$statusRequest = $api->GetStatusResponse();
+			
 			$this->get('log')->addError(serialize($statusRequest));
-			if ($statusRequest['ErrorCode'] != 0) {
-				throw new \Exception('Payment error code '.$statusRequest['ErrorCode']);
-			}
+
 			$order = $this->get('container')->getItem(
 				'basket_order',
 				'order_status="wait" AND id='.$statusRequest['MerchantInternalPaymentId']
 			);
 			if (!$order) {
 				throw new \Exception('Order not found');
+			}
+
+			if ($statusRequest['ErrorCode'] != 0) {
+				$this->get('container')->updateItem(
+					'basket_order',
+					array(
+						'payment_detail' => json_encode($statusRequest),
+					),
+					array('id' => $order['id'])
+				);
+				throw new \Exception('Payment error code '.$statusRequest['ErrorCode']);
 			}
 
 			$this->get('container')->updateItem(
