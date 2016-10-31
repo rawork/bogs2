@@ -88,6 +88,8 @@
 			apartment: $('#apartment').val()
 		};
 
+		console.log(inputData);
+
 		$.post('/api/order/save', inputData, function(data){
 			console.log('ajax answer');
 			if(data.status == 'ok') {

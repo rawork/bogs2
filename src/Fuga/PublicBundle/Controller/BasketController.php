@@ -344,6 +344,7 @@ class BasketController extends PublicController
 	public function saveAction(){
 		if ($_SERVER['REQUEST_METHOD'] == 'POST' && $this->isXmlHttpRequest()) {
 			$response = new JsonResponse();
+
 			$cart = $this->get('session')->get('cart');
 			$num = $this->get('session')->get('num');
 //			$total = $this->get('session')->get('total');
@@ -359,6 +360,7 @@ class BasketController extends PublicController
 				'email' => $this->get('request')->request->get('email', ''),
 				'phone' => $this->get('request')->request->get('phone', ''),
 			);
+
 			$delivery_info = array();
 			if ($this->get('request')->request->get('country', '')) {
 				$delivery_info['country'] = $this->get('request')->request->get('country', '');
@@ -399,14 +401,17 @@ class BasketController extends PublicController
 				$order_status = 'calc';
 			}
 
+
 			$user = $this->get('container')->getItem('basket_user', 'email="'.$buyer['email'].'"');
 			if ($user) {
 				$user_id = $user['id'];
-				$this->get('container')->updateItem(
-					'basket_user',
-					$delivery_info,
-					array('id' => $user_id)
-				);
+				if (count($delivery_info) > 0) {
+					$this->get('container')->updateItem(
+						'basket_user',
+						$delivery_info,
+						array('id' => $user_id)
+					);
+				}
 			} else {
 				try {
 					$user_id = $this->get('container')->addItem(
@@ -435,7 +440,7 @@ class BasketController extends PublicController
 				'user_id' => $user_id,
 				'delivery_type' => $delivery_type,
 				'delivery_cost' => $delivery_cost,
-				'delivery_details' => json_encode($delivery_info),
+				'delivery_details' => count($delivery_info) > 0 ? json_encode($delivery_info) : '',
 				'address' => $delivery_info_string,
 				'payment_type' => $payment_type,
 				'order_status'=> $order_status,
