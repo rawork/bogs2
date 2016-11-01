@@ -53,11 +53,13 @@
             <li class="active"><a href="#" data-tab="description">Описание</a></li>
             <li><a href="#" data-tab="delivery">Доставка</a></li>
             <li><a href="#" data-tab="payment">Оплата</a></li>
+            <li><a href="#" data-tab="table">Таблица размеров</a></li>
         </ul>
         <ul class="product-tabs-content">
             <li data-tab-content="description" class="active">{{ product.description }}</li>
             <li data-tab-content="delivery">{{ render('Fuga:Public:Common:block', {'name': 'delivery'}) }}</li>
             <li data-tab-content="payment">{{ render('Fuga:Public:Common:block', {'name': 'payment'}) }}</li>
+            <li data-tab-content="table"><img src="/files/category/size_{{ product.category_id_value.item.name }}.png" /></li>
         </ul>
     </div>
 </div>
