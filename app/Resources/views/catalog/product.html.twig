@@ -9,7 +9,7 @@
         <ul class="gallery-grid clearfix">
             <li class="active"><img src="{{ product.photo_value.extra.main.path }}" class="gallery-thumb" data-img-id="1"></li>
             {% for image in product.gallery_value  %}
-            <li><img src="{{ image.extra.thumb.path }}" class="gallery-thumb" data-img-id="{{ loop.index+1 }}"></li>
+            <li><img src="{{ image.extra.main.path }}" class="gallery-thumb" data-img-id="{{ loop.index+1 }}"></li>
             {% endfor %}
         </ul>
     </div>
