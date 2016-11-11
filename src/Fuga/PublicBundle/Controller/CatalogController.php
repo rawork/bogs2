@@ -68,9 +68,9 @@ class CatalogController extends PublicController
 
 	public function advAction()
 	{
-		$items = $this->get('container')->getItems('catalog_adv', 'publish=1');
+		$item = $this->get('container')->getItem('catalog_adv', 'publish=1');
 
-		return $this->render('catalog/adv.html.twig', compact('items'));
+		return $this->render('catalog/adv.html.twig', compact('item'));
 	}
 
 	public function catalogAction()

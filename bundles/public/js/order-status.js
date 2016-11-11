@@ -54,7 +54,7 @@ module.exports = (function(){
 	$(document).on('click', '.show-catalog-order', function(e){
         e.preventDefault();
         $('.modal .title').html('BOGS Оптом');
-        $('.modal .content').html('<form method="post"><input type="text" id="name" placeholder="Ваше имя"><input type="text" id="email" placeholder="Ваш e-mail"><input type="text" id="phone" placeholder="Ваш телефон"><button class="btn catalog-order">Заказать</button></form>');
+        $('.modal .content').html('<p>Оставьте ваши контактные данные и мы пришлем вам оптовый прайс лист</p><form method="post"><input type="text" id="name" placeholder="Ваше имя"><input type="text" id="email" placeholder="Ваш e-mail"><input type="text" id="phone" placeholder="Ваш телефон"><button class="btn catalog-order">Заказать</button></form>');
         modal.showModal();
         yaCounter29093585.reachGoal('show_order_pdf');
     });

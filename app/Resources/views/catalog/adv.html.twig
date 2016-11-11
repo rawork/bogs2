@@ -1,11 +1,9 @@
 <div class="banner-top">
 	<div>
-		<img src="/upload/2015/03/18/5.jpg" class="banner-img-desktop">
-		<img src="/upload/2015/03/18/5__mob.jpg" class="banner-img-mob">
+		<img src="{{ item.picture_value.value }}" class="banner-img-desktop">
+		<img src="{{ item.picture_mob_value.value }}" class="banner-img-mob">
 		<div class="slide-text">
-			<h3 class="slide-title">Обувь Bogs – создана для жизни</h3>
-			<a href="#catalog" class="btn scrollto">Заказать</a>
-			<p class="slide-shipping">При заказе от двух пар – бесплатная доставка по России</p>
+			{{ item.text }}
 		</div>
 	</div>
 </div>
