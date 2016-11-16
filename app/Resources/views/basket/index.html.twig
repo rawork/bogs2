@@ -65,21 +65,21 @@
             </li>
             <li class="shipping-payment__list__item">
                 <div class="radio">
-                    <input id="courier" type="radio" name="shipping-type" value="courier" data-shipping-price="500">
-                    <label for="courier">Доставка по Москве курьером (500 руб.)</label>
+                    <input id="courier" type="radio" name="shipping-type" value="courier" data-shipping-price="350">
+                    <label for="courier">Доставка по Москве курьером (350 руб.)</label>
                 </div>
             </li>
-            <li class="shipping-payment__list__item">
-                <div class="radio">
-                    <input id="russia-pr" type="radio" name="shipping-type" value="mkad_post" data-shipping-price="0" data-select-region="true" data-hide-payment=".shipping-payment__cash">
-                    <label for="russia-pr">За МКАД «Почта России»</label>
-                </div>
-                <div class="select-city hidden-area">
-                    <input type="text" class="select-region__field" data-source="cities" data-context="price" placeholder="Введите название города">
-                    <ul class="autocomplete">
-                    </ul>
-                </div>
-            </li>
+            {#<li class="shipping-payment__list__item">#}
+                {#<div class="radio">#}
+                    {#<input id="russia-pr" type="radio" name="shipping-type" value="mkad_post" data-shipping-price="0" data-select-region="true" data-hide-payment=".shipping-payment__cash">#}
+                    {#<label for="russia-pr">За МКАД «Почта России»</label>#}
+                {#</div>#}
+                {#<div class="select-city hidden-area">#}
+                    {#<input type="text" class="select-region__field" data-source="cities" data-context="price" placeholder="Введите название города">#}
+                    {#<ul class="autocomplete">#}
+                    {#</ul>#}
+                {#</div>#}
+            {#</li>#}
             <li class="shipping-payment__list__item">
                 <div class="radio">
                     <input id="russia-pr" type="radio" name="shipping-type" value="mkad_carrier" data-shipping-price="0" data-select-region="true" data-hide-payment=".shipping-payment__cash">
