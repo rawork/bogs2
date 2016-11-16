@@ -5,7 +5,10 @@
 
 {% if order.delivery_cost != -1  %}К оплате - {{ order.cost+order.delivery_cost }} руб.<br>
 {% if order.payment_type == 'card' %}<h3><a href="{{ link }}">Оплатить {{ order.cost+order.delivery_cost }} руб.</a></h3>{% endif %}
+{% else %}
+    <h3><a href="{{ link }}">Информация о заказе и оплате</a></h3>
 {% endif %}
+
 Способ оплаты - {{ payment_type_title }}<br><br>
 
 Способ доставки - {{ delivery_type_title }}<br>
