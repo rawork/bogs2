@@ -737,7 +737,7 @@ class BasketController extends PublicController
 						'status' => $statusRequest,
 						'delivery_type_title' => $this->delivery[$order['delivery_type']],
 						'payment_type_title' => $this->payment[$order['payment_type']],
-						'delivery_info_string' => join(', ', $delivery_info),
+						'delivery_info_string' => $order['address'],
 						'status_title' => $this->statuses[$order['order_status']],
 					)
 				),
