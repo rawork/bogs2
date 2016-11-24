@@ -13,7 +13,20 @@
 Количество товаров - {{ order.num }} шт.<br>
 <br>
 Товары:<br>
-{{ order.detail|nl2br }}<br>
+<table>
+    <tr>
+        <th>Название</th>
+        <th>Цена</th>
+        <th>Количество</th>
+    </tr>
+    {% for item in details %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td style="text-align: right">{{ item.price }} руб.</td>
+            <td style="text-align: right">{{ item.amount }} шт.</td>
+        </tr>
+    {% endfor %}
+</table>
 
 <p>В ближайшее время ваш заказ будет сформирован и отправлен в службу доставки.</p>
 <p>По всем вопросам вы можете связаться с нами по телефону: +7 (495) 580-21-68 или по электронной почте <a href="mailto:zakaz@bogs-shop.ru">zakaz@bogs-shop.ru</a></p>

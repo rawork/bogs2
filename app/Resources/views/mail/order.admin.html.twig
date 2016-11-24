@@ -16,7 +16,22 @@ E-mail - {{ order.email }}<br>
 
 Стоимость товаров - {{ order.cost }} руб.<br>
 Количество товаров - {{ order.num }} шт.<br>
+
 <br>
 Товары:<br>
-{{ order.detail|nl2br }}<br>
-
+<table>
+    <tr>
+        <th>Название</th>
+        <th>Цена</th>
+        <th>Количество</th>
+        <th>Локальный склад</th>
+    </tr>
+    {% for item in details %}
+    <tr>
+        <td>{{ item.name }}</td>
+        <td>{{ item.price }} руб.</td>
+        <td>{{ item.amount }} шт.</td>
+        <td>{{ item.local }} шт.</td>
+    </tr>
+    {% endfor %}
+</table>

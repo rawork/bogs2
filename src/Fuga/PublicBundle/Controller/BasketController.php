@@ -453,8 +453,10 @@ class BasketController extends PublicController
 					'photo' => $product['product']['photo_value']['extra']['thumb']['path'],
 					'name'  => $product['product']['name'].'(Артикул-'.$product['product']['articul'].')',
 					'size'  => $product['sku']['size'].' US',
-					'price' => $product['product']['price'].' руб.',
-					'amount'=> $product['amount'].' шт.',
+					'price' => $product['product']['price'],
+					'amount'=> $product['amount'],
+					'local' => $product['sku']['quantity2'],
+					'sku'   => $product['sku']['id'],
 				);
 				if ($product['product']['is_preorder'] == 1) {
 					$preorderProducts[] = $sku;
@@ -477,7 +479,7 @@ class BasketController extends PublicController
 				$preorderData['detail_json'] = json_encode($preorderProducts);
 
 				$strProducts = '';
-				$strProducts .= join("\t", array('Название', 'Размер', 'Цена', 'Количество'))."\n";
+				$strProducts .= join("\t", array('Название', 'Размер', 'Цена, руб.', 'Количество, шт.'))."\n";
 				foreach ($preorderProducts as $product) {
 					array_shift($product);
 					$strProducts .= join("\t", $product)."\n";
@@ -485,8 +487,22 @@ class BasketController extends PublicController
 
 				$preorderData['detail'] = $strProducts;
 
+				$this->get('connection')->beginTransaction();
+
 				try {
 					$order_id = $this->get('container')->addItem('basket_order', array_merge($preorderData, array('publish' => 1)));
+
+					foreach($preorderProducts as $product) {
+
+						$quantity2 = $product['amount'] <= $product['local'] ? $product['local']-$product['amount'] : 0;
+
+						$this->get('container')->updateItem(
+							'catalog_sku',
+							array('quantity2' => $quantity2),
+							array('id' => $product['sku'])
+						);
+					}
+
 					$link = $this->generateUrl('order', array('id' => md5($buyer['email'].$order_id)));
 
 					$this->get('mailer')->send(
@@ -495,6 +511,7 @@ class BasketController extends PublicController
 							'mail/preorder.buyer.html.twig',
 							array(
 								'order' => $preorderData,
+								'details' => json_decode($orderData['detail_json'], true),
 								'order_id' => $order_id,
 								'delivery_type_title' => $delivery_type_title,
 								'payment_type_title' => $payment_type_title,
@@ -512,6 +529,7 @@ class BasketController extends PublicController
 							'mail/preorder.admin.html.twig',
 							array(
 								'order' => $preorderData,
+								'details' => json_decode($preorderData['detail_json'], true),
 								'order_id' => $order_id,
 								'delivery_type_title' => $delivery_type_title,
 								'payment_type_title' => $payment_type_title,
@@ -523,7 +541,12 @@ class BasketController extends PublicController
 						ADMIN_EMAIL
 					);
 
+					$this->get('connection')->commit();
+
 				} catch (\Exception $e) {
+
+					$this->get('connection')->rollBack();
+
 					$this->get('log')->addError($e->getMessage());
 					$response->setData(array(
 						'status' => 'error',
@@ -542,7 +565,7 @@ class BasketController extends PublicController
 				$orderData['detail_json'] = json_encode($realProducts);
 
 				$strProducts = '';
-				$strProducts .= join("\t", array('Название', 'Размер', 'Цена', 'Количество')) . "\n";
+				$strProducts .= join("\t", array('Название', 'Размер', 'Цена, руб.', 'Количество, шт.')) . "\n";
 				foreach ($realProducts as $product) {
 					array_shift($product);
 					$strProducts .= join("\t", $product) . "\n";
@@ -550,8 +573,22 @@ class BasketController extends PublicController
 
 				$orderData['detail'] = $strProducts;
 
+				$this->get('connection')->beginTransaction();
+
 				try {
 					$order_id = $this->get('container')->addItem('basket_order', array_merge($orderData, array('publish' => 1)));
+
+					foreach($realProducts as $product) {
+
+						$quantity2 = $product['amount'] <= $product['local'] ? $product['local']-$product['amount'] : 0;
+
+						$this->get('container')->updateItem(
+							'catalog_sku',
+							array('quantity2' => $quantity2),
+							array('id' => $product['sku'])
+						);
+					}
+
 					$link = $this->generateUrl('order', array('id' => md5($buyer['email'] . $order_id)));
 
 					$this->get('mailer')->send(
@@ -560,6 +597,7 @@ class BasketController extends PublicController
 							'mail/order.buyer.html.twig',
 							array(
 								'order' => $orderData,
+								'details' => json_decode($orderData['detail_json'], true),
 								'order_id' => $order_id,
 								'delivery_type_title' => $delivery_type_title,
 								'payment_type_title' => $payment_type_title,
@@ -577,6 +615,7 @@ class BasketController extends PublicController
 							'mail/order.admin.html.twig',
 							array(
 								'order' => $orderData,
+								'details' => json_decode($orderData['detail_json'], true),
 								'order_id' => $order_id,
 								'delivery_type_title' => $delivery_type_title,
 								'payment_type_title' => $payment_type_title,
@@ -588,7 +627,12 @@ class BasketController extends PublicController
 						ADMIN_EMAIL
 					);
 
+					$this->get('connection')->commit();
+
 				} catch (\Exception $e) {
+
+					$this->get('connection')->rollBack();
+
 					$this->get('container')->addError($e->getMessage());
 					$response->setData(array(
 						'status' => 'error',
@@ -734,6 +778,7 @@ class BasketController extends PublicController
 					'mail/payment.buyer.html.twig',
 					array(
 						'order' => $order,
+						'details' => json_decode($order['detail_json'], true),
 						'status' => $statusRequest,
 						'delivery_type_title' => $this->delivery[$order['delivery_type']],
 						'payment_type_title' => $this->payment[$order['payment_type']],
