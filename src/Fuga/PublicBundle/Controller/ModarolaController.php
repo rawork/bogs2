@@ -88,17 +88,17 @@ class ModarolaController extends PublicController
 			}
 		}
 
-		if (count($sizes) > 0) {
-			$ids = array_keys($sizes);
-			foreach ($ids as $id) {
-				$this->get('container')->updateItem(
-					'catalog_sku',
-					array('publish' => 0),
-					array('id' => $id)
-				);
-			}
-
-		}
+//		if (count($sizes) > 0) {
+//			$ids = array_keys($sizes);
+//			foreach ($ids as $id) {
+//				$this->get('container')->updateItem(
+//					'catalog_sku',
+//					array('publish' => 0),
+//					array('id' => $id)
+//				);
+//			}
+//
+//		}
 
 		$response = new JsonResponse();
 		$response->setData(array(
