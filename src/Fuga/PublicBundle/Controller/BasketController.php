@@ -452,7 +452,7 @@ class BasketController extends PublicController
 				$sku = array(
 					'photo' => $product['product']['photo_value']['extra']['thumb']['path'],
 					'name'  => $product['product']['name'].'(Артикул-'.$product['product']['articul'].')',
-					'size'  => $product['sku']['size'].' US',
+					'size'  => $product['sku']['size'],
 					'price' => $product['product']['price'],
 					'amount'=> $product['amount'],
 					'local' => $product['sku']['quantity2'],

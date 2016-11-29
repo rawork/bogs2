@@ -28,7 +28,7 @@ E-mail - {{ order.email }}<br>
     </tr>
     {% for item in details %}
     <tr>
-        <td>{{ item.name }}</td>
+        <td>{{ item.name }} (размер - {{ item.size }})</td>
         <td>{{ item.price }} руб.</td>
         <td>{{ item.amount }} шт.</td>
         <td>{{ item.local }} шт.</td>
