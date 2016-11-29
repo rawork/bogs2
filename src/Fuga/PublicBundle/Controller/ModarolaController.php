@@ -68,6 +68,8 @@ class ModarolaController extends PublicController
 		}
 		$sizes = $this->get('container')->getItems('catalog_sku');
 
+		$this->get('log')->addError(serialize($response->body));
+
 		foreach ($response->body as $variant) {
 			$size = $this->get('container')->getItem('catalog_sku', 'modarola_id='.$variant->variant_id);
 			if (!array_key_exists($variant->product_sku, $articuls)) {
