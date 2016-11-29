@@ -101,7 +101,7 @@ class BasketController extends PublicController
 			$amount = $this->get('request')->request->get('amount');
 
 			$cart = $this->get('session')->get('cart');
-			$sku = $this->get('container')->getItem('catalog_sku', 'modarola_id=' . $id);
+			$sku = $this->get('container')->getItem('catalog_sku', 'id=' . $id);
 
 			if (isset($cart[$id])) {
 				$cart[$id]['amount'] += $amount;

@@ -33,6 +33,7 @@
                     <input type="text"
                            class="amount"
                            data-price="{{ product.product.price }}"
+                           data-id="{{ product.sku.id }}"
                            data-sku="{{ product.sku.modarola_id }}"
                            data-value="{% if product.sku.product_id_value.item.is_preorder %}10{% else %}{{ product.sku.quantity+product.sku.quantity2 }}{% endif %}"
                            value="{{ product.amount }}" />
@@ -41,7 +42,7 @@
             </div>
         </td>
         <td class="product-in-cart__price">{{ product.sku.product_id_value.item.price*product.amount }}</td>
-        <td><a href="#"  data-id="{{ product.sku.modarola_id }}" class="remove"></a></td>
+        <td><a href="#"  data-id="{{ product.sku.id }}" class="remove"></a></td>
     </tr>
     {% endfor %}
     </tbody>
