@@ -1,5 +1,8 @@
 'use strict';
 (function($) {
+
+    var skuID = null;
+
     var win = $(window),
         body = $('body'),
         winHeight = win.outerHeight(),
@@ -67,6 +70,11 @@
             $('.modal .content').html(data.content);
             $('.amount').attr('data-value', $('#sizes option:selected').attr('data-value'));
             modal.showModal();
+            console.log(skuID);
+            if (skuID) {
+                console.log('yes'+skuID);
+                $('#sizes').val(skuID);
+            }
         });
     });
 
@@ -194,5 +202,15 @@
             tabContent.addClass('active');        
         }
     });
+
+    try{
+        var productURL = window.location.hash.substr(2).split('/');
+        console.info(productURL);
+        skuID = parseInt(productURL[1]);
+        $('.choose-product[data-id='+parseInt(productURL[0])+']').trigger('click');
+
+    } catch (err) {
+        console.log(err);
+    }
 
 })(jQuery);

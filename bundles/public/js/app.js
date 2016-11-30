@@ -1,6 +1,9 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 (function($) {
+
+    var skuID = null;
+
     var win = $(window),
         body = $('body'),
         winHeight = win.outerHeight(),
@@ -68,6 +71,11 @@
             $('.modal .content').html(data.content);
             $('.amount').attr('data-value', $('#sizes option:selected').attr('data-value'));
             modal.showModal();
+            console.log(skuID);
+            if (skuID) {
+                console.log('yes'+skuID);
+                $('#sizes').val(skuID);
+            }
         });
     });
 
@@ -195,6 +203,16 @@
             tabContent.addClass('active');        
         }
     });
+
+    try{
+        var productURL = window.location.hash.substr(2).split('/');
+        console.info(productURL);
+        skuID = parseInt(productURL[1]);
+        $('.choose-product[data-id='+parseInt(productURL[0])+']').trigger('click');
+
+    } catch (err) {
+        console.log(err);
+    }
 
 })(jQuery);
 

@@ -221,6 +221,16 @@ products:
   path: /modarola/products
   defaults: { _controller: 'Fuga:Public:Modarola:products'}
 
+yandex:
+  path: /export/yandex.yml
+  defaults: { _controller: 'Fuga:Public:Export:yandex'}
+mail:
+  path: /export/mail.xml
+  defaults: { _controller: 'Fuga:Public:Export:mail'}
+google:
+  path: /export/google.xml
+  defaults: { _controller: 'Fuga:Public:Export:google'}
+
 public_page:
   path: /{node}
   defaults: { _controller: 'Fuga:Public:Common:index', node: '', action: '' }
