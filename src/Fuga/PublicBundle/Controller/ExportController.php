@@ -55,7 +55,7 @@ class ExportController extends PublicController
 			<vendor>BOGS</vendor>
 			<model>'.str_replace('Bogs ', '', $product['name']).'</model>
 			<name>'.$product['name'].'</name>
-			<description>'.htmlspecialchars($product['description']).'</description>
+			<description>'.htmlspecialchars(strip_tags($product['description'])).'</description>
 			<delivery>true</delivery>
 			<pickup>true</pickup>
 			<local_delivery_cost>350</local_delivery_cost>
@@ -97,7 +97,7 @@ class ExportController extends PublicController
 		<!-- The following attributes are always required -->
 		<g:id>'.$product['articul'].'-'.$sku['id'].'</g:id>
 		<g:title>'.$product['name'].' - Размер '.$sku['size'].' US</g:title>
-		<g:description>'.$product['description'].'</g:description>
+		<g:description>'.htmlspecialchars(strip_tags($product['description'])).'</g:description>
 		<g:link>http://'.$_SERVER['SERVER_NAME'].'/#/'.$product['id'].'/'.$sku['id'].'</g:link>
 		<g:image_link>http://'.$_SERVER['SERVER_NAME'].$product['photo_value']['extra']['main']['path'].'</g:image_link>
 		<g:condition>new</g:condition>
