@@ -94,7 +94,6 @@ class ExportController extends PublicController
 		foreach ($products as $product) {
 			foreach ($product['sku'] as $sku) {
 				$content .= '	<entry>
-		<!-- The following attributes are always required -->
 		<g:id>'.$product['articul'].'-'.$sku['id'].'</g:id>
 		<g:title>'.$product['name'].' - Размер '.$sku['size'].' US</g:title>
 		<g:description>'.htmlspecialchars(strip_tags($product['description'])).'</g:description>
