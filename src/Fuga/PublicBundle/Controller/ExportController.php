@@ -59,6 +59,7 @@ class ExportController extends PublicController
 			<currencyId>RUR</currencyId>
 			<categoryId>'.$product['category_id'].'</categoryId>
 			<picture>http://'.$_SERVER['SERVER_NAME'].$product['photo_value']['extra']['main']['path'].'</picture>
+			<typePrefix>Обувь</typePrefix>
 			<vendor>BOGS</vendor>
 			<model>'.str_replace('Bogs ', '', $product['name']).'</model>
 			<name>'.$product['name'].'</name>
