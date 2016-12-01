@@ -18,7 +18,70 @@ class ExportController extends PublicController
 
 	public function yandexAction()
 	{
+		$categories = $this->get('container')->getItems('catalog_category', 'publish=1');
+		$products = $this->get('container')->getItems('catalog_product', 'publish=1');
+		foreach ($products as &$product) {
+			$product['sku'] = $this->get('container')->getItems('catalog_sku', 'publish=1 AND (quantity > 0 OR quantity2 > 0) AND product_id='.$product['id']);
+		}
+		unset($product);
+		$date = date('Y-m-d H:i');
 
+		$content = '<?xml version="1.0" encoding="UTF-8"?>
+<yml_catalog date="'.$date.'"> 
+  <shop>
+	<name>'.$this->shop.'</name>
+	<company>'.$this->company.'</company>
+	<url>'.$this->url.'</url>
+	<currencies>
+		<currency id="RUR" rate="1"/>
+	</currencies>
+	<categories>
+';
+
+		foreach ($categories as $category) {
+			$content .= '		<category id="'.$category['id'].'" parentId="0">'.$category['title'].'</category>
+';
+		}
+
+		$content .= '	</categories>
+	<delivery-options>
+      <option cost=350" days="1-3"/>
+    </delivery-options>
+	<offers>
+';
+		foreach ($products as $product) {
+			foreach ($product['sku'] as $sku) {
+				$content .= '<offer id="'.$sku['id'].'" available="true">
+  <url>http://best.seller.ru/#/'.$product['id'].'/'.$sku['id'].'</url>
+  <price>'.$product['price'].'</price>
+  <currencyId>RUR</currencyId>
+  <categoryId>'.$product['category_id'].'</categoryId>
+  <picture>http://'.$_SERVER['SERVER_NAME'].$product['photo_value']['extra']['main']['path'].'</picture>
+  <store>false</store>
+  <pickup>true</pickup>
+  <delivery>true</delivery>
+  <delivery-options>
+    <option cost="350" days="1-3"/>
+  </delivery-options>
+  <name>'.$product['name'].' - Размер '.$sku['size'].' US</name>
+  <vendor>BOGS</vendor>
+  <description>'.htmlspecialchars(strip_tags($product['description'])).'</description>
+  <sales_notes>Необходима предоплата.</sales_notes>
+</offer>
+				
+';
+			}
+		}
+
+		$content .= '	</offers>
+  </shop>
+</yml_catalog>';
+
+		$response = new Response();
+		$response->setContent($content);
+		$response->headers->set('Content-Type', 'xml');
+
+		return $response;
 	}
 
 	public function mailAction()
@@ -28,6 +91,7 @@ class ExportController extends PublicController
 		foreach ($products as &$product) {
 			$product['sku'] = $this->get('container')->getItems('catalog_sku', 'publish=1 AND (quantity > 0 OR quantity2 > 0) AND product_id='.$product['id']);
 		}
+		unset($product);
 		$date = date('Y-m-d H:i');
 
 		$content = '<?xml version="1.0" encoding="UTF-8"?>
