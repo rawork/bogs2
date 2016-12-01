@@ -25,6 +25,9 @@ class ExportController extends PublicController
 	{
 		$categories = $this->get('container')->getItems('catalog_category', 'publish=1');
 		$products = $this->get('container')->getItems('catalog_product', 'publish=1');
+		foreach ($products as &$product) {
+			$product['sku'] = $this->get('container')->getItems('catalog_sku', 'publish=1 AND (quantity > 0 OR quantity2 > 0) AND product_id='.$product['id']);
+		}
 		$date = date('Y-m-d H:i');
 
 		$content = '<?xml version="1.0" encoding="UTF-8"?>
@@ -46,6 +49,10 @@ class ExportController extends PublicController
 	<offers>
 ';
 		foreach ($products as $product) {
+			$sizes = array();
+			foreach ($product['sku'] as $sku) {
+				$sizes[] = $sku['size'];
+			}
 			$content .= '		<offer id="'.$product['id'].'" available="true" cbid="'.$product['cbid'].'">
 			<url>http://'.$_SERVER['SERVER_NAME'].'#/'.$product['id'].'</url>
 			<price>'.$product['price'].'</price>
@@ -59,6 +66,7 @@ class ExportController extends PublicController
 			<delivery>true</delivery>
 			<pickup>true</pickup>
 			<local_delivery_cost>350</local_delivery_cost>
+			<param name="Размер" unit="US">'.join(', ', $sizes).'</param>
 		</offer>
 ';
 		}
