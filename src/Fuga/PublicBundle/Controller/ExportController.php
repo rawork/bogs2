@@ -45,7 +45,7 @@ class ExportController extends PublicController
 
 		$content .= '	</categories>
 	<delivery-options>
-      <option cost=350" days="1-3"/>
+      <option cost="350" days="1-3"/>
     </delivery-options>
 	<offers>
 ';
