@@ -1,0 +1,10 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block content %}
+<h3>Экспорт данных каталога</h3>
+<a href="/export/yandex.yml" target="_blank" class="btn btn-success">Yandex YML</a>
+<br><br>
+<a href="/export/google.xml" target="_blank" class="btn btn-success">Google Shopping XML (Atom)</a>
+<br><br>
+<a href="/export/mail.xml" target="_blank" class="btn btn-success">Mail.ru Товары XML</a>
+{% endblock %}

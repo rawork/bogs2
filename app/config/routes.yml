@@ -66,6 +66,11 @@ admin_module_setting:
     state: (content|service|system)
     module: \w+
 
+admin_catalog_export:
+  path: /admin/content/catalog/export
+  defaults: { _controller: 'Fuga:Admin:Export:index' }
+
+
 admin_entity_index:
   path: /admin/{state}/{module}/{entity}{suffix}
   defaults: { _controller: 'Fuga:Admin:Crud:index', suffix: '' }
@@ -163,6 +168,7 @@ admin_module_index:
   requirements:
     state: (content|service|system)
     module: \w+
+
 
 admin_cache_clear:
   path: /admin/cache/clear

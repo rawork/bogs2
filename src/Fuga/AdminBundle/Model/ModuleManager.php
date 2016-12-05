@@ -53,6 +53,12 @@ class ModuleManager extends ModelManager
 				'name' => 'Экспорт'
 			);
 		}
+		if ($module['name'] == 'catalog') {
+			$ret[] = array (
+				'ref' => $this->get('routing')->getGenerator()->generate('admin_catalog_export'),
+				'name' => 'Экспорт'
+			);
+		}
 
 		return $ret;
 	}
