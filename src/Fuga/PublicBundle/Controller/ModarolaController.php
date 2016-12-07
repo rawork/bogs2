@@ -34,7 +34,7 @@ class ModarolaController extends PublicController
 
 				$this->get('container')->updateItem(
 					'catalog_sku',
-					array('quantity' => $quantity),
+					array('quantity' => $quantity, 'updated' => date('Y-m-d H:i:s')),
 					array('modarola_id'=> $id)
 				);
 			}
