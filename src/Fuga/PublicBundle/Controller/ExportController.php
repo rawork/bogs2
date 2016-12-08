@@ -174,7 +174,7 @@ class ExportController extends PublicController
 		<g:image_link>http://'.$_SERVER['SERVER_NAME'].$product['photo_value']['extra']['main']['path'].'</g:image_link>
 		<g:condition>new</g:condition>
 		<g:availability>'.($product['is_preorder'] == 1 ? 'preorder' : 'in stock').'</g:availability>	
-		<g:price>'.$product['price'].' RUR</g:price>
+		<g:price>'.$product['price'].' RUB</g:price>
 		<g:google_product_category>187</g:google_product_category>
 		<g:brand>BOGS</g:brand>
 		<g:gender>'.$product['gender'].'</g:gender>
