@@ -32,11 +32,35 @@ class ModarolaController extends PublicController
 
 			foreach ($data as $id => $quantity) {
 
-				$this->get('container')->updateItem(
-					'catalog_sku',
-					array('quantity' => $quantity, 'updated' => date('Y-m-d H:i:s')),
-					array('modarola_id'=> $id)
-				);
+				try {
+					$sku = $this->get('container')->getItem('catalog_sku', 'modarola_id='.$id);
+
+					$this->get('container')->updateItem(
+						'catalog_sku',
+						array('quantity' => $quantity, 'updated' => date('Y-m-d H:i:s')),
+						array('modarola_id'=> $id)
+					);
+
+					if ($sku) {
+						$sku2 = $this->get('container')->getItem('catalog_sku', 'modarola_id='.$id);
+
+						$this->get('container')->addItem(
+							'catalog_stock_history',
+							array(
+								'articul' => $sku['product_id_value']['item']['articul'],
+								'modarola_id' => $sku['modarola_id'],
+								'quantity_old' => $sku['quantity'],
+								'quantity_new' => $sku2['quantity'],
+								'date' => date('Y-m-d H:i:s'),
+								'created' => date('Y-m-d H:i:s'),
+							)
+						);
+					}
+				} catch (\Exception $e) {
+					$this->get('log')->addError('Modarole sync error:'. $e->getMessage());
+				}
+
+
 			}
 
 			$response->setData(array(
