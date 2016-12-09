@@ -52,7 +52,7 @@ class ExportController extends PublicController
 		foreach ($products as $product) {
 			foreach ($product['sku'] as $sku) {
 				$content .= '<offer id="'.$sku['id'].'" available="true">
-  <url>http://best.seller.ru/#/'.$product['id'].'/'.$sku['id'].'</url>
+  <url>http://'.$_SERVER['SERVER_NAME'].'/#/'.$product['id'].'/'.$sku['id'].'</url>
   <price>'.$product['price'].'</price>
   <currencyId>RUR</currencyId>
   <categoryId>'.$product['category_id'].'</categoryId>
