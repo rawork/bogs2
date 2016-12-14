@@ -173,7 +173,7 @@ class ExportController extends PublicController
 		<g:id>'.$product['articul'].'-'.$sku['id'].'</g:id>
 		<g:title>'.$product['name'].' - Размер '.$sku['size'].' US</g:title>
 		<g:description>'.htmlspecialchars(strip_tags($product['description'])).'</g:description>
-		<g:link>http://'.$_SERVER['SERVER_NAME'].'/?product='.$product['id'].'&size='.$sku['id'].'</g:link>
+		<g:link>http://'.$_SERVER['SERVER_NAME'].'/?product='.$product['id'].'&amp;size='.$sku['id'].'</g:link>
 		<g:image_link>http://'.$_SERVER['SERVER_NAME'].$photoInfo['dirname'].'/'.urlencode($photoInfo['basename']).'</g:image_link>
 		<g:condition>new</g:condition>
 		<g:availability>'.($product['is_preorder'] == 1 ? 'preorder' : 'in stock').'</g:availability>	
