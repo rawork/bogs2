@@ -166,6 +166,9 @@ class ExportController extends PublicController
 
 		foreach ($products as $product) {
 			foreach ($product['sku'] as $sku) {
+				if (!file_exists(PRJ_DIR.$product['photo_value']['extra']['main']['path'])) {
+					var_dump('FILE NOT EXISTS');
+				}
 				$content .= '	<entry>
 		<g:id>'.$product['articul'].'-'.$sku['id'].'</g:id>
 		<g:title>'.$product['name'].' - Размер '.$sku['size'].' US</g:title>
@@ -180,6 +183,7 @@ class ExportController extends PublicController
 		<g:gender>'.$product['gender'].'</g:gender>
 		<g:age_group>'.$product['age_group'].'</g:age_group>
 		<g:size>'.$sku['size'].'</g:size>
+		<g:gtin>'.$product['gtin'].'</g:gtin>
 				
 		<g:item_group_id>'.$product['articul'].'</g:item_group_id>
 	</entry>
