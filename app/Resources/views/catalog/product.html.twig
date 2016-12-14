@@ -13,8 +13,11 @@
             {% endfor %}
         </ul>
     </div>
-    <div class="product-checkout clearfix">
-        <div class="product-price">{{ product.price }} руб.</div>
+    <div class="product-checkout clearfix" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+        <div class="product-price" itemprop="price">{{ product.price }} руб.</div>
+        <meta itemprop="priceCurrency" content="RUB" />
+        <meta itemprop="availability" content="http://schema.org/{% if product_is_preorder %}PreOrder{% else %}InStock{% endif %}"/>
+        <meta itemprop="itemCondition" itemtype="http://schema.org/OfferItemCondition" content="http://schema.org/NewCondition"/>
         <div class="product-sku">Артикул: {{ product.articul }}</div>
         <div class="product-props clearfix">
             {% if sizes|length > 0 %}
