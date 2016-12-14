@@ -51,12 +51,13 @@ class ExportController extends PublicController
 ';
 		foreach ($products as $product) {
 			foreach ($product['sku'] as $sku) {
+				$photoInfo = pathinfo($product['photo_value']['extra']['main']['path']);
 				$content .= '<offer id="'.$sku['id'].'" available="true">
   <url>http://'.$_SERVER['SERVER_NAME'].'/#/'.$product['id'].'/'.$sku['id'].'</url>
   <price>'.$product['price'].'</price>
   <currencyId>RUR</currencyId>
   <categoryId>'.$product['category_id'].'</categoryId>
-  <picture>http://'.$_SERVER['SERVER_NAME'].urlencode($product['photo_value']['extra']['main']['path']).'</picture>
+  <picture>http://'.$_SERVER['SERVER_NAME'].$photoInfo['dirname'].'/'.urlencode($photoInfo['basename']).'</picture>
   <store>false</store>
   <pickup>true</pickup>
   <delivery>true</delivery>
@@ -117,12 +118,13 @@ class ExportController extends PublicController
 			foreach ($product['sku'] as $sku) {
 				$sizes[] = $sku['size'];
 			}
+			$photoInfo = pathinfo($product['photo_value']['extra']['main']['path']);
 			$content .= '		<offer id="'.$product['id'].'" available="true" cbid="'.$product['cbid'].'">
 			<url>http://'.$_SERVER['SERVER_NAME'].'#/'.$product['id'].'</url>
 			<price>'.$product['price'].'</price>
 			<currencyId>RUR</currencyId>
 			<categoryId>'.$product['category_id'].'</categoryId>
-			<picture>http://'.$_SERVER['SERVER_NAME'].urlencode($product['photo_value']['extra']['main']['path']).'</picture>
+			<picture>http://'.$_SERVER['SERVER_NAME'].$photoInfo['dirname'].'/'.urlencode($photoInfo['basename']).'</picture>
 			<typePrefix>Обувь</typePrefix>
 			<vendor>BOGS</vendor>
 			<model>'.str_replace('Bogs ', '', $product['name']).'</model>
