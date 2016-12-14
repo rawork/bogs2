@@ -1,7 +1,7 @@
 <div class="product-card clearfix">
     <div class="product-gallery">
         <ul class="gallery-img-big">
-            <li class="active"><img src="{{ product.photo_value.extra.main.path }}" class="gallery-thumb"></li>
+            <li class="active"><img itemprop="image" src="{{ product.photo_value.extra.main.path }}" class="gallery-thumb"></li>
             {% for image in product.gallery_value  %}
             <li><img src="{{ image.extra.main.path }}" class="gallery-thumb" ></li>
             {% endfor %}
@@ -14,7 +14,7 @@
         </ul>
     </div>
     <div class="product-checkout clearfix" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-        <div class="product-price" itemprop="price">{{ product.price }} руб.</div>
+        <div class="product-price"><span itemprop="price">{{ product.price }}</span> руб.</div>
         <meta itemprop="priceCurrency" content="RUB" />
         <meta itemprop="availability" content="http://schema.org/{% if product_is_preorder %}PreOrder{% else %}InStock{% endif %}"/>
         <meta itemprop="itemCondition" itemtype="http://schema.org/OfferItemCondition" content="http://schema.org/NewCondition"/>
