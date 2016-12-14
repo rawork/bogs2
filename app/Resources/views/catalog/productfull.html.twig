@@ -2,6 +2,7 @@
     <div class="modal-overlay"></div>
     <div class="modal-dialog" itemscope itemtype="http://schema.org/Product">
         <meta itemprop="gtin12" content="{{ product.gtin }}" />
+        <meta itemprop="sku" content="{{ product.articul }}">
         <a href="#" class="close pull-right">&times;</a>
         <div class="title" itemprop="name">{{ product.name }}</div>
         <div class="content">
