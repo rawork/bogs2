@@ -56,7 +56,7 @@ class ExportController extends PublicController
   <price>'.$product['price'].'</price>
   <currencyId>RUR</currencyId>
   <categoryId>'.$product['category_id'].'</categoryId>
-  <picture>http://'.$_SERVER['SERVER_NAME'].$product['photo_value']['extra']['main']['path'].'</picture>
+  <picture>http://'.$_SERVER['SERVER_NAME'].urlencode($product['photo_value']['extra']['main']['path']).'</picture>
   <store>false</store>
   <pickup>true</pickup>
   <delivery>true</delivery>
@@ -122,7 +122,7 @@ class ExportController extends PublicController
 			<price>'.$product['price'].'</price>
 			<currencyId>RUR</currencyId>
 			<categoryId>'.$product['category_id'].'</categoryId>
-			<picture>http://'.$_SERVER['SERVER_NAME'].$product['photo_value']['extra']['main']['path'].'</picture>
+			<picture>http://'.$_SERVER['SERVER_NAME'].urlencode($product['photo_value']['extra']['main']['path']).'</picture>
 			<typePrefix>Обувь</typePrefix>
 			<vendor>BOGS</vendor>
 			<model>'.str_replace('Bogs ', '', $product['name']).'</model>
@@ -166,15 +166,12 @@ class ExportController extends PublicController
 
 		foreach ($products as $product) {
 			foreach ($product['sku'] as $sku) {
-				if (!file_exists(PRJ_DIR.$product['photo_value']['extra']['main']['path'])) {
-					var_dump('FILE NOT EXISTS');
-				}
 				$content .= '	<entry>
 		<g:id>'.$product['articul'].'-'.$sku['id'].'</g:id>
 		<g:title>'.$product['name'].' - Размер '.$sku['size'].' US</g:title>
 		<g:description>'.htmlspecialchars(strip_tags($product['description'])).'</g:description>
 		<g:link>http://'.$_SERVER['SERVER_NAME'].'/#/'.$product['id'].'/'.$sku['id'].'</g:link>
-		<g:image_link>http://'.$_SERVER['SERVER_NAME'].$product['photo_value']['extra']['main']['path'].'</g:image_link>
+		<g:image_link>http://'.$_SERVER['SERVER_NAME'].urlencode($product['photo_value']['extra']['main']['path']).'</g:image_link>
 		<g:condition>new</g:condition>
 		<g:availability>'.($product['is_preorder'] == 1 ? 'preorder' : 'in stock').'</g:availability>	
 		<g:price>'.$product['price'].' RUB</g:price>
