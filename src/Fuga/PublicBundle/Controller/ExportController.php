@@ -166,12 +166,13 @@ class ExportController extends PublicController
 
 		foreach ($products as $product) {
 			foreach ($product['sku'] as $sku) {
+				$photoInfo = pathinfo($product['photo_value']['extra']['main']['path']);
 				$content .= '	<entry>
 		<g:id>'.$product['articul'].'-'.$sku['id'].'</g:id>
 		<g:title>'.$product['name'].' - Размер '.$sku['size'].' US</g:title>
 		<g:description>'.htmlspecialchars(strip_tags($product['description'])).'</g:description>
 		<g:link>http://'.$_SERVER['SERVER_NAME'].'/#/'.$product['id'].'/'.$sku['id'].'</g:link>
-		<g:image_link>http://'.$_SERVER['SERVER_NAME'].urlencode($product['photo_value']['extra']['main']['path']).'</g:image_link>
+		<g:image_link>http://'.$_SERVER['SERVER_NAME'].$photoInfo['dirname'].'/'.urlencode($photoInfo['basename']).'</g:image_link>
 		<g:condition>new</g:condition>
 		<g:availability>'.($product['is_preorder'] == 1 ? 'preorder' : 'in stock').'</g:availability>	
 		<g:price>'.$product['price'].' RUB</g:price>
