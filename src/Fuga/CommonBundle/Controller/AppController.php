@@ -17,6 +17,13 @@ class AppController extends Controller
 		$this->get('container')->register('session', $session);
 		$this->get('container')->register('request', $request);
 
+		if ($this->get('request')->query->has('product') && $this->get('request')->query->has('size')) {
+			$this->get('templating')->assign([
+				'gproduct' => $this->get('request')->query->getInt('product'),
+				'gsize' => $this->get('request')->query->getInt('size')
+			]);
+		}
+
 		$site = $this->getManager('Fuga:Common:Site')->detectSite($_SERVER['REQUEST_URI']);
 		$this->getManager('Fuga:Common:Locale')->setLocale($site);
 

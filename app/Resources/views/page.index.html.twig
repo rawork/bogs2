@@ -133,14 +133,19 @@
                 <li><a href="/formal-offer">Договор-оферта</a></li>
             </ul>
         </div>
-        <div class="modal hidden">
-            <div class="modal-overlay"></div>
-            <div class="modal-dialog">
-                <a href="#" class="close pull-right">&times;</a>
-                <div class="title"></div>
-                <div class="content"></div>
+        {% if gproduct is defined and gsize is defined %}
+            {{ gproduct }}_{{ gsize }}
+            {{ render('Fuga:Public:Catalog:product', {'id': gproduct, 'gsize': gsize}) }}
+        {% else %}
+            <div class="modal hidden">
+                <div class="modal-overlay"></div>
+                <div class="modal-dialog" itemscope itemtype="http://schema.org/Product">
+                    <a href="#" class="close pull-right">&times;</a>
+                    <div class="title" itemprop="name"></div>
+                    <div class="content"></div>
+                </div>
             </div>
-        </div>
+        {% endif %}
 
 		<script type="text/javascript" src="/bundles/jquery/jquery.js"></script>
         <script src="/bundles/public/js/slick.min.js"></script>

@@ -24,18 +24,23 @@ class CatalogController extends PublicController
 		return $this->render('catalog/index.html.twig', compact('cats', 'cart'));
 	}
 
-	public function productAction($id)
+	public function productAction($id, $gsize = 0)
 	{
 		$response = new JsonResponse();
-		$product = $this->get('container')->getItem('catalog_product', $id);
+
+		$product = $this->get('container')->getItem('catalog_product', intval($id));
 
 		if (!$product) {
-			$response->setData(array(
-				'title' => 'Ошибка',
-				'content' => 'Товар отсутствует',
-			));
+			if($this->isXmlHttpRequest()) {
+				$response->setData(array(
+					'title' => 'Ошибка',
+					'content' => 'Товар отсутствует',
+				));
 
-			return $response;
+				return $response;
+			}
+
+			return 'Товар отсутствует';
 		}
 
 		if ($product['is_preorder']) {
@@ -44,12 +49,16 @@ class CatalogController extends PublicController
 			$sizes = $this->get('container')->getItems('catalog_sku', 'publish=1 AND (quantity>0 OR quantity2>0) AND product_id='.$product['id']);
 		}
 
-		$response->setData(array(
-			'title' => $product['name'],
-			'content' => $this->render('catalog/product.html.twig', compact('product', 'sizes')),
-		));
+		if($this->isXmlHttpRequest()) {
+			$response->setData(array(
+				'title' => $product['name'],
+				'content' => $this->render('catalog/product.html.twig', compact('product', 'sizes')),
+			));
 
-		return $response;
+			return $response;
+		}
+
+		return $this->render('catalog/productfull.html.twig', compact('product', 'sizes', 'gsize'));
 	}
 
 	public function socialAction()
