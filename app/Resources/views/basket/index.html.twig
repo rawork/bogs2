@@ -1,4 +1,8 @@
+{% if message %}
+    <div class="basket-error">{{ message }}</div>
+{% endif %}
 <!-- Products list -->
+
 <table class="products-list">
     {% if cart|length == 0 %}
     <tr class="empty-cart"><td>Ваша корзина пуста</td></tr>

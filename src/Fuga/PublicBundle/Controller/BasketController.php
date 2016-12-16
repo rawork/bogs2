@@ -23,10 +23,10 @@ class BasketController extends PublicController
 	);
 
 	private $statuses = array(
-		'new' => 'Получен, в обработке',
-		'calc' => 'Требуется расчет доставки',
-		'wait' => 'Ожидает оплаты',
-		'paid' => 'Оплачен',
+		'new' 		=> 'Получен, в обработке',
+		'calc' 		=> 'Требуется расчет доставки',
+		'wait' 		=> 'Ожидает оплаты',
+		'paid' 		=> 'Оплачен',
 		'delivered' => 'Передан в службу доставки',
 		'completed' => 'Выполнен',
 	);
@@ -72,17 +72,18 @@ class BasketController extends PublicController
 
 	public function indexAction()
 	{
+		if ($basketMessage = $this->get('session')->getFlashBag()->get('basket.message')) {
+			$message = array_shift($basketMessage);
+		}
+
 		$cart = $this->get('session')->get('cart');
 		$total = $this->get('session')->get('total');
 		$payment_type = $this->get('session')->get('cart.payment.type');
 		$delivery_type = $this->get('session')->get('cart.delivery.type');
 
-//		var_dump(array_shift($cart)['sku']['product_id_value']['item']);
-//		var_dump($_SESSION);
-
 		$this->get('container')->addScript('/bundles/public/js/cart.js');
 
-		return $this->render('basket/index.html.twig', compact('cart', 'total', 'payment_type' , 'delivery_type'));
+		return $this->render('basket/index.html.twig', compact('message', 'cart', 'total', 'payment_type' , 'delivery_type'));
 	}
 
 	public function miniAction()
@@ -101,7 +102,7 @@ class BasketController extends PublicController
 			$amount = $this->get('request')->request->get('amount');
 
 			$cart = $this->get('session')->get('cart');
-			$sku = $this->get('container')->getItem('catalog_sku', 'id=' . $id);
+			$sku = $this->get('container')->getItem('catalog_sku', $id);
 
 			if (isset($cart[$id])) {
 				$cart[$id]['amount'] += $amount;
@@ -315,6 +316,46 @@ class BasketController extends PublicController
 	public function newAction()
 	{
 		$cart = $this->get('session')->get('cart');
+
+		$newCart = array();
+		$changes = 0;
+		$num = 0;
+		$total = 0;
+
+		foreach ($cart as $item) {
+			$sku = $this->get('container')->getItem('catalog_sku', $item['sku']['id']);
+			$stock = $sku['quantity'] + $sku['quantity2'];
+			if ($stock < $item['amount']) {
+				$changes++;
+				if ($stock <= 0) {
+					continue;
+				}
+
+				$item['amount'] = $stock;
+				$item['sku'] = $sku;
+			}
+
+			$newCart[$item['sku']['id']] = $item;
+		}
+
+		if ($changes > 0) {
+			$this->get('session')->getFlashBag()->add(
+				'basket.message',
+				'Корзина обновлена в соответствии с наличием на складе'
+			);
+
+			foreach ($newCart as $item) {
+				$num += $item['amount'];
+				$total += $item['amount'] * $item['sku']['product_id_value']['item']['price'];
+			}
+
+			$this->get('session')->set('cart', $newCart);
+			$this->get('session')->set('num', $num);
+			$this->get('session')->set('total', $total);
+
+			return $this->redirect('/basket');
+		}
+
 		$num = $this->get('session')->get('num');
 		$total = $this->get('session')->get('total');
 		$buyer = $this->get('session')->get('cart.buyer');

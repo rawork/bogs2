@@ -127,7 +127,7 @@
             subTotal = 0;
         }
 
-        $.post('/api/basket/amount', {id: amount.attr('data-sku'), amount: amount.val()}, function(data){
+        $.post('/api/basket/amount', {id: amount.attr('data-id'), amount: amount.val()}, function(data){
             price.html(priceNew);
             $('.sub-total__val').text( convert.numToPrice( subTotal ) );
             checkCart();
