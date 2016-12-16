@@ -1,0 +1,39 @@
+{{ order.name }} {{ order.lastname }}, ваш заказ принят!<br><br>
+
+№ заказа - {{ order_id }}<br>
+Статус заказа - {{ status_title }}<br><br>
+
+{% if order.delivery_cost != -1  %}К оплате - {{ order.cost+order.delivery_cost }} руб.<br>
+{% if order.payment_type == 'card' %}<h3><a href="{{ link }}">Оплатить {{ order.cost+order.delivery_cost }} руб.</a></h3>{% endif %}
+{% else %}
+    <h3><a href="{{ link }}">Информация о заказе и оплате</a></h3>
+{% endif %}
+
+Способ оплаты - {{ payment_type_title }}<br><br>
+
+Способ доставки - {{ delivery_type_title }}<br>
+Стоимость доставки - {% if order.delivery_cost == -1  %}Требуется рассчитать{% else %}{{ order.delivery_cost }} руб.{% endif %}<br>
+Адрес доставки - {{ delivery_info_string }}<br><br>
+
+Стоимость товаров - {{ order.cost }} руб.<br>
+Количество товаров - {{ order.num }} шт.<br>
+<br>
+Товары:<br>
+<table>
+    <tr>
+        <th>Название</th>
+        <th>Цена</th>
+        <th>Количество</th>
+    </tr>
+    {% for item in details %}
+        <tr>
+            <td>{{ item.name }} (размер - {{ item.size }})</td>
+            <td style="text-align: right">{{ item.price }} руб.</td>
+            <td style="text-align: right">{{ item.amount }} шт.</td>
+        </tr>
+    {% endfor %}
+</table>
+
+
+{#<p>В ближайшее время ваш заказ будет сформирован и отправлен в службу доставки.</p>#}
+<p>По всем вопросам вы можете связаться с нами по телефону: +7 (495) 580-21-68 или по электронной почте <a href="mailto:zakaz@bogs-shop.ru">zakaz@bogs-shop.ru</a></p>

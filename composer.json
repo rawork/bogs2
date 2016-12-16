@@ -13,6 +13,7 @@
         "symfony/form": "2.6.*",
         "symfony/validator": "2.6.*",
         "symfony/security": "2.6.*",
+        "symfony/event-dispatcher": "2.6.*",
         "gregwar/captcha": "1.0.*",
         "nategood/httpful": "*"
     },

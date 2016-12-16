@@ -4,6 +4,8 @@ namespace Fuga\AdminBundle\Controller;
 
 use Fuga\AdminBundle\Action\IndexAction;
 use Symfony\Component\HttpFoundation\Response;
+use Fuga\AdminBundle\Listener\OrderListener;
+use Fuga\AdminBundle\Event\OrderDeliveryCalculatedEvent;
 
 class CrudController extends AdminController
 {
@@ -84,6 +86,17 @@ class CrudController extends AdminController
 				'admin.message',
 				$table->updateGlobals() ? 'Обновлено' : 'Ошибка обновления'
 			);
+
+			if ($module == 'basket' && $entity == 'order') {
+				$listener = new OrderListener();
+				$this->get('dispatcher')->addListener(OrderDeliveryCalculatedEvent::NAME, array($listener, 'onDeliveryCalcAction'));
+
+				$event = new OrderDeliveryCalculatedEvent(
+					$this->get('container'),
+					$this->get('container')->getItem($module.'_'.$entity, $id)
+				);
+				$this->get('dispatcher')->dispatch(OrderDeliveryCalculatedEvent::NAME, $event);
+			}
 
 			if ($this->get('request')->request->get('utype', 0) == 1) {
 				return $this->redirect($this->generateUrl(

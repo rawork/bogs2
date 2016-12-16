@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Router;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Loader\YamlFileLoader;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class Container 
 {
@@ -586,6 +587,11 @@ class Container
 					break;
 				case 'cache':
 					$this->services[$name] = new \Doctrine\Common\Cache\ApcCache();
+					break;
+				case 'dispatcher':
+					$dispatcher = new EventDispatcher();
+
+					$this->services[$name] = $dispatcher;
 					break;
 			}	
 		}
