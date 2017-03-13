@@ -118,6 +118,14 @@ class CrudController extends AdminController
 					array('state' => $state, 'module' => $module, 'entity' => $entity)
 				),
 				'name' => 'Список элементов'
+			),
+			array(
+				'ref' => $this->generateUrl(
+					'admin_order_bill',
+					array('id' => $id)
+				),
+				'name' => 'Накладная',
+				'style' => 'btn-warning'
 			)
 		);
 		$item = $table->getItem($id);

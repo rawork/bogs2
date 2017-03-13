@@ -1,7 +1,7 @@
 {% if links %}
 <div class="btn-group">	
 	{% for link in links %}
-	<a class="btn btn-default" href="{{ link.ref }}">{{ link.name }}</a>
+	<a class="btn{% if link.style is defined %} {{ link.style }}{% else %} btn-default{% endif %}" href="{{ link.ref }}">{{ link.name }}</a>
 	{% endfor %}
 </div>
 {% endif %}

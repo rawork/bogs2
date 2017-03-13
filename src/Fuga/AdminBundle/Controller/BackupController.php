@@ -2,11 +2,10 @@
 
 namespace Fuga\AdminBundle\Controller;
 
+
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class BackupController extends AdminController

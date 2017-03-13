@@ -15,7 +15,8 @@
         "symfony/security": "2.6.*",
         "symfony/event-dispatcher": "2.6.*",
         "gregwar/captcha": "1.0.*",
-        "nategood/httpful": "*"
+        "nategood/httpful": "*",
+        "phpoffice/phpexcel": "1.8.*"
     },
     "autoload": {
         "psr-4": {"Fuga\\": "src/Fuga/"}
