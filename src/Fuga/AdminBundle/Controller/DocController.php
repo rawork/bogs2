@@ -49,7 +49,7 @@ class DocController extends AdminController
 		$objDrawing->setCoordinates('A1');
 
 
-		$objPHPExcel->getActiveSheet()->setCellValue('F2', $created->format('d.m.Y').'г.');
+		$objPHPExcel->getActiveSheet()->setCellValue('F2', date('d.m.Y').'г.');
 
 		$objPHPExcel->getActiveSheet()->setCellValue('A6', 'НАКЛАДНАЯ № ТН-'.sprintf('%06d', $order['id']));
 
