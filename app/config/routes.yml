@@ -240,6 +240,13 @@ google:
   path: /export/google.xml
   defaults: { _controller: 'Fuga:Public:Export:google'}
 
+blog_article:
+  path: /blog/read/{id}
+  defaults: { _controller: 'Fuga:Public:Common:index', node: 'blog', action: 'read' }
+blog_tag:
+  path: /blog/tag/{id}
+  defaults: { _controller: 'Fuga:Public:Common:index', node: 'blog', action: 'tag' }
+
 public_page:
   path: /{node}
   defaults: { _controller: 'Fuga:Public:Common:index', node: '', action: '' }

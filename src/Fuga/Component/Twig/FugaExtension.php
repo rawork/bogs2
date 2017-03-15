@@ -36,9 +36,9 @@ class FugaExtension  extends \Twig_Extension
 		return ($locale != PRJ_LOCALE ? '/'.$locale : '').$GLOBALS['container']->get('routing')->getGenerator()->generate($name, $options);
 	}
 
-	public function formatDate($string, $format)
+	public function formatDate($string, $format, $simple = true)
 	{
-		return $GLOBALS['container']->get('util')->format_date($string, $format);
+		return $GLOBALS['container']->get('util')->format_date($string, $format, $simple);
 	}
 
 	public function fileSize($string)

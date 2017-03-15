@@ -1,0 +1,22 @@
+<div class="postlist">
+    {% for article in articles %}
+    <div class="postitem">
+        <h2 class="postitem__title"><a href="{{ path('blog_article', {id: article.id }) }}">{{ article.name }}</a></h2>
+        <div class="postitem__image">
+            <a href="{{ path('blog_article', {id: article.id }) }}">
+                <img src="{{ article.photo_value.extra.main.path }}"  alt="{{ article.name }}" class="need-lazy" >
+            </a>
+        </div>
+        <div class="postitem__preview">{{ article.preview }}</div>
+        <div class="postitem__timegap">
+            {{ article.created|format_date('j F Y') }}
+        </div>
+        <div class="taglist">
+            {% for tag in article.tags_value %}
+            <a href="{{ path('blog_tag', {id: tag.id }) }}" class="tagitem">{{ tag.name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{{ paginator.render() }}

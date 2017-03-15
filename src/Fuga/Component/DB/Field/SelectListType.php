@@ -13,10 +13,10 @@ class SelectListType extends Type
 	{
 		$name = $name ? $name : $this->getName();
 		$value = $this->get('request')->request->get($name);
-		$this->get('connection')->delete('user_group_module', array($this->getParam('link_inversed') => $this->dbId));
+		$this->get('connection')->delete($this->getParam('link_table'), array($this->getParam('link_inversed') => $this->dbId));
 		foreach ($value as $id) {
 			$this->get('connection')->insert(
-				'user_group_module',
+				$this->getParam('link_table'),
 				array(
 					$this->getParam('link_inversed') => $this->dbId,
 					$this->getParam('link_mapped') => $id,
@@ -31,15 +31,7 @@ class SelectListType extends Type
 	{
 		$content = '';
 		$fields = explode(',', $this->getParam('l_field'));
-		$sql = 'SELECT t1.'.$this->getParam('link_mapped').', t0.*
-		FROM '.$this->getParam('l_table').' as t0
-		JOIN '.$this->getParam('link_table').' as t1 ON t1.'.$this->getParam('link_mapped').' = t0.id
-		WHERE t1.'.$this->getParam('link_inversed').' = :id
-		ORDER BY t0.'.$this->getParam('l_sort');
-		$stmt = $this->get('connection')->prepare($sql);
-		$stmt->bindValue('id', $this->dbId);
-		$stmt->execute();
-		$items = $stmt->fetchAll();
+		$items = $this->getNativeValue();
 		if ($items) {
 			foreach ($items as $k => $item) {
 				$content .= (!empty($content) && $k) ? ', ' : '';
@@ -95,9 +87,7 @@ class SelectListType extends Type
 	public function getInput($value = '', $name = '')
 	{
 		$name = $name ? $name : $this->getName();
-		$value = intval($value ? $value : $this->dbValue);
-		$input_id = strtr($name, '[]', '__');
-		$table = $this->getParam('table');
+
 		if ('dialog' == $this->getParam('view_type')) {
 			$sql = 'SELECT t1.'.$this->getParam('link_mapped').', t0.*
 			FROM '.$this->getParam('l_table').' as t0
@@ -121,7 +111,7 @@ class SelectListType extends Type
 		} else {
 			$sql = 'SELECT t1.'.$this->getParam('link_inversed').',t1.'.$this->getParam('link_mapped').', t0.*
 			FROM '.$this->getParam('l_table').' as t0
-			LEFT JOIN '.$this->getParam('link_table').' as t1 ON t1.'.$this->getParam('link_mapped').' = t0.id
+			LEFT JOIN '.$this->getParam('link_table').' as t1 ON (t1.'.$this->getParam('link_mapped').' = t0.id AND t1.'.$this->getParam('link_inversed').'='.$this->dbId.') 
 			ORDER BY t0.'.$this->getParam('l_sort');
 			$stmt = $this->get('connection')->prepare($sql);
 			$stmt->execute();
@@ -138,5 +128,20 @@ class SelectListType extends Type
 			);
 		}
 
+	}
+
+	public function getNativeValue() {
+		$sql = 'SELECT t1.'.$this->getParam('link_mapped').', t0.*
+		FROM '.$this->getParam('l_table').' as t0
+		JOIN '.$this->getParam('link_table').' as t1 ON t1.'.$this->getParam('link_mapped').' = t0.id
+		WHERE t1.'.$this->getParam('link_inversed').' = :id
+		ORDER BY t0.'.$this->getParam('l_sort');
+
+		$stmt = $this->get('connection')->prepare($sql);
+		$stmt->bindValue('id', $this->dbId);
+		$stmt->execute();
+		$items = $stmt->fetchAll();
+
+		return $items;
 	}
 }

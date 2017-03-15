@@ -75,10 +75,21 @@ class Util
 		return str_replace($cyrilic, $latin, $str);
 	}
 
-	public function format_date($str, $format)
+	public function format_date($str, $format, $simple = true)
 	{
 		setlocale(LC_ALL, 'ru_RU.utf-8');
 		$date = new \DateTime($str);
+		$yesterday_end = new \DateTime();
+		$yesterday_end->setTime(0,0);
+		$yesterday_start = $yesterday_end->sub(new \DateInterval('P1D'));
+		if ($simple) {
+			if ($date > $yesterday_end) {
+				$format = 'сегодня в H:i';
+			} else if ($date > $yesterday_start && $date < $yesterday_end) {
+				$format = 'вчера в H:i';
+			}
+		}
+
 		$dstr = $date->format($format);
 		$locale = $this->container->get('session')->get('locale', PRJ_LOCALE);
 		if ($locale != 'en') {
@@ -87,7 +98,7 @@ class Util
 				'ua' => array(),
 			);
 			$month = array(
-				'ru' => array('January' => 'Января', 'February' => 'Февраля', 'March' => 'Марта', 'April' => 'Апреля', 'May' => 'Мая', 'June' => 'Июня', 'July' => 'Июля', 'August' => 'Августа', 'September' => 'Сентября', 'October' => 'Октября', 'November'  => 'Ноября', 'December' => 'Декабря'),
+				'ru' => array('January' => 'января', 'February' => 'февраля', 'March' => 'марта', 'April' => 'апреля', 'May' => 'мая', 'June' => 'июня', 'July' => 'июля', 'August' => 'августа', 'September' => 'сентября', 'October' => 'октября', 'November'  => 'ноября', 'December' => 'декабря'),
 				'ua' => array(),
 			);
 			$sweekday = array(
@@ -103,8 +114,10 @@ class Util
 			} else {
 				$dstr = strtr($dstr, $month[$locale]);
 			}
+
 			$dstr = strtr($dstr, array_merge($sweekday[$locale],$weekday[$locale]));
-		} 
+		}
+
 		return $dstr;
 	}
 

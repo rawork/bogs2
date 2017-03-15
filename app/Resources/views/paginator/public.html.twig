@@ -1,7 +1,6 @@
 <div class="pagination">
-	Страницы: 
-	{% if begin_link != '' %}<a href="{{ begin_link }}">&laquo;</a>{/if}
-	{% if prev_link != '' %}<a href="{{ prev_link }}">&lsaquo;</a>{/if}
+	{% if begin_link != '' %}<a href="{{ begin_link }}">&laquo;</a>{% endif %}
+	{% if prev_link != '' %}<a href="{{ prev_link }}">&lsaquo;</a>{% endif %}
 	{% for i in pages %}
 	<a{% if page == i.name %} class="active"{% endif %} href="{{ i.ref }}">{{ i.name }}</a>
 	{% endfor %}

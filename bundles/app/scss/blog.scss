@@ -1,0 +1,179 @@
+.relatedlist{
+  margin-top: 60px;
+
+  &__header h2 {
+    font-family: PFDinBold, Sans-serif;
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 24px;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    & li {
+      float: left;
+      width: 33%;
+      min-height: 300px;
+      padding: 0 10px;
+
+      &:first-child {
+        padding-left: 0;
+      }
+
+      &:last-child {
+        padding-right: 0;
+      }
+
+      & a {
+        color: #333;
+        text-decoration: none;
+
+        & h3 {
+          margin: 10px 0;
+        }
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+.postitem {
+  padding-top: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #f0f0f0;
+
+  &__title {
+    font-family: PFDinBold,Sans-serif;
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 24px;
+    line-height: 1.4;
+    text-transform: uppercase;
+
+    &>a {
+      color: #000;
+    }
+
+    &>a:hover {
+      text-decoration: none;
+    }
+  }
+
+  &__timegap {
+    margin: 0 0 5px;
+  }
+
+  &__image {
+    & img {
+      max-width: 100%;
+    }
+  }
+
+  &__preview {
+    margin: 20px 0;
+    font-size: 16px;
+    line-height: 22px;
+  }
+}
+
+.taglist {
+  margin: 10px 0;
+  color: #999;
+}
+
+a.tagitem {
+  text-decoration: none;
+  display: inline-block;
+  margin: 0 5px 0 0;
+  padding: 5px 7px 4px;
+  color: #fff;
+  background-color: #f58022;
+  font-weight: bold;
+
+  &:hover {
+    background-color: #000;
+  }
+}
+
+.pagination {
+  margin: 20px 0;
+  font-size: 20px;
+  font-weight: bold;
+
+  & a {
+    display: inline-block;
+    color: #f58022;
+    text-decoration: none;
+    padding: 10px 15px;
+  }
+
+  & a:hover {
+    color: #000;
+  }
+
+  & a.active {
+    background-color: #f58022;
+    color: #fff;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+}
+
+.post__neighbors {
+  font-size: 11px;
+  margin: 0;
+  margin-top: 20px;
+  padding: 0;
+
+  & a {
+    text-decoration: none;
+    color: #333;
+  }
+
+  & li {
+    list-style: none;
+  }
+
+  & h2 {
+    color: #05c;
+    font-size: 12px;
+    text-decoration: underline;
+    display: inline-block;
+  }
+}
+
+@media only screen and (max-width: 670px) {
+  .relatedlist{
+    margin-top: 40px;
+
+    &__list {
+
+      & li {
+        float: none;
+        width: 100%;
+        min-height: auto;
+        margin-bottom: 20px;
+        padding: 0 0;
+
+        & a {
+          & h3 {
+            margin: 10px 0 2px 0;
+          }
+        }
+      }
+    }
+
+  }
+
+}
+

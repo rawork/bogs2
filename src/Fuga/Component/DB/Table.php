@@ -560,7 +560,7 @@ class Table
 	public function getItem($criteria, $sort = '', $select = '', $detailed = true)
 	{
 		$criteria = is_numeric($criteria) ? 'id='.$criteria : $criteria;
-		$this->select(array('where' => $criteria, 'select' => $select, 'order_by' => $sort));
+		$this->select(array('where' => $criteria, 'select' => $select, 'order_by' => $sort, 'limit' => 1));
 		return $this->getNextArray($detailed);    
 	}
 	

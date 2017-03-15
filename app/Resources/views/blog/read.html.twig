@@ -1,0 +1,55 @@
+
+
+    <div class="content-wrap content-wrap_post">
+        <div class="postitem__timegap">
+            {{ article.created|format_date('j F Y') }}
+        </div>
+        <div class="content" id="content">
+            <div class="postitem__image">
+                <img src="{{ article.photo_value.extra.main.path }}"  alt="{{ article.name }}" >
+            </div>
+            <div class="postitem__content">
+                <div class="postitem__preview">{{ article.content }}</div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">(function() {
+            if (window.pluso)if (typeof window.pluso.start == "function") return;
+            if (window.ifpluso==undefined) { window.ifpluso = 1;
+                var d = document, s = d.createElement('script'), g = 'getElementsByTagName';
+                s.type = 'text/javascript'; s.charset='UTF-8'; s.async = true;
+                s.src = ('https:' == window.location.protocol ? 'https' : 'http')  + '://share.pluso.ru/pluso-like.js';
+                var h=d[g]('body')[0];
+                h.appendChild(s);
+            }})();</script>
+    <div class="pluso" data-background="transparent" data-options="medium,square,line,horizontal,nocounter,theme=04" data-services="vkontakte,odnoklassniki,facebook,twitter,google"></div>
+    <ul class="post__neighbors">
+        {% if prev %}
+        <li><a href="{{ path('blog_article', {id: prev.id }) }}" rel="prev"><span class="neighbor__arr"><span>До</span> ←</span> <h2>{{ prev.name }}</h2></a></li>
+        {% endif %}
+        {% if next %}
+        <li><a href="{{ path('blog_article', {id: next.id }) }}" rel="next"><span class="neighbor__arr"><span>После</span> →</span> <h2>{{ next.name }}</h2></a></li>
+        {% endif %}
+    </ul>
+    {% if related %}
+    <div class="relatedlist">
+        <div class="relatedlist__header">
+            <h2>Читайте также</h2>
+        </div>
+        <ul class="relatedlist__list clearfix">
+            {% for item in related %}
+            <li>
+                <a class="related__image" href="{{ path('blog_article', {id: item.id }) }}">
+                    <img width="345" height="195" src="{{ item.photo_value.extra.main.path }}">
+                </a>
+                <div class="related__content">
+                    <a href="{{ path('blog_article', {id: item.id }) }}"><h3>{{ item.name }}</h3></a>
+                    <span>{{ item.created|format_date('j F Y') }}</span>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+
