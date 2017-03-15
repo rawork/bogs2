@@ -532,19 +532,19 @@ $(document).ready(function(){
 		}
 	});
 	/* Taken from http://brianreavis.github.io/selectize.js/  to display current value */
-	$(function() {
-		$('select.selectized,input.selectized').each(function() {
-			var $container = $('<div>').addClass('value').html('Текущее значение: ');
-			var $value = $('<span>').appendTo($container);
-			var $input = $(this);
-			var update = function(e) { $value.text(JSON.stringify($input.val())); }
-
-			$(this).on('change', update);
-			update();
-
-			$container.insertAfter($input.next());
-		});
-	});
+	// $(function() {
+	// 	$('select.selectized,input.selectized').each(function() {
+	// 		var $container = $('<div>').addClass('value').html('Текущее значение: ');
+	// 		var $value = $('<span>').appendTo($container);
+	// 		var $input = $(this);
+	// 		var update = function(e) { $value.text(JSON.stringify($input.val())); }
+    //
+	// 		$(this).on('change', update);
+	// 		update();
+    //
+	// 		$container.insertAfter($input.next());
+	// 	});
+	// });
 
 	$select.each(function(index) {
 		var selectize = this.selectize;
