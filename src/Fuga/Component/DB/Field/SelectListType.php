@@ -92,6 +92,10 @@ class SelectListType extends Type
 	{
 		$name = $name ? $name : $this->getName();
 
+		if (!$this->dbId) {
+			return 'Добавление элементов будет доступно после сохранения записи!';
+		}
+
 		if ('dialog' == $this->getParam('view_type')) {
 			$sql = 'SELECT t1.'.$this->getParam('link_mapped').', t0.*
 			FROM '.$this->getParam('l_table').' as t0
