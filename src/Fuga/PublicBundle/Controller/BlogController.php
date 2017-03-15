@@ -50,4 +50,4 @@ class BlogController extends PublicController
 		return $this->render('blog/read.html.twig', compact('article', 'next', 'prev', 'related'));
 	}
 
-} 
+}

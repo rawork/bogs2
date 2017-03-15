@@ -177,6 +177,14 @@ admin_cache_clear:
   path: /admin/cache/clear
   defaults: { _controller: 'Fuga:Admin:Cache:clear' }
 
+api_tag_list:
+  path: /api/tag
+  defaults: { _controller: 'Fuga:Public:Tag:index' }
+api_tag_create:
+  path: /api/tag/create
+  defaults: { _controller: 'Fuga:Public:Tag:create' }
+
+
 order_catalog:
   path: /ajax/catalog
   defaults: { _controller: 'Fuga:Public:Catalog:catalog' }

@@ -486,6 +486,82 @@ $(document).ready(function(){
         }
         $('#'+inputId+'_extra').val(ids.join());
     });
+
+	var $select = $('.multiselect').selectize({
+		plugins: ['remove_button'],
+		valueField: 'tag_id',
+		labelField: 'tag_name',
+		searchField: ['tag_name'],
+		maxOptions: 10,
+		create: function (input, callback) {
+			$.ajax({
+				url: this.$input.attr('data-create-url'),
+				data: { 'name': input },
+				type: 'POST',
+				dataType: 'json',
+				success: function (result) {
+					if (result) {
+						callback({ tag_id: result.id, tag_name: input });
+					}
+				}
+			});
+		},
+		render: {
+			option: function (item, escape) {
+				return '<div>' + escape(item.tag_name) + '</div>';
+			}
+		},
+		load: function (query, callback) {
+			if (!query.length) return callback();
+			return callback();
+		}
+		,
+		onInitialize: function() {
+			var existingOptions = JSON.parse(this.$input.attr('data-selectize-value'));
+			var self = this;
+			if(Object.prototype.toString.call( existingOptions ) === "[object Array]") {
+				existingOptions.forEach( function (existingOption) {
+					self.addOption(existingOption);
+					self.addItem(existingOption[self.settings.valueField]);
+				});
+			}
+			else if (typeof existingOptions === 'object') {
+				self.addOption(existingOptions);
+				self.addItem(existingOptions[self.settings.valueField]);
+			}
+		}
+	});
+	/* Taken from http://brianreavis.github.io/selectize.js/  to display current value */
+	$(function() {
+		$('select.selectized,input.selectized').each(function() {
+			var $container = $('<div>').addClass('value').html('Текущее значение: ');
+			var $value = $('<span>').appendTo($container);
+			var $input = $(this);
+			var update = function(e) { $value.text(JSON.stringify($input.val())); }
+
+			$(this).on('change', update);
+			update();
+
+			$container.insertAfter($input.next());
+		});
+	});
+
+	$select.each(function(index) {
+		var selectize = this.selectize;
+
+		var url = selectize.$input.attr('data-list-url');
+
+		$.get(url+'?_=' + $.now(), function(data) {
+			if (data) {
+				for (i in data) {
+					var tag = data[i];
+					var item = {tag_id: tag.id, tag_name: tag.name};
+					selectize.addOption(item);
+				}
+			}
+		}, "json");
+
+	})
 	
 });
 
