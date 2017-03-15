@@ -49,7 +49,7 @@ class DocController extends AdminController
 		$objDrawing->setCoordinates('A1');
 
 
-		$objPHPExcel->getActiveSheet()->setCellValue('F2', date('d.m.Y').'г.');
+		$objPHPExcel->getActiveSheet()->setCellValue('E2', date('d.m.Y').'г.');
 
 		$objPHPExcel->getActiveSheet()->setCellValue('A6', 'НАКЛАДНАЯ № ТН-'.sprintf('%06d', $order['id']));
 
@@ -79,7 +79,7 @@ class DocController extends AdminController
 
 		foreach ($products as $product) {
 			$objPHPExcel->getActiveSheet()
-				->getStyle('A'.$i.':F'.$i)
+				->getStyle('A'.$i.':E'.$i)
 				->getBorders()
 				->getAllBorders()
 				->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
@@ -87,17 +87,16 @@ class DocController extends AdminController
 			$objPHPExcel->getActiveSheet()->getStyle('B'.$i)
 				->getAlignment()->setWrapText(true);
 			$objPHPExcel->getActiveSheet()
-				->getStyle('A'.$i.':F'.$i)
+				->getStyle('A'.$i.':E'.$i)
 				->getAlignment()
 				->setVertical(\PHPExcel_Style_Alignment::VERTICAL_TOP);
 			$objPHPExcel->getActiveSheet()->getRowDimension($i)->setRowHeight(-1);
 
-			$objPHPExcel->getActiveSheet()->mergeCells('B'.$i.':C'.$i);
 			$objPHPExcel->getActiveSheet()->setCellValue('A'.$i, $num);
 			$objPHPExcel->getActiveSheet()->setCellValue('B'.$i, $product['name'].', размер '.$product['size']);
-			$objPHPExcel->getActiveSheet()->setCellValue('D'.$i, $product['price']);
-			$objPHPExcel->getActiveSheet()->setCellValue('E'.$i, $product['amount']);
-			$objPHPExcel->getActiveSheet()->setCellValue('F'.$i, $product['price']*$product['amount']);
+			$objPHPExcel->getActiveSheet()->setCellValue('C'.$i, $product['price']);
+			$objPHPExcel->getActiveSheet()->setCellValue('D'.$i, $product['amount']);
+			$objPHPExcel->getActiveSheet()->setCellValue('E'.$i, $product['price']*$product['amount']);
 
 			$objPHPExcel->getActiveSheet()->getStyle('D'.$i)->getNumberFormat()->setFormatCode('# ##0.00');
 			$objPHPExcel->getActiveSheet()->getStyle('F'.$i)->getNumberFormat()->setFormatCode('# ##0.00');
@@ -108,31 +107,30 @@ class DocController extends AdminController
 
 		if (intval($order['delivery_cost']) > 0) {
 			$objPHPExcel->getActiveSheet()
-				->getStyle('A'.$i.':F'.$i)
+				->getStyle('A'.$i.':E'.$i)
 				->getBorders()
 				->getAllBorders()
 				->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
 
-			$objPHPExcel->getActiveSheet()->mergeCells('B'.$i.':C'.$i);
 			$objPHPExcel->getActiveSheet()->setCellValue('A'.$i, $num);
 			$objPHPExcel->getActiveSheet()->setCellValue('B'.$i, 'Доставка');
-			$objPHPExcel->getActiveSheet()->setCellValue('D'.$i, $order['delivery_cost']);
-			$objPHPExcel->getActiveSheet()->setCellValue('E'.$i, 1);
-			$objPHPExcel->getActiveSheet()->setCellValue('F'.$i, $order['delivery_cost']);
+			$objPHPExcel->getActiveSheet()->setCellValue('C'.$i, $order['delivery_cost']);
+			$objPHPExcel->getActiveSheet()->setCellValue('D'.$i, 1);
+			$objPHPExcel->getActiveSheet()->setCellValue('E'.$i, $order['delivery_cost']);
 
-			$objPHPExcel->getActiveSheet()->getStyle('D'.$i)->getNumberFormat()->setFormatCode('# ##0.00');
-			$objPHPExcel->getActiveSheet()->getStyle('F'.$i)->getNumberFormat()->setFormatCode('# ##0.00');
+			$objPHPExcel->getActiveSheet()->getStyle('C'.$i)->getNumberFormat()->setFormatCode('# ##0.00');
+			$objPHPExcel->getActiveSheet()->getStyle('E'.$i)->getNumberFormat()->setFormatCode('# ##0.00');
 			$i++;
 			$sum += $order['delivery_cost'];
 		}
 
 		$objPHPExcel->getActiveSheet()
-			->getStyle('E'.$i.':F'.$i)
+			->getStyle('D'.$i.':E'.$i)
 			->getBorders()
 			->getAllBorders()
 			->setBorderStyle(\PHPExcel_Style_Border::BORDER_THIN);
-		$objPHPExcel->getActiveSheet()->setCellValue('E'.$i, 'Итого:');
-		$objPHPExcel->getActiveSheet()->setCellValue('F'.$i, $sum);
+		$objPHPExcel->getActiveSheet()->setCellValue('D'.$i, 'Итого:');
+		$objPHPExcel->getActiveSheet()->setCellValue('E'.$i, $sum);
 		$objPHPExcel->getActiveSheet()->getStyle('F'.$i)->getNumberFormat()->setFormatCode('# ##0.00');
 		$i += 4;
 		$objPHPExcel->getActiveSheet()
