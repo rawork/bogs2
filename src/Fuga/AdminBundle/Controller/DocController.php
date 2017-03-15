@@ -74,6 +74,7 @@ class DocController extends AdminController
 		$objRichText->createTextRun('Адрес доставки: ')->getFont()->setBold(true)->setSize(14);
 		$objRichText->createTextRun($order['address'])->getFont()->setSize(14);
 		$objPHPExcel->getActiveSheet()->setCellValue('A11', $objRichText);
+		$objPHPExcel->getActiveSheet()->getStyle('A11')->getAlignment()->setWrapText(true);
 
 		$objPHPExcel->getActiveSheet()->getStyle('A8:A11')->getFont()->setSize(14);
 
