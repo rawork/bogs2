@@ -115,7 +115,7 @@ class SelectListType extends Type
 		} else {
 			$sql = 'SELECT t1.'.$this->getParam('link_inversed').',t1.'.$this->getParam('link_mapped').', t0.*
 			FROM '.$this->getParam('l_table').' as t0
-			JOIN '.$this->getParam('link_table').' as t1 ON (t1.'.$this->getParam('link_mapped').' = t0.id AND t1.'.$this->getParam('link_inversed').'='.$this->dbId.') 
+			JOIN '.$this->getParam('link_table').' as t1 ON (t1.'.$this->getParam('link_mapped').' = t0.id '.($this->dbId ? 'AND t1.'.$this->getParam('link_inversed').'='.$this->dbId : '').') 
 			ORDER BY t0.'.$this->getParam('l_sort');
 
 			$stmt = $this->get('connection')->prepare($sql);
@@ -132,16 +132,6 @@ class SelectListType extends Type
 
 			// todo сделать урлы универсальными
 			return '<input class="multiselect" id="'.$name.'" name="'.$name.'" type="text" value="" data-list-url="/api/tag"  data-create-url="/api/tag/create" data-selectize-value=\''.json_encode($tags).'\'/>';
-
-//			return $this->get('templating')->render(
-//				'form/field/selectlist.simple.html.twig',
-//				array(
-//					'items' => $items,
-//					'name' => $name,
-//					'l_field' => $this->getParam('l_field'),
-//					'link_mapped' => $this->getParam('link_mapped')
-//				)
-//			);
 		}
 
 	}
