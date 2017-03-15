@@ -31,6 +31,13 @@ class BlogController extends PublicController
 		return $this->render('blog/index.html.twig', compact('articles', 'paginator'));
 	}
 
+	public function tagAction($id)
+	{
+		$articles = $this->getManager('Fuga:Public:Article')->getByTag($id);
+
+		return $this->render('blog/index.html.twig', compact('articles'));
+	}
+
 	public function readAction($id)
 	{
 		$article = $this->get('container')->getItem('blog_article', $id);

@@ -34,9 +34,25 @@ class ArticleManager extends ModelManager
 			$ids[] = $link['article_id'];
 		}
 
-		$criteria = 'id IN('.implode(',', $ids).')';
+		$criteria = 'publish=1 AND id IN('.implode(',', $ids).')';
 
 		return $this->get('container')->getItems('blog_article', $criteria, 'id DESC', 3);
+	}
+
+	function getByTag($tagId) {
+		$sql = 'SELECT article_id FROM blog_article_tag WHERE tag_id = ? ORDER BY article_id DESC';
+
+		$links = $this->get('connection')
+			->executeQuery($sql, array($tagId), array(\PDO::PARAM_INT))->fetchAll();
+
+		$ids = array();
+		foreach ( $links as $link) {
+			$ids[] = $link['article_id'];
+		}
+
+		$criteria = 'publish=1 AND id IN('.implode(',', $ids).')';
+
+		return $this->get('container')->getItems('blog_article', $criteria);
 	}
 
 }
