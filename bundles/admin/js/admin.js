@@ -487,7 +487,11 @@ $(document).ready(function(){
         $('#'+inputId+'_extra').val(ids.join());
     });
 
-	var $select = $('.multiselect').selectize({
+    window.setTimeout(function () {
+        $(".alert-warning").alert('close');
+    }, 3000);
+
+var $select = $('.multiselect').selectize({
 		plugins: ['remove_button'],
 		valueField: 'tag_id',
 		labelField: 'tag_name',

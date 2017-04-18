@@ -2,7 +2,7 @@
 
 {% block content %}
     <h3>Импорт .CSV с сайта bogsboots.ru</h3>
-    {% if message %}<div class="alert alert-warning">{{ message }}</div>{% endif %}
+    {% if message %}<div class="alert alert-{{ message.type }}">{{ message.text }}</div>{% endif %}
     <form method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="exampleInputFile">.CSV файл</label>

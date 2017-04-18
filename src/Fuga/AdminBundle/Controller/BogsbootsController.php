@@ -69,12 +69,15 @@ class BogsbootsController extends AdminController
 				}
 			}
 
+			$this->get('session')->set('warning', 'Остатки по складу bogsboots.ru импортированы');
+
 			return $this->reload();
 		}
 
 
 		$state = 'content';
 		$module = 'catalog';
+		$message = $this->flash('warning');
 
 		return new Response($this->render('admin/import/bogsboots/index.html.twig', compact('state', 'module', 'message')));
 	}
