@@ -21,7 +21,7 @@ class ExportController extends PublicController
 		$categories = $this->get('container')->getItems('catalog_category', 'publish=1');
 		$products = $this->get('container')->getItems('catalog_product', 'publish=1');
 		foreach ($products as &$product) {
-			$product['sku'] = $this->get('container')->getItems('catalog_sku', 'publish=1 AND (quantity > 0 OR quantity2 > 0) AND product_id='.$product['id']);
+			$product['sku'] = $this->get('container')->getItems('catalog_sku', 'publish=1 AND (quantity > 0 OR quantity2 > 0 OR quantity3 > 0) AND product_id='.$product['id']);
 		}
 		unset($product);
 		$date = date('Y-m-d H:i');
@@ -90,7 +90,7 @@ class ExportController extends PublicController
 		$categories = $this->get('container')->getItems('catalog_category', 'publish=1');
 		$products = $this->get('container')->getItems('catalog_product', 'publish=1');
 		foreach ($products as &$product) {
-			$product['sku'] = $this->get('container')->getItems('catalog_sku', 'publish=1 AND (quantity > 0 OR quantity2 > 0) AND product_id='.$product['id']);
+			$product['sku'] = $this->get('container')->getItems('catalog_sku', 'publish=1 AND (quantity > 0 OR quantity2 > 0 OR quantity3 > 0) AND product_id='.$product['id']);
 		}
 		unset($product);
 		$date = date('Y-m-d H:i');
@@ -153,7 +153,7 @@ class ExportController extends PublicController
 	{
 		$products = $this->get('container')->getItems('catalog_product', 'publish=1');
 		foreach ($products as &$product) {
-			$product['sku'] = $this->get('container')->getItems('catalog_sku', 'publish=1 AND (quantity > 0 OR quantity2 > 0) AND product_id='.$product['id']);
+			$product['sku'] = $this->get('container')->getItems('catalog_sku', 'publish=1 AND (quantity > 0 OR quantity2 > 0 OR quantity3 > 0) AND product_id='.$product['id']);
 		}
 		unset($product);
 		$date = date('Y-m-d');

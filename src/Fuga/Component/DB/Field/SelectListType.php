@@ -27,7 +27,6 @@ class SelectListType extends Type
 			}
 		}
 
-
 		return '';
 	}
 

@@ -39,7 +39,7 @@
                            data-price="{{ product.product.price }}"
                            data-id="{{ product.sku.id }}"
                            data-sku="{{ product.sku.modarola_id }}"
-                           data-value="{% if product.sku.product_id_value.item.is_preorder %}10{% else %}{{ product.sku.quantity+product.sku.quantity2 }}{% endif %}"
+                           data-value="{% if product.sku.product_id_value.item.is_preorder %}10{% else %}{{ product.sku.quantity+product.sku.quantity2+product.sku.quantity3 }}{% endif %}"
                            value="{{ product.amount }}" />
                     <a href="javascript:;" class="circle plus-circle amount-inc">+</a>
                 </div>

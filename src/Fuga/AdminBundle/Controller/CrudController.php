@@ -12,8 +12,13 @@ class CrudController extends AdminController
 	public function indexAction($state, $module, $entity)
 	{
 		$action = new IndexAction($state, $module, $entity);
+		$res = $action->run();
+		if ($res instanceof Response) {
+			return $res;
+		}
+
 		$response = new Response();
-		$response->setContent($action->run());
+		$response->setContent($res);
 
 		return $response;
 	}

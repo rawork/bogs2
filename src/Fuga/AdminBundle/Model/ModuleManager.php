@@ -55,6 +55,12 @@ class ModuleManager extends ModelManager
 		}
 		if ($module['name'] == 'catalog') {
 			$ret[] = array (
+				'ref' => $this->get('routing')->getGenerator()->generate('admin_bogsboots_stock'),
+				'name' => 'Импорт bogsboots.ru'
+			);
+		}
+		if ($module['name'] == 'catalog') {
+			$ret[] = array (
 				'ref' => $this->get('routing')->getGenerator()->generate('admin_catalog_export'),
 				'name' => 'Экспорт'
 			);

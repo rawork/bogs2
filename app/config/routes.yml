@@ -69,6 +69,9 @@ admin_module_setting:
 admin_catalog_export:
   path: /admin/content/catalog/export
   defaults: { _controller: 'Fuga:Admin:Export:index' }
+admin_bogsboots_stock:
+  path: /admin/content/catalog/bogsboots
+  defaults: { _controller: 'Fuga:Admin:Bogsboots:index' }
 admin_order_bill:
   path: /admin/content/basket/order/{id}/bill
   defaults: { _controller: 'Fuga:Admin:Doc:bill' }

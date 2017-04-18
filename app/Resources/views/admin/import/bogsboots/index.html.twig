@@ -1,0 +1,13 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block content %}
+    <h3>Импорт .CSV с сайта bogsboots.ru</h3>
+    {% if message %}<div class="alert alert-warning">{{ message }}</div>{% endif %}
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="exampleInputFile">.CSV файл</label>
+            <input type="file" name="stock" id="exampleInputFile">
+        </div>
+        <button type="submit" class="btn btn-success">Импортировать</button>
+    </form>
+{% endblock %}
