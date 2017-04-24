@@ -63,6 +63,10 @@ class CommonController extends Controller {
 		}
 		unset($link);
 
+		if (!$this->get('session')->has('csrf_token')) {
+			$this->get('session')->set('csrf_token', base64_encode(openssl_random_pseudo_bytes(32)));
+		}
+
 		$params = array(
 			'h1'        => $nodeItem['title'],
 			'title'     => $this->getManager('Fuga:Common:Meta')->getTitle() ?: strip_tags($nodeItem['title']),
@@ -73,7 +77,8 @@ class CommonController extends Controller {
 			'curnode'   => $nodeItem,
 			'curuser'   => $this->get('security')->getCurrentUser(),
 			'locale'    => $this->get('session')->get('locale'),
-			'asset'		=> 'dev' == PRJ_ENV ? date('YmdHis') : 'prodaction'
+			'asset'		=> 'dev' == PRJ_ENV ? date('YmdHis') : 'prodaction',
+			'csrf_token'=> $this->get('session')->get('csrf_token'),
 		);
 		$this->get('templating')->assign($params);
 

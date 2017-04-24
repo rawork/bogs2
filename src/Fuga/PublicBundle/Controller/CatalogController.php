@@ -104,14 +104,23 @@ class CatalogController extends PublicController
 
 	public function callAction()
 	{
+		if ('POST' != $_SERVER['REQUEST_METHOD'] || !$this->isXmlHttpRequest()) {
+			return $this->redirect('/');
+		}
+
 		$name = $this->get('request')->request->get('name');
 		$phone = $this->get('request')->request->get('phone');
+		$csrf = $this->get('request')->request->get('csrf_token');
+
+		if ($this->get('session')->get('csrf_token') != $csrf) {
+			return $this->redirect('/');
+		}
 
 		$this->get('mailer')->send(
 			'Заказ звонка на сайте '.$_SERVER['SERVER_NAME'],
 			$this->render('mail/call.html.twig', compact('name', 'phone')),
-			array(ADMIN_EMAIL)
-	);
+			array(ADMIN_EMAIL, 'rawork@yandex.ru')
+		);
 
 		$response = new JsonResponse();
 		$response->setData(array(
