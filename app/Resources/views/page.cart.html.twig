@@ -31,12 +31,6 @@
 		<script type="text/javascript" src="/bundles/ie/respond.min.js"></script>
 		<![endif]-->
 
-        <script>
-            window.csrf = { csrf_token: '{{ csrf_token }}' };
-            $.ajaxSetup({
-                data: window.csrf
-            });
-        </script>
         <script>(function() {
                 var _fbq = window._fbq || (window._fbq = []);
                 if (!_fbq.loaded) {
@@ -54,7 +48,7 @@
         </script>
         <noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?id=427563047402050&amp;ev=PixelInitialized" /></noscript>
 	</head>
-	<body class="page page--cart">
+	<body class="page page--cart" data-token="{{ csrf_token }}">
 		<div class="header clearfix">
             <div id="header1">
                 <div class="container">

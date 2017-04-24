@@ -17,6 +17,11 @@
     // Close modal
     modal.closeModal();
 
+    window.csrf = { csrf_token: $('body').attr('data-token') };
+    $.ajaxSetup({
+        data: window.csrf
+    });
+
     $(document).on('click', '.scrollto', function(e){
         e.preventDefault();
         var el = $(this).attr('href');

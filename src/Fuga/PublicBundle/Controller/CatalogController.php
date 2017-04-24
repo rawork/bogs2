@@ -105,6 +105,7 @@ class CatalogController extends PublicController
 	public function callAction()
 	{
 		if ('POST' != $_SERVER['REQUEST_METHOD'] || !$this->isXmlHttpRequest()) {
+			$this->get('log')->addError('ORDER CALL: direct access to form');
 			return $this->redirect('/');
 		}
 
@@ -113,6 +114,7 @@ class CatalogController extends PublicController
 		$csrf = $this->get('request')->request->get('csrf_token');
 
 		if ($this->get('session')->get('csrf_token') != $csrf) {
+			$this->get('log')->addError('ORDER CALL: csrf error');
 			return $this->redirect('/');
 		}
 
