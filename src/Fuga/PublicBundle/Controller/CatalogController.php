@@ -109,6 +109,7 @@ class CatalogController extends PublicController
 			return $this->redirect('/');
 		}
 
+		$lastname = $this->get('request')->request->get('lastname');
 		$name = $this->get('request')->request->get('name');
 		$phone = $this->get('request')->request->get('phone');
 		$csrf = $this->get('request')->request->get('csrf_token');
@@ -120,11 +121,13 @@ class CatalogController extends PublicController
 
 		$this->get('log')->addError('ORDER CALL: referer'.(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : ''));
 
-		$this->get('mailer')->send(
-			'Заказ звонка на сайте '.$_SERVER['SERVER_NAME'],
-			$this->render('mail/call.html.twig', compact('name', 'phone')),
-			array(ADMIN_EMAIL, 'rawork@yandex.ru')
-		);
+		if (empty($lastname)) {
+			$this->get('mailer')->send(
+				'Заказ звонка на сайте '.$_SERVER['SERVER_NAME'],
+				$this->render('mail/call.html.twig', compact('name', 'phone')),
+				array(ADMIN_EMAIL, 'rawork@yandex.ru')
+			);
+		}
 
 		$response = new JsonResponse();
 		$response->setData(array(

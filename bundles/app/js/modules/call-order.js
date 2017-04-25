@@ -5,13 +5,14 @@ module.exports = (function() {
     $(document).on('click', '.show-call-order', function(e){
         e.preventDefault();
         $('.modal .title').html('Заказать звонок');
-        $('.modal .content').html('<form method="post"><input type="text" id="name" placeholder="Ваше имя"><input type="text" id="phone" placeholder="Ваш телефон"><button class="btn call-order">Заказать</button></form>');
+        $('.modal .content').html('<form method="post"><input type="text" name="lastname" id="lastname" placeholder="Фамилия" class="flag"> <input type="text" id="name" placeholder="Ваше имя"><input type="text" id="phone" placeholder="Ваш телефон"><button class="btn call-order">Заказать</button></form>');
         modal.showModal();
         yaCounter29093585.reachGoal('show_order_call');
     });
 
     $(document).on('click', '.call-order', function(e){
         e.preventDefault();
+        var lastname = $('input#lastname').val();
         var name = $('input#name').val();
         var phone = $('input#phone').val();
 
@@ -19,7 +20,7 @@ module.exports = (function() {
             return;
         }
 
-        $.post("/ajax/call", {name: name, phone: phone},
+        $.post("/ajax/call", {lastname: lastname, name: name, phone: phone},
             function(data){
                 $('.modal .content').html(data.text);
                 yaCounter29093585.reachGoal('order_call');
