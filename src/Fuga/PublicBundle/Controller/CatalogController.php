@@ -118,6 +118,8 @@ class CatalogController extends PublicController
 			return $this->redirect('/');
 		}
 
+		$this->get('log')->addError('ORDER CALL: referer'.(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : ''));
+
 		$this->get('mailer')->send(
 			'Заказ звонка на сайте '.$_SERVER['SERVER_NAME'],
 			$this->render('mail/call.html.twig', compact('name', 'phone')),
