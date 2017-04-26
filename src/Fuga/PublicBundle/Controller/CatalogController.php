@@ -127,6 +127,8 @@ class CatalogController extends PublicController
 				$this->render('mail/call.html.twig', compact('name', 'phone')),
 				array(ADMIN_EMAIL, 'rawork@yandex.ru')
 			);
+		} else {
+			$this->get('log')->addError('ORDER CALL: bot');
 		}
 
 		$response = new JsonResponse();
