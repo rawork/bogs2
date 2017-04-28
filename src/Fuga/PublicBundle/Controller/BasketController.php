@@ -690,9 +690,20 @@ class BasketController extends PublicController
 			$this->get('session')->set('cart.buyer', $buyer);
 			$this->get('session')->set('cart.delivery.address', $delivery_info);
 
+			$order = null;
+			$items = null;
+			if (isset($order_id)){
+				$order = $this->get('container')->getItem('basket_order', $order_id);
+				if ($order) {
+					$items = json_decode($order['detail_json'], true);
+				}
+			}
+
 			$response->setData(array(
 				'status' => 'ok',
 				'link' => 'http://'.$_SERVER['SERVER_NAME'].$link,
+				'order' => $order,
+				'items' => $items,
 			));
 
 			return $response;

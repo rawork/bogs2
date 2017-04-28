@@ -92,7 +92,34 @@
 		$.post('/api/order/save', inputData, function(data){
 			console.log('ajax answer');
 			if(data.status == 'ok') {
-				window.location = data.link;
+				if (data.order){
+                    ga('require', 'ecommerce');
+                    ga('ecommerce:addTransaction', {
+                        'id': data.order.id,                     // Transaction ID. Required.
+                        'affiliation': 'Bogs-Shop.ru',   // Affiliation or store name.
+                        'revenue': parseInt(data.order.cost) + parseInt(data.order.delivery_cost),               // Grand Total.
+                        'shipping': data.order.delivery_cost,                  // Shipping.
+                        'currency': 'RUR'                     // Tax.
+                    });
+
+
+                    data.items.forEach(function(item) {
+                        ga('ecommerce:addItem', {
+                            'id': data.order.id,            // Transaction ID. Required.
+                            'name': item.name,    			// Product name. Required.
+                            'sku': item.sku,                // SKU/code.
+                            'price': item.price,            // Unit price.
+                            'quantity': item.amount,        // Quantity.
+                            'currency': 'RUR'
+                        });
+                    });
+
+                    ga('ecommerce:send');
+				}
+
+                setTimeout(function(){
+                    window.location = data.link;
+				}, 1000);
 			} else {
 				alert(data.error);
 			}

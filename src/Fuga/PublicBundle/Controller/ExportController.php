@@ -49,11 +49,14 @@ class ExportController extends PublicController
     </delivery-options>
 	<offers>
 ';
+
+		$utm = urlencode('?utm_source=market&utm_medium=cpc&utm_content=offer-{offer id}&utm_campaign=bogsshop');
+
 		foreach ($products as $product) {
 			foreach ($product['sku'] as $sku) {
 				$photoInfo = pathinfo($product['photo_value']['extra']['main']['path']);
 				$content .= '<offer id="'.$sku['id'].'" available="true">
-  <url>http://'.$_SERVER['SERVER_NAME'].'/#/'.$product['id'].'/'.$sku['id'].'</url>
+  <url>http://'.$_SERVER['SERVER_NAME'].'/#/'.$product['id'].'/'.$sku['id'].$utm.'</url>
   <price>'.$product['price'].'</price>
   <currencyId>RUR</currencyId>
   <categoryId>'.$product['category_id'].'</categoryId>
@@ -166,6 +169,8 @@ class ExportController extends PublicController
 	<updated>'.$date.'T'.$time.'Z</updated> 
 		';
 
+		$utm = urlencode('?utm_medium=cpc&utm_source=google&utm_campaign={campaignid}&utm_content={adtype}%3A%20{adgroupid}%3A%20{product_channel}%3A%20{product_id}%3A%20{product_partition_id}');
+
 		foreach ($products as $product) {
 			foreach ($product['sku'] as $sku) {
 				$photoInfo = pathinfo($product['photo_value']['extra']['main']['path']);
@@ -173,7 +178,7 @@ class ExportController extends PublicController
 		<g:id>'.$product['articul'].'-'.$sku['id'].'</g:id>
 		<g:title>'.$product['name'].' - Размер '.$sku['size'].' US</g:title>
 		<g:description>'.htmlspecialchars(strip_tags($product['description'])).'</g:description>
-		<g:link>http://'.$_SERVER['SERVER_NAME'].'/?product='.$product['id'].'&amp;size='.$sku['id'].'</g:link>
+		<g:link>http://'.$_SERVER['SERVER_NAME'].'/?product='.$product['id'].'&amp;size='.$sku['id'].$utm.'</g:link>
 		<g:image_link>http://'.$_SERVER['SERVER_NAME'].$photoInfo['dirname'].'/'.urlencode($photoInfo['basename']).'</g:image_link>
 		<g:condition>new</g:condition>
 		<g:availability>'.($product['is_preorder'] == 1 ? 'preorder' : 'in stock').'</g:availability>	

@@ -1,0 +1,25 @@
+<script>
+    ga('require', 'ecommerce');
+    ga('ecommerce:addTransaction', {
+        'id': '{{ order.id }}',                     // Transaction ID. Required.
+        'affiliation': 'Bogs-Shop.ru',   // Affiliation or store name.
+        'revenue': '{{ order.cost + order.delivery_cost }}',               // Grand Total.
+        'shipping': '{{ order.delivery_cost }}',                  // Shipping.
+        'currency': 'RUR'                     // Tax.
+    });
+
+
+    {% for item in items %}
+    ga('ecommerce:addItem', {
+        'id': '{{ order.id }}',                     // Transaction ID. Required.
+        'name': '{{ item.name }}',    // Product name. Required.
+        'sku': '{{ item.sku }}',                 // SKU/code.
+        'category': '{{ item.category }}',         // Category or variation.
+        'price': '{{ item.price }}',                 // Unit price.
+        'quantity': '{{ item.amount }}',                   // Quantity.
+        'currency': 'RUR'
+    });
+    {% endfor %}
+
+    ga('ecommerce:send');
+</script>
