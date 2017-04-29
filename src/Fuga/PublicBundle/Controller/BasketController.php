@@ -116,7 +116,7 @@ class BasketController extends PublicController
 				$product = array(
 					'id' => $sku['id'],
 					'name' => $cart[$id]['product']['name'],
-					'category' => $cart[$id]['product']['category_id_value']['item']['name'],
+					'category' => $cart[$id]['product']['category_id_value']['item']['title'],
 					'price' => $cart[$id]['product']['price'],
 					'quantity' => $amount,
 				);
@@ -201,7 +201,7 @@ class BasketController extends PublicController
 				$cartItem = $cart[$id];
 				$product['id'] = $cartItem['sku']['id'];
 				$product['name'] = $cartItem['product']['name'];
-				$product['category'] = $cartItem['product']['category_id_value']['item']['name'];
+				$product['category'] = $cartItem['product']['category_id_value']['item']['title'];
 
 				unset($cart[$id]);
 			}
@@ -724,7 +724,7 @@ class BasketController extends PublicController
 							continue;
 						}
 
-						$item['category'] = $product['category_id_value']['item']['name'];
+						$item['category'] = $product['category_id_value']['item']['title'];
 					}
 					unset($item);
 				}

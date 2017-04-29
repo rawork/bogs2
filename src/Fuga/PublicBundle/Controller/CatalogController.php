@@ -56,7 +56,7 @@ class CatalogController extends PublicController
 			'id' => $sizes[$first_key],
 			'name' => $product['name'],
 			'price' => $product['price'],
-			'category' => $product['category_id_value']['item']['name'],
+			'category' => $product['category_id_value']['item']['title'],
 		);
 
 		if($this->isXmlHttpRequest()) {
