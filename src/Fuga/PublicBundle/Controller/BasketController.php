@@ -104,6 +104,7 @@ class BasketController extends PublicController
 			$cart = $this->get('session')->get('cart');
 			$sku = $this->get('container')->getItem('catalog_sku', $id);
 
+			$product = null;
 			if (isset($cart[$id])) {
 				$cart[$id]['amount'] += $amount;
 			} else {
@@ -111,6 +112,13 @@ class BasketController extends PublicController
 					'sku' => $sku,
 					'product' => $this->get('container')->getItem('catalog_product', $sku['product_id']),
 					'amount' => $amount,
+				);
+				$product = array(
+					'id' => $sku['id'],
+					'name' => $cart[$id]['product']['name'],
+					'category' => $cart[$id]['product']['category_id_value']['item']['name'],
+					'price' => $cart[$id]['product']['price'],
+					'quantity' => $amount,
 				);
 			}
 			if ($cart[$id]['amount'] <= 0) {
@@ -137,6 +145,7 @@ class BasketController extends PublicController
 			$response = new JsonResponse();
 			$response->setData(array(
 				'minicart' => $this->render('basket/mini.html.twig', compact('num', 'total', 'ending')),
+				'product' => $product
 			));
 
 			return $response;
@@ -187,7 +196,13 @@ class BasketController extends PublicController
 			$id = $this->get('request')->request->get('id');
 			$cart = $this->get('session')->get('cart');
 
+			$product = array();
 			if (isset($cart[$id])) {
+				$cartItem = $cart[$id];
+				$product['id'] = $cartItem['sku']['id'];
+				$product['name'] = $cartItem['product']['name'];
+				$product['category'] = $cartItem['product']['category_id_value']['item']['name'];
+
 				unset($cart[$id]);
 			}
 
@@ -208,6 +223,7 @@ class BasketController extends PublicController
 			$response->setData(array(
 				'status' => true,
 				'minicart' => $this->render('basket/mini.html.twig', compact('num', 'total', 'ending')),
+				'product' => $product
 			));
 
 			return $response;
@@ -696,6 +712,21 @@ class BasketController extends PublicController
 				$order = $this->get('container')->getItem('basket_order', $order_id);
 				if ($order) {
 					$items = json_decode($order['detail_json'], true);
+					foreach ($items as &$item) {
+						$item['category'] = 'Bogs';
+						$sku = $this->get('container')->getItem('catalog_sku', $item['sku']);
+						if (!$sku) {
+							continue;
+						}
+
+						$product = $this->get('container')->getItem('catalog_product', $sku['product_id']);
+						if (!$product){
+							continue;
+						}
+
+						$item['category'] = $product['category_id_value']['item']['name'];
+					}
+					unset($item);
 				}
 			}
 

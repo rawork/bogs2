@@ -91,7 +91,7 @@
 		console.log(inputData);
 
 		$.post('/api/order/save', inputData, function(data){
-			console.log('ajax answer');
+			// console.log('ajax answer');
 			if(data.status == 'ok') {
 				if (data.order){
                     ga('require', 'ecommerce');
@@ -116,6 +116,30 @@
                     });
 
                     ga('ecommerce:send');
+
+                    var products = [];
+
+                    data.items.forEach(function(product){
+						products.push({
+                            "id": product.sku,
+                            "name": product.name,
+                            "price": product.price,
+                            "brand": "Bogs",
+                            "category": product.category,
+                            "variant": product.size + " размер"
+						})
+					});
+
+                    dataLayer.push({
+                        "ecommerce": {
+                            "purchase": {
+                                "actionField": {
+                                    "id" : "TRX987"
+                                },
+                                "products": products
+                            }
+                        }
+                    });
 				}
 
                 setTimeout(function(){

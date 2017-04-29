@@ -4,6 +4,8 @@
 
     var skuID = null;
 
+    window.dataLayer = window.dataLayer || [];
+
     var win = $(window),
         body = $('body'),
         winHeight = win.outerHeight(),
@@ -43,6 +45,24 @@
                 $('#cart').html(data.minicart);
                 that.html('Оформить заказ').removeClass('active');
                 yaCounter29093585.reachGoal('add_product');
+                if (data.product) {
+                    dataLayer.push({
+                        "ecommerce": {
+                            "add": {
+                                "products": [
+                                    {
+                                        "id": data.product.id,
+                                        "name": data.product.name,
+                                        "price": data.product.price,
+                                        "brand": "Bogs",
+                                        "category": data.product.category,
+                                        "quantity": data.product.quantity
+                                    }
+                                ]
+                            }
+                        }
+                    });
+                }
             }, "json");
     });
 
@@ -76,10 +96,25 @@
             $('.modal .content').html(data.content);
             $('.amount').attr('data-value', $('#sizes option:selected').attr('data-value'));
             modal.showModal();
-            console.log(skuID);
+            dataLayer.push({
+                "ecommerce": {
+                    "detail": {
+                        "products": [
+                            {
+                                "id": data.product.id,
+                                "name" : data.product.name,
+                                "price": data.product.price,
+                                "brand": "Bogs",
+                                "category": data.product.category,
+                            }
+                        ]
+                    }
+                }
+            });
             if (skuID) {
-                console.log('yes'+skuID);
+                //console.log('yes'+skuID);
                 $('#sizes').val(skuID);
+
             }
         });
     });

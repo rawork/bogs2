@@ -104,6 +104,21 @@
                     $('.sub-total__val').text( convert.numToPrice( subTotal ) );
                     checkCart();
                     updateTotals(shippingTotal, subTotal);
+                    if (data.product) {
+                        dataLayer.push({
+                            "ecommerce": {
+                                "remove": {
+                                    "products": [
+                                        {
+                                            "id": data.product.id,
+                                            "name": data.product.name,
+                                            "category": data.product.category
+                                        }
+                                    ]
+                                }
+                            }
+                        });
+                    }
                 });
             } else {
                 console.log('remove sku from cart error');
