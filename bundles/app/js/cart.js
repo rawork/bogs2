@@ -104,6 +104,7 @@
                     checkCart();
                     updateTotals(shippingTotal, subTotal);
                     if (data.product) {
+                        console.log(data.product);
                         dataLayer.push({
                             "ecommerce": {
                                 "remove": {

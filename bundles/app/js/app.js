@@ -45,6 +45,7 @@
                 that.html('Оформить заказ').removeClass('active');
                 yaCounter29093585.reachGoal('add_product');
                 if (data.product) {
+                    console.log(data.product);
                     dataLayer.push({
                         "ecommerce": {
                             "add": {
@@ -95,21 +96,24 @@
             $('.modal .content').html(data.content);
             $('.amount').attr('data-value', $('#sizes option:selected').attr('data-value'));
             modal.showModal();
-            dataLayer.push({
-                "ecommerce": {
-                    "detail": {
-                        "products": [
-                            {
-                                "id": data.product.id,
-                                "name" : data.product.name,
-                                "price": data.product.price,
-                                "brand": "Bogs",
-                                "category": data.product.category,
-                            }
-                        ]
+            if (data.sku) {
+                console.log(data.sku);
+                dataLayer.push({
+                    "ecommerce": {
+                        "detail": {
+                            "products": [
+                                {
+                                    "id": data.sku.id,
+                                    "name" : data.sku.name,
+                                    "price": data.sku.price,
+                                    "brand": "Bogs",
+                                    "category": data.sku.category,
+                                }
+                            ]
+                        }
                     }
-                }
-            });
+                });
+            }
             if (skuID) {
                 //console.log('yes'+skuID);
                 $('#sizes').val(skuID);
