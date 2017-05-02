@@ -149,7 +149,7 @@
 
                 setTimeout(function(){
                     window.location = data.link;
-				}, 5000);
+				}, 1000);
 			} else {
 				alert(data.error);
 			}
