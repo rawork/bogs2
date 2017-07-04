@@ -142,12 +142,12 @@
                     <label for="cache">Оплата наличными при получении</label>
                 </div>
             </li>
-            <li class="shipping-payment__list__item">
+            {% if payonline_enabled %}<li class="shipping-payment__list__item">
                 <div class="radio">
                     <input type="radio" name="payment-type" value="card"{% if payment_type == 'card' %} checked="checked"{% endif %}>
                     <label for="">Оплата банковской картой</label>
                 </div>
-            </li>
+            </li>{% endif %}
         </ul>
     </div>
 

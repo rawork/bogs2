@@ -80,10 +80,11 @@ class BasketController extends PublicController
 		$total = $this->get('session')->get('total');
 		$payment_type = $this->get('session')->get('cart.payment.type');
 		$delivery_type = $this->get('session')->get('cart.delivery.type');
+		$payonline_enabled = $this->params['payonline_enabled'];
 
 		$this->get('container')->addScript('/bundles/public/js/cart.js');
 
-		return $this->render('basket/index.html.twig', compact('message', 'cart', 'total', 'payment_type' , 'delivery_type'));
+		return $this->render('basket/index.html.twig', compact('message', 'cart', 'total', 'payment_type' , 'delivery_type', 'payonline_enabled'));
 	}
 
 	public function miniAction()

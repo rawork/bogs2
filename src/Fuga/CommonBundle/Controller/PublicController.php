@@ -9,7 +9,9 @@ class PublicController extends Controller {
 	function __construct($name) {
 		$params = $this->getManager('Fuga:Common:Param')->findAll($name);
 		foreach ($params as $param) {
-			$this->params[$param['name']] = $param['type'] == 'int' ? intval($param['value']) : $param['value'];
+			$this->params[$param['name']] = $param['type'] == 'int'
+                ? intval($param['value'])
+                : ($param['type'] == 'bool' ? boolval($param['value']) : $param['value']);
 		}
 	}
 	
