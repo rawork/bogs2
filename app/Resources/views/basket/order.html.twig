@@ -20,6 +20,12 @@
     <a href="#" class="btn btn-pay">Оплатить заказ</a>
 </div>
 {% endif %}
+{% if order.payment_type == 'bank' %}
+    <div class="btn-wrap ">
+        <a target="_blank" href="{{ path('order_notice', {id: id}) }}" class="btn">Скачать квитанцию на оплату</a>
+    </div>
+{% endif %}
+
 
 <h4 class="products-list__title">Товары в заказе</h4>
 <!-- Products list -->

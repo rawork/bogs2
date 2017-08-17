@@ -233,6 +233,10 @@ form:
   path: /ajax/form
   defaults: { _controller: 'Fuga:Public:Catalog:form'}
 
+order_notice:
+  path: /basket/notice/{id}
+  defaults: { _controller: 'Fuga:Public:Basket:notice'}
+
 stock:
   path: /modarola/stock
   defaults: { _controller: 'Fuga:Public:Modarola:stock'}

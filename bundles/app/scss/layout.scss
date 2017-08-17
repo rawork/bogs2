@@ -444,13 +444,21 @@ body.header-fixed {
             content: '';
             position: absolute;
             left: 6px;
-            top: 8px;
+            top: 1px;
             width: 7px;
             height: 11px;
             transform: rotate(45deg);
             border-bottom: 1px solid #000;
             border-right: 1px solid #000;
             opacity: 0;
+        }
+    }
+    &-agreement {
+        max-width: 500px;
+        padding-top: 20px;
+
+        label {
+          padding-left: 0;
         }
     }
 }

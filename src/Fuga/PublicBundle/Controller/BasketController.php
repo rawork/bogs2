@@ -5,6 +5,8 @@ namespace Fuga\PublicBundle\Controller;
 use Fuga\CommonBundle\Controller\PublicController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class BasketController extends PublicController
 {
@@ -19,7 +21,8 @@ class BasketController extends PublicController
 	);
 	private $payment = array(
 		'cash' => 'Оплата наличными при получении',
-		'card' => 'Оплата банковской картой'
+		'card' => 'Оплата банковской картой',
+        'bank' => 'Оплата квитанции в банке',
 	);
 
 	private $statuses = array(
@@ -379,7 +382,7 @@ class BasketController extends PublicController
 		$delivery_info = $this->get('session')->get('cart.delivery.address');
 
 		$delivery_type = $this->get('session')->get('cart.delivery.type', 'self');
-		$payment_type = $this->get('session')->get('cart.payment.type', 'card');
+		$payment_type = $this->get('session')->get('cart.payment.type', 'cash');
 		$delivery_type_title = $this->delivery[$delivery_type];
 		$delivery_cost = $this->get('session')->get('cart.delivery.cost');
 		$delivery_country = $this->get('session')->get('cart.delivery.country');
@@ -407,7 +410,7 @@ class BasketController extends PublicController
 			$num = $this->get('session')->get('num');
 //			$total = $this->get('session')->get('total');
 			$delivery_type = $this->get('session')->get('cart.delivery.type', 'self');
-			$payment_type = $this->get('session')->get('cart.payment.type', 'card');
+			$payment_type = $this->get('session')->get('cart.payment.type', 'cash');
 			$delivery_type_title = $this->delivery[$delivery_type];
 			$delivery_cost = $this->get('session')->get('cart.delivery.cost');
 			$payment_type_title = $this->payment[$payment_type];
@@ -691,7 +694,7 @@ class BasketController extends PublicController
 
 					$this->get('connection')->rollBack();
 
-					$this->get('container')->addError($e->getMessage());
+					$this->get('log')->addError($e->getMessage());
 					$response->setData(array(
 						'status' => 'error',
 						'error' => 'Ошибка добавления заказа',
@@ -803,7 +806,7 @@ class BasketController extends PublicController
 		$this->get('container')->setVar('h1', 'Заказ № '.$order['id']);
 		$this->get('container')->addScript('/bundles/public/js/order-status.js');
 
-		return $this->render('basket/order.html.twig', compact('order', 'delivery_type_title', 'payment_type_title', 'order_status_title', 'merchantInfo', 'createPaymentResponse'));
+		return $this->render('basket/order.html.twig', compact('order', 'delivery_type_title', 'payment_type_title', 'order_status_title', 'merchantInfo', 'createPaymentResponse', 'id'));
 	}
 
 	public function statusAction()
@@ -967,5 +970,49 @@ class BasketController extends PublicController
 
 		return $response;
 	}
+
+	public function noticeAction($id)
+    {
+        $order = $this->get('container')->getItem('basket_order', 'MD5(CONCAT(email, id)) = "'.$id.'"');
+        if (!$order) {
+            throw $this->createNotFoundException('File not found');
+        }
+
+        $file = 'notice_'.$order['id'].'.xls';
+
+        if (!file_exists(UPLOAD_DIR.'/orders')) {
+            mkdir(UPLOAD_DIR.'/orders', 0755, true);
+        }
+
+        $filepath = UPLOAD_DIR.'/orders/'.$file;
+
+        if (!$this->get('fs')->exists($filepath)) {
+            $this->get('fs')->copy(UPLOAD_DIR.'/sber_pd4.xls', $filepath);
+
+            $objPHPExcel = \PHPExcel_IOFactory::createReader('Excel5');
+            $objPHPExcel = $objPHPExcel->load($filepath);
+            $objPHPExcel->setActiveSheetIndex(0);
+
+            $number = str_pad($order['id'], 6, "0", STR_PAD_LEFT);
+            $date = new \DateTime($order['created']);
+
+            $objPHPExcel->getActiveSheet()->setCellValue('Q10', 'Оплата товара по счету ИМ-'.$number.' от '.$date->format('d.m.Y'));
+            $objPHPExcel->getActiveSheet()->setCellValue('AA12', $order['lastname'].' '.$order['name']);
+            $objPHPExcel->getActiveSheet()->setCellValue('AA13', $order['address']);
+            $objPHPExcel->getActiveSheet()->setCellValue('Z14', intval($order['cost']) + intval($order['delivery_cost']));
+
+            $objWriter = new \PHPExcel_Writer_Excel5($objPHPExcel);
+            $objWriter->save($filepath);
+        }
+
+        $response = new BinaryFileResponse($filepath);
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $file
+        );
+        $response->prepare($this->get('request'));
+
+        return $response;
+    }
 
 } 

@@ -41,7 +41,7 @@
 		var inputs = form.find('input');
 		var errors = false;
 
-		console.log('before validator', errors);
+		// console.log('before validator', errors);
 		inputs.each(function(){
 			var value = $(this).val();
 			var rulesString = $(this).attr('data-validator');
@@ -56,7 +56,7 @@
 					if (!validator.test(value)) {
 						$(this).css('border-color','#d00');
 						errors = true;
-						console.log(value, validator, rulesString, rulesArray);
+						//console.log(value, validator, rulesString, rulesArray);
 					} else {
 						$(this).css('border-color','#ddd');
 					}
@@ -64,13 +64,17 @@
 			}
 		});
 
-		console.log('before errors', errors);
+		//console.log('before errors', errors);
+		if (!$('#agreement')[0].checked) {
+            // console.log('agreement!');
+			return;
+		}
 
 		if (errors){
 			return;
 		}
 
-		console.log('after errors');
+		//console.log('after errors');
 
 		var inputData = {
 			name: $('#name').val(),
@@ -94,9 +98,9 @@
 			if(data.status == 'ok') {
 				if (data.order){
 
-					console.log(
-						parseInt(data.order.cost) + parseInt(data.order.delivery_cost),
-						parseFloat(data.order.cost) + parseFloat(data.order.delivery_cost));
+					// console.log(
+					// 	parseInt(data.order.cost) + parseInt(data.order.delivery_cost),
+					// 	parseFloat(data.order.cost) + parseFloat(data.order.delivery_cost));
 
                     ga('require', 'ecommerce');
                     ga('ecommerce:addTransaction', {
@@ -154,6 +158,6 @@
 			}
 		}, 'json');
 
-		console.info('Submit!');
+		//console.info('Submit!');
 	})
 })(jQuery);

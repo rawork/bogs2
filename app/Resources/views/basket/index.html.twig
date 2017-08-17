@@ -148,6 +148,12 @@
                     <label for="">Оплата банковской картой</label>
                 </div>
             </li>{% endif %}
+            <li class="shipping-payment__list__item">
+                <div class="radio">
+                    <input type="radio" name="payment-type" value="bank"{% if payment_type == 'bank' %} checked="checked"{% endif %}>
+                    <label for="">Оплата квитанции в банке</label>
+                </div>
+            </li>
         </ul>
     </div>
 
