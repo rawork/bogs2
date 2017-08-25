@@ -18,7 +18,8 @@ class OrderListener
 
 	private $payment = array(
 		'cash' => 'Оплата наличными при получении',
-		'card' => 'Оплата банковской картой'
+		'card' => 'Оплата банковской картой',
+        'bank' => 'Оплата квитанции в банке',
 	);
 
 	private $statuses = array(
