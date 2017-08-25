@@ -15,7 +15,7 @@
     </li>
     {% endif %}
 </ul>
-{% if order.order_status == 'wait' and order.is_preorder != 1 %}
+{% if order.order_status == 'wait' and order.is_preorder != 1 and order.payment_type == 'card' %}
 <div class="btn-wrap ">
     <a href="#" class="btn btn-pay">Оплатить заказ</a>
 </div>
