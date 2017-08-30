@@ -4,7 +4,6 @@ namespace Fuga\Component\Mailer;
 
 class Mailer 
 {
-	
 	private $engine;
 	
 	function __construct() 
@@ -19,7 +18,7 @@ class Mailer
 	function send($subject, $message, $emails) 
 	{
 		if (!is_array($emails)) {
-			if (preg_match_all('/[a-z0-9]+([-_\.]?[a-z0-9])*@[a-z0-9]+([-_\.]?[a-z0-9])+\.[a-z]{2,4}/i', $emails, $finded)) {
+			if (preg_match_all('/@/i', $emails, $finded)) {
 				$subscribers = array_unique($finded[0]);
 			}
 		} else {

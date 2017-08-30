@@ -67,6 +67,7 @@ class ModarolaController extends PublicController
 				'message' => 'ok',
 			));
 		} else {
+            $this->get('log')->addError('Modarola stock no auth');
 			$response->setData(array(
 				'message' => 'no',
 			));
