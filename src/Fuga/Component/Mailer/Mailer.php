@@ -2,13 +2,17 @@
 
 namespace Fuga\Component\Mailer;
 
-class Mailer 
+use Monolog\Logger;
+
+class Mailer
 {
 	private $engine;
+	private $logger;
 	
-	function __construct() 
+	function __construct(MailEngine $engine, Logger $logger)
 	{
-		$this->engine = new MailEngine();
+		$this->engine = $engine;
+        $this->logger = $logger;
 	}
 	
 	function attach($fileName) {
@@ -20,7 +24,9 @@ class Mailer
 		if (!is_array($emails)) {
 			if (preg_match_all('/(.+@.+)/i', $emails, $finded)) {
 				$subscribers = array_unique($finded[0]);
-			}
+			} else {
+			    $this->logger->addError('Email not found in string: '.$emails);
+            }
 		} else {
 			$subscribers = $emails;
 		}

@@ -4,6 +4,7 @@ namespace Fuga\Component;
 
 use Fuga\CommonBundle\Security\SecurityHandler;
 use Fuga\Component\Exception\NotFoundHttpException;
+use Fuga\Component\Mailer\MailEngine;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Routing\Router;
@@ -557,7 +558,7 @@ class Container
 					$this->services[$name] = new Paginator($this->get('templating'));
 					break;
 				case 'mailer':
-					$this->services[$name] = new Mailer\Mailer();
+					$this->services[$name] = new Mailer\Mailer(new MailEngine(), $this->get('log'));
 					break;
 				case 'scheduler':
 					$this->services[$name] = new Scheduler\Scheduler($this);
