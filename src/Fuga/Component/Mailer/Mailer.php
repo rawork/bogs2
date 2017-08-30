@@ -18,7 +18,7 @@ class Mailer
 	function send($subject, $message, $emails) 
 	{
 		if (!is_array($emails)) {
-			if (preg_match_all('/@/i', $emails, $finded)) {
+			if (preg_match_all('/(.+@.+)/i', $emails, $finded)) {
 				$subscribers = array_unique($finded[0]);
 			}
 		} else {
