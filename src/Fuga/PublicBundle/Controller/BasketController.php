@@ -344,7 +344,7 @@ class BasketController extends PublicController
 
 		foreach ($cart as $item) {
 			$sku = $this->get('container')->getItem('catalog_sku', $item['sku']['id']);
-			$stock = $sku['quantity'] + $sku['quantity2'] + $sku['quantity3'];
+			$stock = $sku['quantity'] + $sku['quantity2']; // + $sku['quantity3'];
 			if ($stock < $item['amount']) {
 				$changes++;
 				if ($stock <= 0) {
