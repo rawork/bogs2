@@ -90,7 +90,7 @@
         e.preventDefault();
         var title = $(this).siblings('.name').text();
         $.ajax({
-            url: '/ajax/product/' + $(this).attr('data-id')
+            url: '/ajax/product/' + $(this).attr('data-id') + '?_=' + new Date().getTime()
         }).done(function(data){
             $('.modal').addClass('modal--product');
             $('.modal .title').html(data.title);
