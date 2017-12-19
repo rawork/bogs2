@@ -1364,3 +1364,51 @@ input.flag {
   color: #f58024;
   font-weight: bold;
 }
+
+.techs-list {
+  list-style: none;
+  display: flex;
+  flex-flow: row wrap;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.techs-list__item {
+  display: block;
+  line-height: 30px;
+  margin-bottom: 3px;
+  margin-right: 25px;
+}
+
+.techs-list__item:before {
+  color: #000;
+  content: '';
+  font-family: bogs-fontello;
+  font-size: 22px;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.icon-tech--waterproof:before {
+  content: '\e80f';
+}
+
+.icon-tech--rebound:before {
+  content: '\e808';
+}
+
+.icon-tech--durafresh:before {
+  content: '\e807';
+}
+
+.icon-tech--neotech:before {
+  content: '\e805';
+}
+
+.icon-tech--biogrip:before {
+  content: '\e80b';
+}
+
+.icon-tech--everdry:before {
+  content: '\e80c';
+}

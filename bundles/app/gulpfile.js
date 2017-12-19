@@ -49,4 +49,5 @@ gulp.task('serve', ['sass'], function() {
     gulp.watch('../../app/Resources/views/*.twig').on('change', reload);
 });
 
+gulp.task('build', ['sass', 'js', 'json']);
 gulp.task('default', ['sass', 'js', 'json', 'serve']); //   <------ Default -----//

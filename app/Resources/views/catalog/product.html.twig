@@ -64,7 +64,17 @@
             <li><a href="#" data-tab="table">Таблица размеров</a></li>
         </ul>
         <ul class="product-tabs-content">
-            <li data-tab-content="description" class="active">{{ product.description }}</li>
+            <li data-tab-content="description" class="active">
+                <ul class="techs-list">
+                    <li class="techs-list__item icon-tech--waterproof">Waterproof</li>
+                    <li class="techs-list__item icon-tech--rebound">Rebound</li>
+                    <li class="techs-list__item icon-tech--durafresh">Durafresh</li>
+                    <li class="techs-list__item icon-tech--neotech">Neotech</li>
+                    <li class="techs-list__item icon-tech--neotech">Biogrip</li>
+                    <li class="techs-list__item icon-tech--everdry">Everdry</li>
+                </ul>
+                {{ product.description }}
+            </li>
             <li data-tab-content="delivery">{{ render('Fuga:Public:Common:block', {'name': 'delivery'}) }}</li>
             <li data-tab-content="payment">{{ render('Fuga:Public:Common:block', {'name': 'payment'}) }}</li>
             <li data-tab-content="table"><img src="/files/category/size_{{ product.category_id_value.item.name }}.png" /></li>
