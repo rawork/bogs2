@@ -1,8 +1,14 @@
 {% if message %}
     <div class="basket-error">{{ message }}</div>
 {% endif %}
-<!-- Products list -->
 
+{% if date('2018-01-09 00:00:00') > date()  %}
+<div class="new-year-alert">
+    Уважаемые покупатели! Все заказы, оформленные на сайте с 25 декабря 2017 года по 8 января 2018 года, будут обработаны после 8 января 2018 года. Благодарим за понимание и желаем вам прекрасных праздников!
+</div>
+{% endif %}
+
+<!-- Products list -->
 <table class="products-list">
     {% if cart|length == 0 %}
     <tr class="empty-cart"><td>Ваша корзина пуста</td></tr>
