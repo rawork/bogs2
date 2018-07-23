@@ -26,7 +26,7 @@
                 <div class="custom-select__list-wrap">
                     <select class="custom-select__list" id="sizes">
                         {% for size in sizes %}
-                            <option data-value="{% if product.is_preorder %}10{% else %}{{ size.quantity + size.quantity2 }}{#+ size.quantity3 #}{% endif %}" value="{{ size.id }}"{% if gsize is defined and gsize == size.id %} selected{% endif %}>{{ size.size }} US</option>
+                            <option data-value="{% if product.is_preorder %}10{% else %}{{ size.quantity2 }}{% endif %}" value="{{ size.id }}"{% if gsize is defined and gsize == size.id %} selected{% endif %}>{{ size.size }} US</option>
                         {% endfor %}
                     </select>
                     <span class="custom-select__chevron"></span>

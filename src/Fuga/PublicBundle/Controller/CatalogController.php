@@ -46,8 +46,7 @@ class CatalogController extends PublicController
 		if ($product['is_preorder']) {
 			$sizes = $this->get('container')->getItems('catalog_sku', 'publish=1 AND product_id='.$product['id']);
 		} else {
-			$sizes = $this->get('container')->getItems('catalog_sku', 'publish=1 AND (quantity>0 OR quantity2>0) AND product_id='.$product['id']);
-			// OR quantity3>0
+			$sizes = $this->get('container')->getItems('catalog_sku', 'publish=1 AND (quantity2>0) AND product_id='.$product['id']);
 		}
 
 		reset($sizes);
